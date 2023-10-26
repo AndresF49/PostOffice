@@ -4,6 +4,7 @@ import { Home } from "./components/Home";
 import { Login } from "./components/Account/Login";
 import { Register } from "./components/Account/Register";
 import { ToDoList } from "./components/ToDoList";
+import { SearchPackage } from "./components/Package/SearchPackage";
 
 
 const AppRoutes = [
@@ -30,6 +31,10 @@ const AppRoutes = [
   {
     path: '/register',
     element: <Register />
+  },
+  {
+    path: '/package',
+    element: <SearchPackage />
   }
 ];
 
