@@ -1,5 +1,8 @@
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
+import { useLocation } from 'react-router-dom';
+
+
 
 export default function ShowPackage({ _package }) {
 
@@ -7,6 +10,9 @@ export default function ShowPackage({ _package }) {
 		<>
 			<Container >
 				<Row>
+					<Col>
+						<b>Tracking Id:</b> {_package.trackingNumber != null ? _package.trackingNumber : "N/A"}
+					</Col> 
 					<Col>
 						<b>Status:</b> {_package.status}
 					</Col> 
@@ -23,7 +29,7 @@ export default function ShowPackage({ _package }) {
 					<Col><b>Price:</b> ${_package.price}</Col> <Col><b>Description of item:</b> {_package.descriptionOfItem  != null ? _package.descriptionOfItem : "N/A"}</Col>
 				</Row>
 				<Row>
-					<Col><b>Declared Value:</b> {_package.declaredValue  != null ? '$' + _package.declaredValue : "N/A"}</Col> <Col><b>Package Type:</b> {_package.packageType}</Col>
+					<Col><b>Declared Value:</b> {_package.declaredValue != null ? '$' + _package.declaredValue : "N/A"}</Col> <Col><b>Package Type:</b> {_package.packageType}</Col>
 				</Row>
 				<Row>
 					<Col><b>Weight:</b> {_package.weight != null ? _package.weight + ' lbs' : "N/A"}</Col> <Col><b>Signature Required:</b> {_package.signatureRequired.toString() ? "Yes" : "No"}</Col>
