@@ -32,10 +32,10 @@ export default function ShowPackage({ _package }) {
 					<Col><b>Declared Value:</b> {_package.declaredValue != null ? '$' + _package.declaredValue : "N/A"}</Col> <Col><b>Package Type:</b> {_package.packageType}</Col>
 				</Row>
 				<Row>
-					<Col><b>Weight:</b> {_package.weight != null ? _package.weight + ' lbs' : "N/A"}</Col> <Col><b>Signature Required:</b> {_package.signatureRequired.toString() ? "Yes" : "No"}</Col>
+					<Col><b>Weight:</b> {_package.weight != null ? _package.weight + ' lbs' : "N/A"}</Col> <Col><b>Signature Required:</b> {_package.signatureRequired ? "Yes" : "No"}</Col>
 				</Row>
 				<Row>
-					<Col><b>Length:</b> {_package.length != null ? _package.length + '"' : ""}</Col> <Col><b>Insurance:</b> {_package.insurance.toString() ? "Yes" : "No"}</Col>
+					<Col><b>Length:</b> {_package.length != null ? _package.length + '"' : ""}</Col> <Col><b>Insurance:</b> {_package.insurance ? "Yes" : "No"}</Col>
 				</Row>
 				<Row>
 					<Col><b>Width:</b> {_package.width != null ? _package.width + '"' : ""}</Col>
