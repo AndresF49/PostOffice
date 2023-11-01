@@ -49,23 +49,26 @@ public class PackageController : ControllerBase
 		return Packages;
 		
     }
-
+	public class TrackingRequest
+	{
+		public string searchRequest { get; set; }
+	}
 	[HttpPost]
 	[Route("SearchPackage")]
-        public ActionResult<Package> SearchPackage(string searchRequest)
-        {
-            if (string.IsNullOrEmpty(searchRequest))
+    public ActionResult<Package> SearchPackage([FromBody] TrackingRequest tr) // By default, Web API tries to get simple types from the request URI. The FromBody attribute tells Web API to read the value from the request body.
+    {
+            if (string.IsNullOrEmpty(tr.searchRequest))
             {
                 return BadRequest("Invalid search request.");
             }
 
-			var searchResult = Packages.Where(x => x.TrackingNumber == searchRequest);
+			var searchResult = Packages.Where(x => x.TrackingNumber == tr.searchRequest);
 
-			if (searchResult == null)
+			if (searchResult.Count() == 0)
             {
                 return NotFound("Object not found.");
             }
-
+		//Console.WriteLine(searchResult);
             return Ok(searchResult);
         }
 
