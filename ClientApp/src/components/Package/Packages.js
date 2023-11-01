@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardBody, CardHeader, CardTitle, Row, Col, CardText } from 'reactstrap';
+import { Card, CardBody, CardHeader, CardTitle, Row, Col, CardText, Button } from 'reactstrap';
+import ShowPackage from './ShowPackage';
 
 
 
@@ -7,6 +8,12 @@ export default function Packages() {
 	const [listPackages, updatePackages] = useState([]);
 	const [sendingPackages, updateSending] = useState([]);
 	const [receivingPackages, updateReceiving] = useState([]);
+
+	const [selectedPackage, setSelectedPackage] = useState(null); // to show package details under table
+
+	const handleDetailButtonClick = (pack) => {
+		setSelectedPackage(pack);
+	};
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -21,7 +28,6 @@ export default function Packages() {
 				updateSending(sendingPackagesData); // update useStates with new arrays because pushing could lead to unexpected behavior in react
 				updateReceiving(receivingPackagesData);
 
-				console.log(data);
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
@@ -41,9 +47,29 @@ export default function Packages() {
 					<CardHeader>Sending</CardHeader>
 					{sendingPackages.length > 0 && (
 						<CardBody>
-							<b>Tracking Id:</b> {sendingPackages[0].trackingNumber === null ? "N/A" : sendingPackages[0].trackingNumber}
-							<b>Receiver:</b> {sendingPackages[0].receiver}
-							<b>Package Type:</b> {sendingPackages[0].packageType}
+							<table className="table table-striped" aria-labelledby="tableLabel">
+								<thead>
+								<tr>
+									<th>Tracking Id</th>
+									<th>Status</th>
+									<th>Reciever</th>
+									<th>Package Type</th>
+									<th>&nbsp;</th>
+									
+								</tr>
+								</thead>
+								<tbody>
+								{sendingPackages.map(item =>
+									<tr key={item.packageId}>
+										<td>{item.trackingNumber === null ? "N/A" : item.trackingNumber}</td>
+										<td>{item.status}</td>
+										<td>{item.receiver}</td>
+										<td>{item.packageType}</td>
+										<td><Button color='primary' size='sm' onClick={() => handleDetailButtonClick(item)}>Details</Button></td>
+									</tr>
+								)}
+								</tbody>
+							</table>
 						</CardBody>
 					)}
 				</Card>
@@ -55,9 +81,29 @@ export default function Packages() {
 							receivingPackages.length > 0 && (
 								<CardBody>
 									<CardText>
-										<p><b>Tracking Id:</b> {receivingPackages[0].trackingNumber === null ? "N/A" : receivingPackages[0].trackingNumber}</p>
-										<p><b>Sender:</b> {receivingPackages[0].sender}</p>
-										<p><b>Package Type:</b> {receivingPackages[0].packageType}</p>
+										<table className="table table-striped" aria-labelledby="tableLabel">
+											<thead>
+											<tr>
+												<th>Tracking Id</th>
+												<th>Status</th>
+												<th>Sender</th>
+												<th>Package Type</th>
+												<th>&nbsp;</th>
+												
+											</tr>
+											</thead>
+											<tbody>
+											{receivingPackages.map(item =>
+												<tr key={item.packageId}>
+													<td>{item.trackingNumber  === null ? "N/A" : item.trackingNumber}</td>
+													<td>{item.status}</td>
+													<td>{item.sender}</td>
+													<td>{item.packageType}</td>
+													<td><Button color='primary' size='sm' onClick={() => handleDetailButtonClick(item)}>Details</Button></td>
+												</tr>
+											)}
+											</tbody>
+										</table>
 									</CardText>
 									
 								</CardBody>
@@ -66,7 +112,12 @@ export default function Packages() {
 					</Card>
 				</Col>
 			</Row>
-
+			<br></br>
+			<Row>
+				<Col>
+				{selectedPackage && <ShowPackage _package={selectedPackage} />}
+				</Col>
+			</Row>
 		</>
 	);
 };
