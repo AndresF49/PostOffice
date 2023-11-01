@@ -1,8 +1,5 @@
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
-import { useLocation } from 'react-router-dom';
-
-
 
 export default function ShowPackage({ _package }) {
 
