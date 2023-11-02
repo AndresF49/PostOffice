@@ -15,18 +15,6 @@ const AppRoutes = [
     element: <Home />
   },
   {
-    path: '/counter',
-    element: <Counter />
-  },
-  {
-    path: '/fetch-data',
-    element: <FetchData />
-  },
-  {
-    path: '/todolist',
-    element: <ToDoList />
-  },
-  {
     path: '/login',
     element: <Login />
   },
