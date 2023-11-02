@@ -1,9 +1,6 @@
-import { Counter } from "./components/Counter";
-import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import { Login } from "./components/Account/Login";
 import { Register } from "./components/Account/Register";
-import { ToDoList } from "./components/ToDoList";
 import SearchPackage from "./components/Package/SearchPackage";
 import Packages from "./components/Package/Packages";
 import EmployeePage from "./components/Employee/EmployeePage";
