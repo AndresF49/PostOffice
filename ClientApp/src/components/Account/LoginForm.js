@@ -8,14 +8,34 @@ import { Link } from 'react-router-dom';
 
 
 async function loginUser(credentials) {
- return fetch('login/Login', {
-   method: 'POST',
-   headers: {
-     'Content-Type': 'application/json'
-	 },
-	 body: JSON.stringify({ email: credentials.email, password: credentials.password })
- })
-   .then(data => data.json())
+
+  try {
+    const response = await fetch('login/Login', {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: credentials.email, password: credentials.password }) // explicitly state each parameter, both this line and line below work tho >:(
+      // body: JSON.stringify( credentials )
+    });
+    // console.log("response: ", response);
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    // console.log("error in loginUser with creds: ", credentials);
+    console.log("error: ", error);
+  }
+
+	
+//  return fetch('login/Login', {
+//    method: 'POST',
+//    headers: {
+//      'Content-Type': 'application/json'
+// 	 },
+// 	 body: JSON.stringify({ email: credentials.email, password: credentials.password })
+// 	})
+//    .then(data => data.json());
 }
 
 // export default function Login({ setToken }) {
@@ -26,9 +46,9 @@ export default function LoginForm() {
 	const [userInfo, setUserInfo] = useState();
 
 	const onSubmit = async (credentials) => {
-		const token = await loginUser({ credentials });
-		console.log("Token: ", token);
-		console.log("Creds: ", credentials);
+		const token = await loginUser(credentials);
+		console.log("Token: ", token.password);
+		// console.log("Creds: ", credentials);
 		// setUserInfo(credentials);
 		// console.log(credentials);
 	};
@@ -89,12 +109,6 @@ export default function LoginForm() {
 							<Link className="btn btn-primary btn-login text-uppercase fw-bold" to="/register" role="button">Register</Link>
 						</div>
 					</Form>
-					<Button onClick={
-						var request = fetch("login/GetLogin", {
-
-						});
-					}>
-						Get</Button>
 				</div>
 			</div>
 		</div>
