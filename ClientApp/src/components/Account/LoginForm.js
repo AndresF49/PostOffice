@@ -6,14 +6,31 @@ import { Link } from 'react-router-dom';
 
 // do not use Input component from reactstrap for form validation with useForm :(
 
+
+async function loginUser(credentials) {
+ return fetch('login/Login', {
+   method: 'POST',
+   headers: {
+     'Content-Type': 'application/json'
+	 },
+	 body: JSON.stringify({ email: credentials.email, password: credentials.password })
+ })
+   .then(data => data.json())
+}
+
+// export default function Login({ setToken }) {
+
 export default function LoginForm() {
 	const { register, handleSubmit, formState } = useForm();
 	const { errors } = formState
 	const [userInfo, setUserInfo] = useState();
 
-	const onSubmit = (data) => {
-		setUserInfo(data)
-		console.log(data);
+	const onSubmit = async (credentials) => {
+		const token = await loginUser({ credentials });
+		console.log("Token: ", token);
+		console.log("Creds: ", credentials);
+		// setUserInfo(credentials);
+		// console.log(credentials);
 	};
 
 	return (
@@ -29,7 +46,7 @@ export default function LoginForm() {
 								className="form-control" 
 								id="email" 
 								placeholder="name@example.com"
-								{...register("Email", {
+								{...register("email", {
 									required: {
 										value: true,
 										message: 'Email is required'
@@ -52,7 +69,7 @@ export default function LoginForm() {
 								className="form-control" 
 								id="password" 
 								placeholder="Password"
-								{...register("Password", {
+								{...register("password", {
 									required: {
 										value: true,
 										message: 'Password is required'
@@ -72,6 +89,12 @@ export default function LoginForm() {
 							<Link className="btn btn-primary btn-login text-uppercase fw-bold" to="/register" role="button">Register</Link>
 						</div>
 					</Form>
+					<Button onClick={
+						var request = fetch("login/GetLogin", {
+
+						});
+					}>
+						Get</Button>
 				</div>
 			</div>
 		</div>
