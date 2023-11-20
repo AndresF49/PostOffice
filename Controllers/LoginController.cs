@@ -20,6 +20,11 @@ public class LoginController : ControllerBase
 		public string email { get; set; }
 		public string password { get; set; }
 	}
+	public class Token
+	{
+		public string token { get; set; }
+		public string email { get; set; }
+	}
 	[HttpPost]
 	[Route("Login")]
 	public async Task<IActionResult> Login([FromBody] LoginCredentials credentials) // By default, Web API tries to get simple types from the request URI. The FromBody attribute tells Web API to read the value from the request body.
@@ -30,13 +35,17 @@ public class LoginController : ControllerBase
 			return BadRequest("One or more Login credentials is empty");
 		}
 
-		Console.WriteLine("In Post method for login:");
-		Console.WriteLine(credentials);
-		Console.WriteLine();
+		
 		await Task.Run(() => Thread.Sleep(100));
-		var token = "test123";
+		var tokenObj = new Token { token = "test123", email = credentials.email };
+		//var token = "test123";
+        Console.WriteLine("In Post method for login:");
+        Console.WriteLine("Email: " + credentials.email);
+        Console.WriteLine("Pass: " + credentials.password);
+        Console.WriteLine("Token: " + tokenObj);
+		Console.WriteLine("JSONed Token: " + JsonSerializer.Serialize(tokenObj));
 
-		 return Ok(JsonSerializer.Serialize(token));
+        return Ok(JsonSerializer.Serialize(tokenObj));
 		//return Ok(token);
 	}
     //[HttpGet]

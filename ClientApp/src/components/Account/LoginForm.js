@@ -3,9 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-
 // do not use Input component from reactstrap for form validation with useForm :(
-
 
 async function loginUser(credentials) {
 
@@ -26,19 +24,7 @@ async function loginUser(credentials) {
     // console.log("error in loginUser with creds: ", credentials);
     console.log("error: ", error);
   }
-
-	
-//  return fetch('login/Login', {
-//    method: 'POST',
-//    headers: {
-//      'Content-Type': 'application/json'
-// 	 },
-// 	 body: JSON.stringify({ email: credentials.email, password: credentials.password })
-// 	})
-//    .then(data => data.json());
 }
-
-// export default function Login({ setToken }) {
 
 export default function LoginForm() {
 	const { register, handleSubmit, formState } = useForm();
@@ -47,7 +33,7 @@ export default function LoginForm() {
 
 	const onSubmit = async (credentials) => {
 		const token = await loginUser(credentials);
-		console.log("Token: ", token.password);
+		console.log("Token: ", token);
 		// console.log("Creds: ", credentials);
 		// setUserInfo(credentials);
 		// console.log(credentials);
@@ -58,7 +44,6 @@ export default function LoginForm() {
 			<div className="card border-0 shadow rounded-3 my-5">
 				<div className="card-body p-4 p-sm-5">
 					<h5 className="card-title text-center mb-5 fw-light fs-2">Login</h5>
-					{/* <pre>{JSON.stringify(userInfo, undefined, 2)}</pre> */}
 					<Form noValidate onSubmit={ handleSubmit(onSubmit) } >
 						<FormGroup floating className="mb-3">
 							<input 
