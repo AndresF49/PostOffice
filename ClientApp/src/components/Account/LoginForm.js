@@ -1,7 +1,7 @@
 import { Button, Form, Label, FormGroup } from "reactstrap";
 import { useForm } from 'react-hook-form'
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // do not use Input component from reactstrap for form validation with useForm :(
 
@@ -26,17 +26,16 @@ async function loginUser(credentials) {
   }
 }
 
-export default function LoginForm() {
+export default function LoginForm({ setToken }) {
 	const { register, handleSubmit, formState } = useForm();
 	const { errors } = formState
-	const [userInfo, setUserInfo] = useState();
+  const navigate = useNavigate();
 
 	const onSubmit = async (credentials) => {
 		const token = await loginUser(credentials);
 		console.log("Token: ", token);
-		// console.log("Creds: ", credentials);
-		// setUserInfo(credentials);
-		// console.log(credentials);
+    setToken(token);
+    navigate("/");
 	};
 
 	return (
