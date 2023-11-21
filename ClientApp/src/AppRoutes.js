@@ -1,36 +1,43 @@
 import { Home } from "./components/Home";
-import { Login } from "./components/Account/Login";
 import { Register } from "./components/Account/Register";
 import SearchPackage from "./components/Package/SearchPackage";
 import Packages from "./components/Package/Packages";
 import EmployeePage from "./components/Employee/EmployeePage";
+import ErrorPage from "./components/ErrorPage";
+import { Navigate } from "react-router-dom";
 
 
 const AppRoutes = [
   {
     index: true,
-    element: <Home />
-  },
-  {
-    path: '/login',
-    element: <Login />
+    element: <Home />,
+    errorElement: <ErrorPage />,
   },
   {
     path: '/register',
-    element: <Register />
+    element: <Register />,
+    errorElement: <ErrorPage />,
   },
   {
     path: '/searchpackage',
-    element: <SearchPackage />
+    element: <SearchPackage />,
+    errorElement: <ErrorPage />,
   },
   {
     path: '/packages',
-    element: <Packages />
+    element: <Packages />,
+    errorElement: <ErrorPage />,
   },
   {
     path: '/employee',
-    element: <EmployeePage />
-  }
+    element: <EmployeePage />,
+    errorElement: <ErrorPage />,
+  },
+  {                      
+    path: "*",
+    element: <Navigate to="/" />,
+  },
+                    
 ];
 
 export default AppRoutes;
