@@ -26,7 +26,7 @@ async function loginUser(credentials) {
   }
 }
 
-export default function LoginForm({ setToken }) {
+export default function LoginForm({ setToken, setIsAuthenticated }) {
 	const { register, handleSubmit, formState } = useForm();
 	const { errors } = formState
   const navigate = useNavigate();
@@ -35,6 +35,7 @@ export default function LoginForm({ setToken }) {
 		const token = await loginUser(credentials);
 		console.log("Token: ", token);
     setToken(token);
+    setIsAuthenticated(true);
     navigate("/");
 	};
 
