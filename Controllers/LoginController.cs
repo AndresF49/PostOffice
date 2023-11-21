@@ -29,18 +29,11 @@ public class LoginController : ControllerBase
 	// private readonly int[] _foo = new int[] {0,1,2,3};
 	private readonly User[] UserArr = new User[] 
 	{ 
-		new User { Userid=0, Email="admin@gmail.com", RoleTypeId=0, EmployeeId=0, Username="admin", Password="admin", CustomerId=null },
-	 	new User { Userid=1, Email="andres@gmail.com", RoleTypeId=0, EmployeeId=1, Username="andres", Password="andres", CustomerId=null },
-		new User { Userid=2, Email="employee@gmail.com", RoleTypeId=1, EmployeeId=2, Username="employee", Password="employee", CustomerId=null },
-		new User { Userid=3, Email="customer@gmail.com", RoleTypeId=2, EmployeeId=null, Username="customer", Password="customer", CustomerId=0 }
+		new User { UserId=0, Email="admin@gmail.com", RoleTypeId=0, EmployeeId=0, Username="admin", Password="admin", CustomerId=null },
+	 	new User { UserId=1, Email="andres@gmail.com", RoleTypeId=0, EmployeeId=1, Username="andres", Password="andres", CustomerId=null },
+		new User { UserId=2, Email="employee@gmail.com", RoleTypeId=1, EmployeeId=2, Username="employee", Password="employee", CustomerId=null },
+		new User { UserId=3, Email="customer@gmail.com", RoleTypeId=2, EmployeeId=null, Username="customer", Password="customer", CustomerId=0 }
 	};
-
-	public enum Roles 
-	{
-		Admin=0,
-		Employee=1,
-		Customer=2
-	}
 	
 	[HttpPost]
 	[Route("Login")]
