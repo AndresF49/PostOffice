@@ -15,7 +15,8 @@ const SearchPackage = () => {
 		);
 	}
 
-	const handleSearch = async () => {
+	const handleSearch = async (e) => {
+		e.preventDefault();
 	try {
 		const response = await fetch('package/SearchPackage', {
 		method: 'POST',
@@ -44,7 +45,7 @@ const SearchPackage = () => {
 	return (
 	<>
 		<h2>Search for a Package</h2>
-		<Form>
+		<Form onSubmit={handleSearch}>
 		<FormGroup>
 			<Label for="searchInput">Tracking Id:</Label>
 			<Input
@@ -60,7 +61,7 @@ const SearchPackage = () => {
 				}}
 			/>
 		</FormGroup>
-		<Button color="primary" onClick={handleSearch}>
+		<Button color="primary">
 			Search
 		</Button>
 		</Form>
