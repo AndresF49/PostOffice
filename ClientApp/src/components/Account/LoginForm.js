@@ -1,6 +1,5 @@
 import { Button, Form, Label, FormGroup } from "reactstrap";
 import { useForm } from 'react-hook-form'
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Roles } from "./Roles";
 
@@ -27,19 +26,14 @@ async function loginUser(credentials) {
   }
 }
 
-export default function LoginForm({ setIsAuthenticated, setAuthentication }) {
-  const { register, handleSubmit, formState } = useForm();
+export default function LoginForm({ setAuthentication }) {
+    const { register, handleSubmit, formState } = useForm();
 	const { errors } = formState
   const navigate = useNavigate();
 
 	const onSubmit = async (credentials) => {
 		const authDetails = await loginUser(credentials);
-    setIsAuthenticated(true);
-    // setIsAuthenticated({
-    //   currentUser: token.user,
-    //   role: Roles[token.user.RoleTypeId],
-    //   token: token.token
-    // });
+
     setAuthentication({
       currentUser: authDetails.user,
       role: Roles[authDetails.user.RoleTypeId],

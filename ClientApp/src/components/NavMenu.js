@@ -1,11 +1,11 @@
 import {  useState } from 'react';
-import { Button, Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import Logout from './Account/Logout';
 
-export default function NavMenu({ setIsAuthenticated, setAuthentication }) {
-  const [collapsed, setCollapsed] = useState(true);
+export default function NavMenu({ setAuthentication }) {
+    const [collapsed, setCollapsed] = useState(true);
   const toggleNavbar = () => {
     setCollapsed(!collapsed);
   };
@@ -27,7 +27,7 @@ export default function NavMenu({ setIsAuthenticated, setAuthentication }) {
               <NavLink tag={Link} className="text-dark" to="/packages">Packages</NavLink>
             </NavItem>
             <NavItem className="">
-              <Logout size="sm" setIsAuthenticated={setIsAuthenticated} setAuthentication={setAuthentication} />
+            <Logout size="sm" setAuthentication={setAuthentication} />
             </NavItem>
           </ul>
         </Collapse>

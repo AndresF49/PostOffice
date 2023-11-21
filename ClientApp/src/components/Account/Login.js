@@ -1,11 +1,10 @@
-﻿import React, { Component } from 'react';
-import LoginForm from './LoginForm';
+﻿import LoginForm from './LoginForm';
 
-export default function Login({ setIsAuthenticated, setAuthentication }) {
+export default function Login({ setAuthentication }) {
 
-        return (
-            <>
-                <LoginForm setIsAuthenticated={setIsAuthenticated} setAuthentication={setAuthentication} />
-            </>
-        );
+  return (
+    <>
+      <LoginForm setAuthentication={setAuthentication} />
+    </>
+  );
 }
