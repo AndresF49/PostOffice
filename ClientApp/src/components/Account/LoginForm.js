@@ -2,6 +2,7 @@ import { Button, Form, Label, FormGroup } from "reactstrap";
 import { useForm } from 'react-hook-form'
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Roles } from "./Roles";
 
 // do not use Input component from reactstrap for form validation with useForm :(
 
@@ -26,20 +27,31 @@ async function loginUser(credentials) {
   }
 }
 
-export default function LoginForm({ setToken, setIsAuthenticated }) {
-	const { register, handleSubmit, formState } = useForm();
+// export default function LoginForm({ setToken, setIsAuthenticated, setAuthentication }) {
+export default function LoginForm({ setIsAuthenticated, setAuthentication }) {
+    const { register, handleSubmit, formState } = useForm();
 	const { errors } = formState
   const navigate = useNavigate();
 
 	const onSubmit = async (credentials) => {
 		const token = await loginUser(credentials);
-		console.log("Token: ", token);
-    setToken(token);
-    // setIsAuthenticated(true);
-    setIsAuthenticated({
+		// console.log("Token: ", token);
+    // setToken(token);
+    setIsAuthenticated(true);
+    // setIsAuthenticated({
+    //   currentUser: token.user,
+    //   role: Roles[token.user.RoleTypeId],
+    //   token: token.token
+    // });
+    setAuthentication({
       currentUser: token.user,
+      role: Roles[token.user.RoleTypeId],
       token: token.token
     });
+    // console.log("Info below from token=loginUser")
+    // console.log(`User: ${token.user}`);
+    // console.log(`Role: ${Roles[token.user.RoleTypeId]}`);
+    // console.log(`Token: ${token.token}`);
     navigate("/");
 	};
 

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import Logout from './Account/Logout';
 
-export default function NavMenu({ setIsAuthenticated }) {
+export default function NavMenu({ setIsAuthenticated, setAuthentication }) {
   const [collapsed, setCollapsed] = useState(true);
   const toggleNavbar = () => {
     setCollapsed(!collapsed);
@@ -27,7 +27,7 @@ export default function NavMenu({ setIsAuthenticated }) {
               <NavLink tag={Link} className="text-dark" to="/packages">Packages</NavLink>
             </NavItem>
             <NavItem className="">
-              <Logout size="sm" setIsAuthenticated={setIsAuthenticated} />
+              <Logout size="sm" setIsAuthenticated={setIsAuthenticated} setAuthentication={setAuthentication} />
             </NavItem>
           </ul>
         </Collapse>

@@ -6,7 +6,7 @@ export default function Layout(props) {
 
   return(
     <div>
-      <NavMenu setIsAuthenticated={props.setIsAuthenticated}/>
+      <NavMenu setIsAuthenticated={props.setIsAuthenticated} setAuthentication={props.setAuthentication} />
       <Container tag="main">
         {props.children}
       </Container>
