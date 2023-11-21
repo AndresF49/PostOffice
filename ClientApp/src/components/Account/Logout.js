@@ -7,7 +7,7 @@ export default function Logout({size, setIsAuthenticated}) {
 	const logout = () => {
 		sessionStorage.removeItem('token');
 		// navigate("/");
-		setIsAuthenticated(false);
+		setIsAuthenticated(null);
 		// window.location.reload(true);
 	}
 	return(

@@ -35,7 +35,11 @@ export default function LoginForm({ setToken, setIsAuthenticated }) {
 		const token = await loginUser(credentials);
 		console.log("Token: ", token);
     setToken(token);
-    setIsAuthenticated(true);
+    // setIsAuthenticated(true);
+    setIsAuthenticated({
+      currentUser: token.user,
+      token: token.token
+    });
     navigate("/");
 	};
 
