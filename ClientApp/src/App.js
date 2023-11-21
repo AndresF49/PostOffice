@@ -3,7 +3,6 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import Layout from './components/Layout';
 import './custom.css';
-import useToken from './components/Utils/useToken';
 import Login from "./components/Account/Login";
 import { Register } from './components/Account/Register';
 import ErrorPage from './components/ErrorPage';
@@ -14,7 +13,6 @@ import useAuthentication from './components/Utils/useAuthentication';
 
 export default function App() {
 
-  const { token, setToken } = useToken();
   const {authentication, setAuthentication} = useAuthentication(null); // authentication holds
   // currentUser Obj, Role, and Token
   // pass this to each page as needed
@@ -26,13 +24,12 @@ export default function App() {
   // isAuthenticated will store an object that holds currentUser object, Role, and token
   
   useEffect(() => {
-    console.log("isAuthenticated now: " + isAuthenticated);
-  }, [isAuthenticated]);
+    console.log(`authentication is: ${authentication != null}`);
+  }, [authentication]);
 
   const notAuthenticatedRoutes = () => {
     return (
     <Routes>
-      {/* <Route key={0} index path={"/login"} element={<Login setToken={setToken} setIsAuthenticated={setIsAuthenticated} setAuthentication={setAuthentication} />} errorElement={<ErrorPage />} /> */}
       <Route key={0} index path={"/login"} element={<Login setIsAuthenticated={setIsAuthenticated} setAuthentication={setAuthentication} />} errorElement={<ErrorPage />} />
       <Route key={1} path={"/register"} element={<Register />} errorElement={<ErrorPage />}/>
       <Route key={2} path={"*"} element={<Navigate to="/login" replace />} errorElement={<ErrorPage />}/>
@@ -41,7 +38,7 @@ export default function App() {
   }
 
   return (
-    (isAuthenticated == true ? 
+    (authentication != null ? 
       <Layout setIsAuthenticated={setIsAuthenticated} setAuthentication={setAuthentication}>
         <Routes>
           {AppRoutes.map((route, index) => {

@@ -1,3 +1,5 @@
+/*
+
 import { useState } from 'react';
 
 export default function useToken() {
@@ -19,3 +21,4 @@ export default function useToken() {
     token
   }
 }
+*/

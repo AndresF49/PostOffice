@@ -27,7 +27,6 @@ async function loginUser(credentials) {
   }
 }
 
-// export default function LoginForm({ setToken, setIsAuthenticated, setAuthentication }) {
 export default function LoginForm({ setIsAuthenticated, setAuthentication }) {
     const { register, handleSubmit, formState } = useForm();
 	const { errors } = formState
@@ -35,8 +34,6 @@ export default function LoginForm({ setIsAuthenticated, setAuthentication }) {
 
 	const onSubmit = async (credentials) => {
 		const token = await loginUser(credentials);
-		// console.log("Token: ", token);
-    // setToken(token);
     setIsAuthenticated(true);
     // setIsAuthenticated({
     //   currentUser: token.user,
