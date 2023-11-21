@@ -17,10 +17,10 @@ public class LoginController : ControllerBase
 	}
 	public class LoginCredentials
 	{
-		public string email { get; set; }
+		public string username { get; set; }
 		public string password { get; set; }
 	}
-	public class Token // returning this token object so frontend destructure this object into a token and email
+	public class Token // returning this token object so frontend destructure this object into a token and user object
 	{
 		public string token { get; set; }
 		public User user { get; set; }
@@ -39,20 +39,20 @@ public class LoginController : ControllerBase
 	[Route("Login")]
 	public async Task<IActionResult> Login([FromBody] LoginCredentials credentials) // By default, Web API tries to get simple types from the request URI. The FromBody attribute tells Web API to read the value from the request body.
 	{
-		if (string.IsNullOrEmpty(credentials.email) || string.IsNullOrEmpty(credentials.password))
+		if (string.IsNullOrEmpty(credentials.username) || string.IsNullOrEmpty(credentials.password))
 		{
-			Console.WriteLine("email or pass null/emp");
+			Console.WriteLine("username or pass null/emp");
 			return BadRequest("One or more Login credentials is empty");
 		}
 		
 		await Task.Run(() => Thread.Sleep(100));
-		// query db where credentials.email == db.email && Hash(credentials.password) == db.hashedPassword
-		var user = UserArr.Single<User>(u => u.Email == credentials.email && u.Password == credentials.password);
+		// query db where credentials.username == db.username && Hash(credentials.password) == db.hashedPassword
+		var user = UserArr.Single<User>(u => u.Username == credentials.username && u.Password == credentials.password);
 		// NEEDS TO BE HASHED PASSWORD ^^^^ and SWITCH frontend to take a Username when logging in/registering instead
 		// of an email
 		var tokenObj = new Token { token = "test123", user = user };
   //      Console.WriteLine("In Post method for login:");
-  //      Console.WriteLine("Email: " + credentials.email);
+  //      Console.WriteLine("Username: " + credentials.username);
   //      Console.WriteLine("Pass: " + credentials.password);
   //      Console.WriteLine("Token: " + tokenObj);
 		//Console.WriteLine("JSONed Token: " + JsonSerializer.Serialize(tokenObj));

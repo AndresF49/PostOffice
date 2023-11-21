@@ -14,7 +14,7 @@ async function loginUser(credentials) {
       headers: {
       'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ email: credentials.email, password: credentials.password }) // explicitly state each parameter, both this line and line below work tho >:(
+      body: JSON.stringify({ username: credentials.username, password: credentials.password }) // explicitly state each parameter, both this line and line below work tho >:(
       // body: JSON.stringify( credentials )
     });
     // console.log("response: ", response);
@@ -28,12 +28,12 @@ async function loginUser(credentials) {
 }
 
 export default function LoginForm({ setIsAuthenticated, setAuthentication }) {
-    const { register, handleSubmit, formState } = useForm();
+  const { register, handleSubmit, formState } = useForm();
 	const { errors } = formState
   const navigate = useNavigate();
 
 	const onSubmit = async (credentials) => {
-		const token = await loginUser(credentials);
+		const authDetails = await loginUser(credentials);
     setIsAuthenticated(true);
     // setIsAuthenticated({
     //   currentUser: token.user,
@@ -41,9 +41,9 @@ export default function LoginForm({ setIsAuthenticated, setAuthentication }) {
     //   token: token.token
     // });
     setAuthentication({
-      currentUser: token.user,
-      role: Roles[token.user.RoleTypeId],
-      token: token.token
+      currentUser: authDetails.user,
+      role: Roles[authDetails.user.RoleTypeId],
+      token: authDetails.token
     });
     // console.log("Info below from token=loginUser")
     // console.log(`User: ${token.user}`);
@@ -60,25 +60,21 @@ export default function LoginForm({ setIsAuthenticated, setAuthentication }) {
 					<Form noValidate onSubmit={ handleSubmit(onSubmit) } >
 						<FormGroup floating className="mb-3">
 							<input 
-								type="email" 
+								type="text" 
 								className="form-control" 
-								id="email" 
+								id="username" 
 								placeholder="name@example.com"
-								{...register("email", {
+								{...register("username", {
 									required: {
 										value: true,
-										message: 'Email is required'
+										message: 'Username is required'
 									},
-									pattern: {
-										value: /[^\s@]+@[^\s@]+\.[^\s@]+/,
-										message: 'Invalid email format'
-									}
 								})}
 							/>
-							<Label htmlFor="email">
-								Email address
+							<Label htmlFor="username">
+								Username
 							</Label>
-							<p className="text-danger mt-1">{errors.Email?.message}</p>
+							<p className="text-danger mt-1">{errors.username?.message}</p>
 
 						</FormGroup>
 						<FormGroup floating className="mb-3">
@@ -97,7 +93,7 @@ export default function LoginForm({ setIsAuthenticated, setAuthentication }) {
 							<Label htmlFor="password">
 								Password
 							</Label>
-							<p className="text-danger mt-1">{errors.Password?.message}</p>
+							<p className="text-danger mt-1">{errors.password?.message}</p>
 
 						</FormGroup>
 						<div className="d-grid gap-3">
