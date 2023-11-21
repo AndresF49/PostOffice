@@ -14,7 +14,9 @@ import { useEffect } from 'react';
 export default function App() {
 
   const { token, setToken } = useToken();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(); // if we default useState(false), for some reason
+  // whenever we go to searchPackage and press 'enter', isAuthenticated gets set to false...
+  // so keep it empty for now and let login/logout control the state of this
 
   useEffect(() => {
     console.log("isAuthenticated now: " + isAuthenticated);
