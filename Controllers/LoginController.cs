@@ -20,7 +20,7 @@ public class LoginController : ControllerBase
 		public string email { get; set; }
 		public string password { get; set; }
 	}
-	public class Token
+	public class Token // returning this token object so frontend destructure this object into a token and email
 	{
 		public string token { get; set; }
 		public string email { get; set; }
@@ -38,29 +38,13 @@ public class LoginController : ControllerBase
 		
 		await Task.Run(() => Thread.Sleep(100));
 		var tokenObj = new Token { token = "test123", email = credentials.email };
-		//var token = "test123";
-        Console.WriteLine("In Post method for login:");
-        Console.WriteLine("Email: " + credentials.email);
-        Console.WriteLine("Pass: " + credentials.password);
-        Console.WriteLine("Token: " + tokenObj);
-		Console.WriteLine("JSONed Token: " + JsonSerializer.Serialize(tokenObj));
+  //      Console.WriteLine("In Post method for login:");
+  //      Console.WriteLine("Email: " + credentials.email);
+  //      Console.WriteLine("Pass: " + credentials.password);
+  //      Console.WriteLine("Token: " + tokenObj);
+		//Console.WriteLine("JSONed Token: " + JsonSerializer.Serialize(tokenObj));
 
         return Ok(JsonSerializer.Serialize(tokenObj));
-		//return Ok(token);
 	}
-    //[HttpGet]
-    //[Route("GetLogin")]
-    //public IActionResult GetLogin() // By default, Web API tries to get simple types from the request URI. The FromBody attribute tells Web API to read the value from the request body.
-    //{
-
-    //    Console.WriteLine("In Get method for login:");
-
-    //    Console.WriteLine();
-
-    //    var token = "test123";
-
-    //    return Ok(JsonSerializer.Serialize(token));
-    //}
-
 }
 
