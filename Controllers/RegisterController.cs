@@ -6,12 +6,12 @@ namespace PostOffice.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class LoginController : ControllerBase
+public class RegisterController : ControllerBase
 {
 
-	private readonly ILogger<LoginController> _logger;
+	private readonly ILogger<RegisterController> _logger;
 
-	public LoginController(ILogger<LoginController> logger)
+	public RegisterController(ILogger<RegisterController> logger)
 	{
 		_logger = logger;
 	}
@@ -25,7 +25,6 @@ public class LoginController : ControllerBase
 		public string token { get; set; }
 		public User user { get; set; }
 	}
-	
 	[HttpPost]
 	[Route("Login")]
 	public async Task<IActionResult> Login([FromBody] LoginCredentials credentials) // By default, Web API tries to get simple types from the request URI. The FromBody attribute tells Web API to read the value from the request body.
@@ -38,16 +37,15 @@ public class LoginController : ControllerBase
 		
 		await Task.Run(() => Thread.Sleep(100));
 		// query db where credentials.username == db.username && Hash(credentials.password) == db.hashedPassword
-		// var user = UserArr.Single<User>(u => u.Username == credentials.username && u.Password == credentials.password);
 		var user = UsersArray.UserArr.Single<User>(u => u.Username == credentials.username && u.Password == credentials.password);
 		// NEEDS TO BE HASHED PASSWORD ^^^^ and SWITCH frontend to take a Username when logging in/registering instead
 		// of an email
 		var tokenObj = new Token { token = "test123", user = user };
-        // Console.WriteLine("In Post method for login:");
-        // Console.WriteLine("Username: " + credentials.username);
-        // Console.WriteLine("Pass: " + credentials.password);
-        // Console.WriteLine("Token: " + tokenObj);
-		// Console.WriteLine("JSONed Token: " + JsonSerializer.Serialize(tokenObj));
+  //      Console.WriteLine("In Post method for login:");
+  //      Console.WriteLine("Username: " + credentials.username);
+  //      Console.WriteLine("Pass: " + credentials.password);
+  //      Console.WriteLine("Token: " + tokenObj);
+		//Console.WriteLine("JSONed Token: " + JsonSerializer.Serialize(tokenObj));
 
         return Ok(JsonSerializer.Serialize(tokenObj));
 	}

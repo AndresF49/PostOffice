@@ -5,6 +5,30 @@ import { Link } from "react-router-dom";
 
 // do not use Input component from reactstrap for form validation with useForm :(
 
+// async function RegisterUser(credentials) {
+
+// 	try {
+// 	  const response = await fetch('register/Register', {
+// 		method: 'POST',
+// 		headers: {
+// 		'Content-Type': 'application/json'
+// 		},
+// 		body: JSON.stringify({ username: credentials.username, password: credentials.password }) // explicitly state each parameter, both this line and line below work tho >:(
+// 		// body: JSON.stringify( credentials )
+// 	  });
+// 	  // console.log("response: ", response);
+  
+// 	  const result = await response.json();
+// 	  return result;
+// 	} catch (error) {
+// 	  // console.log("error in loginUser with creds: ", credentials);
+// 	  console.log("error: ", error);
+// 	}
+//   }
+
+// access CustomersArray CustomerArr and add to it when registering, also add to UsersArray -> UserArr as well
+
+
 export default function RegisterForm() {
 	const { register, watch, handleSubmit, formState } = useForm();
 	const { errors } = formState
