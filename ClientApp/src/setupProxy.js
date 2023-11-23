@@ -9,6 +9,7 @@ const context = [
   "/todolist",
   "/package",
   "/login",
+  "/register",
 ];
 
 const onError = (err, req, resp, target) => {

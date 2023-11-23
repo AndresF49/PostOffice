@@ -4,7 +4,7 @@ import AppRoutes from './AppRoutes';
 import Layout from './components/Layout';
 import './custom.css';
 import Login from "./components/Account/Login";
-import { Register } from './components/Account/Register';
+import Register from './components/Account/Register';
 import ErrorPage from './components/ErrorPage';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -25,7 +25,7 @@ export default function App() {
     return (
     <Routes>
       <Route key={0} index path={"/login"} element={<Login setAuthentication={setAuthentication} />} errorElement={<ErrorPage />} />
-      <Route key={1} path={"/register"} element={<Register />} errorElement={<ErrorPage />}/>
+      <Route key={1} path={"/register"} element={<Register setAuthentication={setAuthentication}/>} errorElement={<ErrorPage />}/>
       <Route key={2} path={"*"} element={<Navigate to="/login" replace />} errorElement={<ErrorPage />}/>
     </Routes>
     );

@@ -1,5 +1,4 @@
 import { Home } from "./components/Home";
-import { Register } from "./components/Account/Register";
 import SearchPackage from "./components/Package/SearchPackage";
 import Packages from "./components/Package/Packages";
 import EmployeePage from "./components/Employee/EmployeePage";
@@ -11,11 +10,6 @@ const AppRoutes = [
   {
     index: true,
     element: <Home />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: '/register',
-    element: <Register />,
     errorElement: <ErrorPage />,
   },
   {
