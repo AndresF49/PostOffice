@@ -9,6 +9,7 @@ import ErrorPage from './components/ErrorPage';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import useAuthentication from './components/Utils/useAuthentication';
+import Home from './components/Home';
 
 
 export default function App() {
@@ -35,10 +36,11 @@ export default function App() {
     (authentication != null ? 
       <Layout setAuthentication={setAuthentication}>
         <Routes>
-          {AppRoutes.map((route, index) => {
+          <Route key={0} path='/' element={<Home authentication={authentication} />} />;
+          {/* {AppRoutes.map((route, index) => {
             const { element, ...rest } = route;
             return <Route key={index} {...rest} element={element} />;
-          })}
+          })} */}
         </Routes>
       </Layout> 
       :
