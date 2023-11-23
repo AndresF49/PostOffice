@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Roles } from "./Roles";
 
 // do not use Input component from reactstrap for form validation with useForm :(
-
 async function CreateUser(credentials, roleTypeNum) {
 
   try {
@@ -15,10 +14,9 @@ async function CreateUser(credentials, roleTypeNum) {
       'Content-Type': 'application/json'
       },
       body: JSON.stringify({ 
-        Email: credentials.Email,
         Username: credentials.Username,
         Password: credentials.Password,
-        RoleTypeId: Roles[roleTypeNum],
+        RoleTypeId: roleTypeNum,
       }) 
     }); 
 
@@ -30,14 +28,6 @@ async function CreateUser(credentials, roleTypeNum) {
 }
 
 async function CreateCustomer(credentials) {
-  // public int CustomerId { get; set; }
-  // public string FirstName { get; set; }
-  // public char? MiddleInitial { get; set; }
-  // public string LastName { get; set; }
-  // public string? PhoneNumber { get; set; }
-  // public string Email { get; set; }
-  // public int? BillingAddressId { get; set;}
-  // public User User { get; set; }
   try {
     const response = await fetch('register/CreateCustomer', {
       method: 'POST',
@@ -50,6 +40,7 @@ async function CreateCustomer(credentials) {
         LastName: credentials.LastName,
         PhoneNumber: credentials.PhoneNumber ? credentials.PhoneNumber : null,
         Email: credentials.Email,
+        UserId: credentials.UserId,
       }) // explicitly state each parameter, both this line and line below work tho >:(
       // body: JSON.stringify( credentials )
     });
@@ -58,12 +49,11 @@ async function CreateCustomer(credentials) {
     const result = await response.json();
     return result;
   } catch (error) {
-    // console.log("error in loginUser with creds: ", credentials);
     console.log("Error when creating Customer: ", error);
   }
 }
 
-  // access CustomersArray CustomerArr and add to it when registering, also add to UsersArray -> UserArr as well
+// access CustomersArray CustomerArr and add to it when registering, also add to UsersArray -> UserArr as well
 
 
 export default function RegisterForm({ setAuthentication }) {
@@ -74,8 +64,10 @@ export default function RegisterForm({ setAuthentication }) {
   // const watchConfirmPassword = watch("confirmPassword", ''); // you can supply default value as second argument
 
   const onSubmit = async (credentials) => {
-    const newUserId = await CreateUser(credentials, 2);
-    credentials.UserId = newUserId;
+    // create a user, get the created UserId from db/backend
+    // add UserId to the credentials object that we pass to CreateCustomer
+    const createUserObj = await CreateUser(credentials, 2);
+    credentials.UserId = createUserObj.UserId;
 
     const authDetails = await CreateCustomer(credentials);
 
@@ -90,11 +82,6 @@ export default function RegisterForm({ setAuthentication }) {
     // console.log(`Token: ${token.token}`);
     navigate("/");
   };
-
-  // const onSubmit = (data) => {
-  // 	setUserInfo(data)
-  // 	console.log(data);
-  // };
 
   return (
     <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
@@ -240,7 +227,7 @@ export default function RegisterForm({ setAuthentication }) {
                     message: 'Confirm password is required'
                   },
                   validate: (val) => {
-                    if (watch('Password') != val) {
+                    if (watch('Password') !== val) {
                       return "Your passwords do no match";
                     }
                   }
