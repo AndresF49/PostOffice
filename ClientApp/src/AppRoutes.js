@@ -1,4 +1,4 @@
-import { Home } from "./components/Home";
+import Home from "./components/Home";
 import SearchPackage from "./components/Package/SearchPackage";
 import Packages from "./components/Package/Packages";
 import EmployeePage from "./components/Employee/EmployeePage";

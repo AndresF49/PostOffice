@@ -1,18 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import RegisterForm from './RegisterForm';
 
-export class Register extends Component {
-    static displayName = Register.name;
+export default function Register({ setAuthentication }) {
 
-    // const { register } = useForm();
-
-    // lets do some validation on the fields too!
-    // we may be able to do input fields as reusable components
-    render() {
-        return (
-            <>
-                <RegisterForm />
-            </>
-        );
-    }
+  return (
+    <>
+      <RegisterForm setAuthentication={setAuthentication} />
+    </>
+  );
 }
