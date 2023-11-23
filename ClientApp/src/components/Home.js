@@ -1,15 +1,29 @@
-import React, { Component } from 'react';
+import { Row, Col } from 'reactstrap';
 import CreatePackage from './Package/CreatePackage';
 
-export class Home extends Component {
-  static displayName = Home.name;
+export default function Home({ authentication }) {
 
-render() {
 	return (
 		<div>
+      <h1>User details:</h1>
+      <Row>
+        <Col>
+          UserId: {authentication.currentUser.UserId}
+        </Col>
+        <Col>
+          Role: {authentication.role}
+        </Col>
+        <Col>
+          Username: {authentication.currentUser.Username}
+        </Col>
+        <Col>
+          CustomerId: {authentication.currentUser.CustomerId ? authentication.currentUser.CustomerId : "Not a customer"}
+        </Col>
+        <Col>
+          EmployeeId: {authentication.currentUser.EmployeeId ? authentication.currentUser.EmployeeId : "Not an employee"}
+        </Col>
+      </Row>
 			<CreatePackage />
-
 		</div>
 	);
-	}
 }
