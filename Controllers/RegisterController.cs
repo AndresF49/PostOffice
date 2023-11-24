@@ -28,6 +28,31 @@ public class RegisterController : ControllerBase
 	}
 	public class Token
 	{
+		public string Username { get; set; }
+		public string Password { get; set; }
+		public int RoleTypeId { get; set; }
+	}
+	public class UserObject
+	{
+		public int UserId { get; set; }
+	}
+	public class CreateCustomerCredentials
+	{
+		// FirstName: credentials.FirstName,
+        // MiddleInitial: credentials.MiddleInitial ? credentials.MiddleInitial : null,
+        // LastName: credentials.LastName,
+        // PhoneNumber: credentials.PhoneNumber ? credentials.PhoneNumber : null,
+        // Email: credentials.Email,
+        // UserId: credentials.UserId,
+		public string FirstName { get; set; }
+		public char? MiddleInitial { get; set; }
+		public string LastName { get; set; }
+		public string? PhoneNumber { get; set; }
+		public string Email { get; set; }
+		public int UserId { get; set; }
+	}
+	public class Token // returning this token object so frontend destructure this object into a token and user object
+	{
 		public string token { get; set; }
 		public User user { get; set; }
 	}

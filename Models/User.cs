@@ -1,12 +1,11 @@
-namespace PostOffice.Models
+using PostOffice;
+
+public class User 
 {
-    public class User
-    {
-        public int UserId { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public int RoleTypeId { get; set; }
-        public int? CustomerId { get; set; } = null;
-        public int? EmployeeId { get; set; } = null;
-    }
+  public int UserId { get; set; }
+  public string Username { get; set; }
+  public string Password { get; set; }
+  public int RoleTypeId { get; set; }
+  public int? CustomerId { get; set; } = null;
+  public int? EmployeeId { get; set; } = null;
 }

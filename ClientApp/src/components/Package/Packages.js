@@ -4,7 +4,7 @@
 
 
 
-export default function Packages() {
+export default function Packages({ authentication }) {
   const [listPackages, updatePackages] = useState([]);
   const [sendingPackages, updateSending] = useState([]);
   const [receivingPackages, updateReceiving] = useState([]);

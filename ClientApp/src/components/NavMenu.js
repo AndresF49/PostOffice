@@ -11,9 +11,12 @@ export default function NavMenu({ setAuthentication, authentication }) {
     setCollapsed(!collapsed);
   };
 
-  const employePageLinks = () => {
+  const employeePageLinks = () => {
     return (
       <>
+        <NavItem>
+          <NavLink tag={Link} className="text-dark" to="/transactions">Transactions</NavLink>
+        </NavItem>
         <NavItem>
           <NavLink tag={Link} className="text-dark" to="/employee">Employee Details</NavLink>
         </NavItem>
@@ -24,6 +27,9 @@ export default function NavMenu({ setAuthentication, authentication }) {
   const adminPageLinks = () => {
     return (
       <>
+        <NavItem>
+          <NavLink tag={Link} className="text-dark" to="/transactions">Transactions</NavLink>
+        </NavItem>
         <NavItem>
           <NavLink tag={Link} className="text-dark" to="/employee">Employee Details</NavLink>
         </NavItem>
@@ -45,13 +51,7 @@ export default function NavMenu({ setAuthentication, authentication }) {
               <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
             </NavItem>
             { authentication.role === Roles[0] && adminPageLinks() }
-            { authentication.role === Roles[1] && employePageLinks() }
-            {/* <NavItem>
-              <NavLink tag={Link} className="text-dark" to="/searchpackage">Search for Package</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink tag={Link} className="text-dark" to="/packages">Packages</NavLink>
-            </NavItem> */}
+            { authentication.role === Roles[1] && employeePageLinks() }
             <NavItem>
             <Logout size="sm" setAuthentication={setAuthentication} />
             </NavItem>
