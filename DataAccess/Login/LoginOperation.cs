@@ -33,7 +33,7 @@ namespace PostOffice.DataAccess.Login
                 result.Count();
 
 
-                if (result.Count() > 1)
+                if (result.Count() > 0)
                 {
                     return true;
                 }

@@ -4,16 +4,16 @@ using System.Data.SqlClient;
 
 namespace PostOffice.DataAccess.UserQueries
 {
-    public class GetUserByCredentialsOperation : IUserOperation
+    public class GetUserIdByCredentialsOperation : IUserOperation
     {
         private IConfiguration _configuration;
 
-        public GetUserByCredentialsOperation(IConfiguration configuration)
+        public GetUserIdByCredentialsOperation(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public async Task<User> GetUserByCredentials(User credentials)
+        public async Task<User> GetUserIdByCredentials(User credentials)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {

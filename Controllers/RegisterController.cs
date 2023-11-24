@@ -78,7 +78,7 @@ public class RegisterController : ControllerBase
 		else
 		{
 			_registration.CreateUser(credentials);
-			var user = _userOperation.GetUserByCredentials(credentials).Result;
+			var user = _userOperation.GetUserIdByCredentials(credentials).Result;
 			userId = user.UserId;
 
             return Ok(JsonSerializer.Serialize(user));

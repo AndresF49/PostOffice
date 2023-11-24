@@ -4,6 +4,6 @@ namespace PostOffice.DataAccess.UserQueries
 {
     public interface IUserOperation
     {
-        Task<User> GetUserByCredentials(User credentials);
+        Task<User> GetUserIdByCredentials(User credentials);
     }
 }

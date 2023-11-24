@@ -29,7 +29,7 @@ namespace PostOffice.DataAccess.Registration
 
                 var result = connection.QueryFirstOrDefault(sql, parameters, commandType: System.Data.CommandType.Text);
 
-                if (result > 1) { return true; } else { return false; }
+                if (result > 0) { return true; } else { return false; }
             }
         }
 
@@ -104,7 +104,7 @@ namespace PostOffice.DataAccess.Registration
                 WHERE FirstName = @FirstName 
                     AND LastName = @LastName 
                     AND PhoneNumber = @PhoneNumber 
-                    AND Emial = @Email";
+                    AND Email = @Email";
 
                 var parameters = new Dictionary<string, object>
                 {
