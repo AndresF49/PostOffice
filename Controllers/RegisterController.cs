@@ -20,7 +20,7 @@ public class RegisterController : ControllerBase
 	{
 		public string Username { get; set; }
 		public string Password { get; set; }
-		public int RoleTypeId { get; set; }
+		public string RoleType { get; set; }
 	}
 	public class UserObject
 	{
@@ -68,7 +68,7 @@ public class RegisterController : ControllerBase
 			return BadRequest(new CustomError { error="Username already exists" });
 		}
 
-		var user = new User { UserId=UsersArray.UserArr.Length, Username=credentials.Username, Password=credentials.Password, RoleTypeId=credentials.RoleTypeId };
+		var user = new User { UserId=UsersArray.UserArr.Length, Username=credentials.Username, Password=credentials.Password, RoleType=credentials.RoleType };
 
 		// add user to UsersArray ->  REPLACE WITH INSERT INTO `Users`
 		UsersArray.UserArr = UsersArray.UserArr.Append(user).ToArray();
