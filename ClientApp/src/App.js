@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Router, Routes } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import Layout from './components/Layout';
 import './custom.css';
@@ -14,6 +14,8 @@ import Home from './components/Home';
 import AdminPage from './components/Admin/AdminPage';
 import EmployeePage from './components/Employee/EmployeePage';
 import Packages from './components/Package/Packages';
+import PackagesPage from './components/Package/PackagesPage';
+import TransactionsPage from './components/Transactions/TransactionsPage';
 
 
 export default function App() {
@@ -24,7 +26,7 @@ export default function App() {
   
   useEffect(() => {
     if (authentication != null) {
-      console.log(`authentication is: ${authentication != null} with role as ${authentication.role}`);
+      // console.log(`authentication is: ${authentication != null} with role as ${authentication.role}`);
     }
     else {
       console.log(`authentication is NULL`);
@@ -43,35 +45,43 @@ export default function App() {
 
   const adminRoutes = () => {
     return (
-      <>
+      <Routes>
+        <Route index path='/' element={ <AdminPage authentication={authentication} /> } />
+        <Route index path='/packages' element={ <PackagesPage authentication={authentication} /> } />
         <Route path='/employee' element={ <EmployeePage authentication={authentication} /> } /> 
-        <Route path='/admin' element={ <AdminPage authentication={authentication} /> } />
-      </>
+        <Route path='/transactions' element={ <TransactionsPage authentication={authentication} /> } />
+        <Route path='*' element={ <Navigate to="/" replace /> } />
+      </Routes>
     );
   }
 
   const employeeRoutes = () => {
     return (
-      <>
+      <Routes>
+        <Route index path='/' element={ <PackagesPage authentication={authentication} /> } />
         <Route path='/employee' element={ <EmployeePage authentication={authentication} /> } /> 
-      </>
+        <Route path='/transactions' element={ <TransactionsPage authentication={authentication} /> } />
+        <Route path='*' element={ <Navigate to="/" replace /> } />
+      </Routes>
+    );
+  }
+
+  const customerRoutes = () => {
+    return (
+      <Routes>
+        <Route index path='/' element={ <PackagesPage authentication={authentication} /> } />
+        <Route path='/transactions' element={ <TransactionsPage authentication={authentication} /> } />
+        <Route path='*' element={ <Navigate to="/" replace /> } />
+      </Routes>
     );
   }
 
   return (
     (authentication != null ? 
       <Layout setAuthentication={setAuthentication} authentication={authentication}>
-        <Routes>
-          <Route index path='/' element={ <Packages authentication={authentication} /> } />
-          { authentication.role === Roles[0] && adminRoutes() } {/* admin */}
-          { authentication.role === Roles[1] && employeeRoutes() } {/* employee */}
-          <Route path='*' element={ <Navigate to="/" replace /> } />
-          
-          {/* {AppRoutes.map((route, index) => {
-            const { element, ...rest } = route;
-            return <Route key={index} {...rest} element={element} />;
-          })} */}
-        </Routes>
+        { authentication.role === Roles[0] && adminRoutes() } {/* admin */}
+        { authentication.role === Roles[1] && employeeRoutes() } {/* employee */}
+        { authentication.role === Roles[2] && customerRoutes() } {/* customer */}
       </Layout> 
       :
       notAuthenticatedRoutes()
