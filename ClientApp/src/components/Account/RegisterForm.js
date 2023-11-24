@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Roles } from "./Roles";
 
 // do not use Input component from reactstrap for form validation with useForm :(
-async function CreateUser(credentials, roleTypeNu, setRegistrationError) {
+async function CreateUser(credentials, roleTypeNum, setRegistrationError) {
   setRegistrationError(null);
 
   try {
