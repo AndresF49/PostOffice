@@ -23,6 +23,10 @@ export default function Home({ authentication }) {
           EmployeeId: {authentication.currentUser.EmployeeId ? authentication.currentUser.EmployeeId : "Not an employee"}
         </Col>
       </Row>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
 			<CreatePackage />
 		</div>
 	);
