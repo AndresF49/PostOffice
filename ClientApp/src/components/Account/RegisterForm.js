@@ -5,7 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Roles } from "./Roles";
 
 // do not use Input component from reactstrap for form validation with useForm :(
-async function CreateUser(credentials, roleTypeNum) {
+async function CreateUser(credentials, roleTypeNu, setRegistrationError) {
+  setRegistrationError(null);
 
   try {
     const response = await fetch('register/CreateUser', {
@@ -20,10 +21,24 @@ async function CreateUser(credentials, roleTypeNum) {
       }) 
     }); 
 
-    const result = response.json();
-    return result;
+    if (!response.ok) {
+      if (response.status === 400) {
+        const errorData = await response.json();
+        setRegistrationError(errorData.message);
+        return false;
+      } else {
+        console.error('Error during registration:', response.statusText);
+        return false;
+      }
+    } else {
+      // Handle successful user creation if needed
+      const result = response.json();
+      console.log('User creation successful');
+      return result;
+    }
   } catch (error) {
     console.log("Error when creating User: ", error);
+    return false;
   }
 }
 
@@ -60,13 +75,18 @@ export default function RegisterForm({ setAuthentication }) {
   const { register, watch, handleSubmit, formState } = useForm();
   const { errors } = formState
   const navigate = useNavigate();
+  const [registrationError, setRegistrationError] = useState(null);
 
   // const watchConfirmPassword = watch("confirmPassword", ''); // you can supply default value as second argument
 
   const onSubmit = async (credentials) => {
+    
     // create a user, get the created UserId from db/backend
     // add UserId to the credentials object that we pass to CreateCustomer
-    const createUserObj = await CreateUser(credentials, 2);
+    const createUserObj = await CreateUser(credentials, 2, setRegistrationError);
+    if (createUserObj == false) {
+      return false;
+    }
     credentials.UserId = createUserObj.UserId;
 
     const authDetails = await CreateCustomer(credentials);
@@ -240,6 +260,7 @@ export default function RegisterForm({ setAuthentication }) {
 
             </FormGroup>
             <p className="text-left">Already have an account? <Link to="/login">Login</Link></p>
+            <div className="text-danger">{registrationError}</div>
             <div className="d-grid">
               <Button className="btn-primary btn-login text-uppercase fw-bold" type="submit" >
                 Register
