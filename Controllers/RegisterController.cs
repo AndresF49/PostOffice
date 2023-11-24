@@ -46,6 +46,10 @@ public class RegisterController : ControllerBase
 		public string token { get; set; }
 		public User user { get; set; }
 	}
+	private class CustomError
+	{
+		public string error { get; set; }
+	}
 	[HttpPost]
 	[Route("CreateUser")]
 	public async Task<IActionResult> CreateUser([FromBody] CreateUserCredentials credentials) // By default, Web API tries to get simple types from the request URI. The FromBody attribute tells Web API to read the value from the request body.
@@ -53,11 +57,16 @@ public class RegisterController : ControllerBase
 		if (string.IsNullOrEmpty(credentials.Username) || string.IsNullOrEmpty(credentials.Password))
 		{
 			Console.WriteLine("Username or Password null/emp");
-			return BadRequest("One or more Create User credentials is empty");
+			return BadRequest(new CustomError { error="One or more Create User credentials is empty" });
 		}
 
 		// -----REPLACE WITH DB QUERY-----
 		await Task.Run(() => Thread.Sleep(100));
+
+		if (UsersArray.UserArr.Any(u => u.Username == credentials.Username)) { // Username already exists
+			Console.WriteLine("Username already exists in UsersArray.UserArr");
+			return BadRequest(new CustomError { error="Username already exists" });
+		}
 
 		var user = new User { UserId=UsersArray.UserArr.Length, Username=credentials.Username, Password=credentials.Password, RoleTypeId=credentials.RoleTypeId };
 

@@ -24,7 +24,8 @@ async function CreateUser(credentials, roleTypeNum, setRegistrationError) {
     if (!response.ok) {
       if (response.status === 400) {
         const errorData = await response.json();
-        setRegistrationError(errorData.message);
+        setRegistrationError(errorData.error);
+        console.log("Error 400 recieved");
         return false;
       } else {
         console.error('Error during registration:', response.statusText);
@@ -260,7 +261,7 @@ export default function RegisterForm({ setAuthentication }) {
 
             </FormGroup>
             <p className="text-left">Already have an account? <Link to="/login">Login</Link></p>
-            <div className="text-danger">{registrationError}</div>
+            <p className="text-danger">{registrationError}</p>
             <div className="d-grid">
               <Button className="btn-primary btn-login text-uppercase fw-bold" type="submit" >
                 Register

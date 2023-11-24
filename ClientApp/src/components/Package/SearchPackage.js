@@ -35,7 +35,7 @@ const SearchPackage = () => {
         },
         body: JSON.stringify({ searchRequest: searchTerm }),
       });
-      if (!response.staus === 404) {
+      if (response.status === 404) {
         setResultPackage(null);
         setShowNotFound(true);
         setShowBadRequest(false);
@@ -45,7 +45,7 @@ const SearchPackage = () => {
         //Handle other non-successful responses
         setResultPackage(null);
         setShowNotFound(false);
-        setShowBadRequest(false);
+        setShowBadRequest(true);
         console.log("Error:", response.statusText);
       }
       else {
@@ -81,7 +81,7 @@ const SearchPackage = () => {
             }}
           />
         </FormGroup>
-        <Button color="primary" disabled={showBadRequest}>
+        <Button color="primary" disabled={showBadRequest || showNotFound}>
           Search
         </Button>
       </Form>
