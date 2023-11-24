@@ -20,7 +20,7 @@ public class RegisterController : ControllerBase
 	{
 		public string Username { get; set; }
 		public string Password { get; set; }
-		public string RoleType { get; set; }
+		public Roles RoleType { get; set; }
 	}
 	public class UserObject
 	{
