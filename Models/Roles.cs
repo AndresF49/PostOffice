@@ -1,8 +1,9 @@
-using PostOffice;
-
-public enum Roles
+namespace PostOffice.Models
 {
-  ADMIN,
-  EMPLOYEE,
-  CUSTOMER
+    public enum Roles
+    {
+        ADMIN,
+        EMPLOYEE,
+        CUSTOMER
+    }
 }
