@@ -3,12 +3,36 @@ import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from '
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import Logout from './Account/Logout';
+import { Roles } from './Account/Roles';
 
-export default function NavMenu({ setAuthentication }) {
-    const [collapsed, setCollapsed] = useState(true);
+export default function NavMenu({ setAuthentication, authentication }) {
+  const [collapsed, setCollapsed] = useState(true);
   const toggleNavbar = () => {
     setCollapsed(!collapsed);
   };
+
+  const employePageLinks = () => {
+    return (
+      <>
+        <NavItem>
+          <NavLink tag={Link} className="text-dark" to="/employee">Employee Details</NavLink>
+        </NavItem>
+      </>
+    );
+  }
+
+  const adminPageLinks = () => {
+    return (
+      <>
+        <NavItem>
+          <NavLink tag={Link} className="text-dark" to="/employee">Employee Details</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink tag={Link} className="text-dark" to="/admin">Admin Dashboard</NavLink>
+        </NavItem>
+      </>
+    );
+  }
 
   return (
     <header>
@@ -20,13 +44,15 @@ export default function NavMenu({ setAuthentication }) {
             <NavItem>
               <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
             </NavItem>
-            <NavItem>
+            { authentication.role === Roles[0] && adminPageLinks() }
+            { authentication.role === Roles[1] && employePageLinks() }
+            {/* <NavItem>
               <NavLink tag={Link} className="text-dark" to="/searchpackage">Search for Package</NavLink>
             </NavItem>
             <NavItem>
               <NavLink tag={Link} className="text-dark" to="/packages">Packages</NavLink>
-            </NavItem>
-            <NavItem className="">
+            </NavItem> */}
+            <NavItem>
             <Logout size="sm" setAuthentication={setAuthentication} />
             </NavItem>
           </ul>
