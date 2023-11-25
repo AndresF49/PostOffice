@@ -9,13 +9,10 @@ namespace PostOffice.Controllers;
 [Route("[controller]")]
 public class LoginController : ControllerBase
 {
-
-    private readonly ILogger<LoginController> _logger;
     private readonly ILoginOperation _login;
 
-    public LoginController(ILogger<LoginController> logger, ILoginOperation login)
+    public LoginController(ILoginOperation login)
     {
-        _logger = logger;
         _login = login;
     }
     public class Token

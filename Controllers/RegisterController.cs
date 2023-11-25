@@ -10,21 +10,14 @@ namespace PostOffice.Controllers;
 [Route("[controller]")]
 public class RegisterController : ControllerBase
 {
-
-    private readonly ILogger<RegisterController> _logger;
     private readonly IRegistrationOperation _registration;
     private readonly IUserOperation _userOperation;
     private int userId;
 
-    public RegisterController(ILogger<RegisterController> logger,
-        IRegistrationOperation registration,
-        IUserOperation userOperation
-        )
+    public RegisterController(IRegistrationOperation registration, IUserOperation userOperation)
     {
-        _logger = logger;
         _registration = registration;
         _userOperation = userOperation;
-        CustomersArray.CustomerArr.First<Customer>().User = UsersArray.UserArr[3]; // REMOVE IN PROD
     }
     public class Token
     {
@@ -32,26 +25,7 @@ public class RegisterController : ControllerBase
         public string Password { get; set; }
         public int RoleTypeId { get; set; }
     }
-    public class UserObject
-    {
-        public int UserId { get; set; }
-    }
-    public class CreateCustomerCredentials
-    {
-        // FirstName: credentials.FirstName,
-        // MiddleInitial: credentials.MiddleInitial ? credentials.MiddleInitial : null,
-        // LastName: credentials.LastName,
-        // PhoneNumber: credentials.PhoneNumber ? credentials.PhoneNumber : null,
-        // Email: credentials.Email,
-        // UserId: credentials.UserId,
-        public string FirstName { get; set; }
-        public char? MiddleInitial { get; set; }
-        public string LastName { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string Email { get; set; }
-        public int UserId { get; set; }
-    }
-    public class Token // returning this token object so frontend destructure this object into a token and user object
+    public class Tokenk // returning this token object so frontend destructure this object into a token and user object
     {
         public string token { get; set; }
         public User user { get; set; }
@@ -100,7 +74,7 @@ public class RegisterController : ControllerBase
         _registration.UpdateCustomerIdOnUser(userId, customerId);
 
         
-        var tokenObj = new Token { token="token123", user=new User() };
+        var tokenObj = new Tokenk { token="token123", user=new User() };
 
         return Ok(JsonSerializer.Serialize(tokenObj));
     }
