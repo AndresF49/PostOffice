@@ -36,7 +36,7 @@ public class LoginController : ControllerBase
 
         if (!string.IsNullOrEmpty(user.Username))
         {
-            var tokenObj = new Token { token = "test123", user = new User() };
+            var tokenObj = new Token { token = "test123", user = user };
 
             return Ok(JsonSerializer.Serialize(tokenObj));
         }
