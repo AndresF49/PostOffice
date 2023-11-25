@@ -72,7 +72,8 @@ namespace PostOffice.DataAccess.Packages
                     Insurance,
                     SourceAddress,
                     DestinationAddress,
-                    Status
+                    Status,
+                    UpdatedTimestamp
                 )
                 VALUES
                 (
@@ -90,7 +91,8 @@ namespace PostOffice.DataAccess.Packages
                     @Insurance,
                     @SourceAddress,
                     @DestinationAddress,
-                    @Status
+                    @Status,
+                    GETDATE()
                 )";
 
                 var parameters = new Dictionary<string, object>
@@ -146,7 +148,8 @@ namespace PostOffice.DataAccess.Packages
                     SourceAddress = @SourceAddress,
                     DestinationAddress = @DestinationAddress,
                     Status = @Status,
-                    PostOfficeId = @PostOfficeId
+                    PostOfficeId = @PostOfficeId,
+                    UpdatedTimestamp = GETDATE()
                 WHERE PackageId = @PackageId
                 ";
 
