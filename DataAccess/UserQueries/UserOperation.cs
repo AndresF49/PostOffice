@@ -4,11 +4,11 @@ using System.Data.SqlClient;
 
 namespace PostOffice.DataAccess.UserQueries
 {
-    public class GetUserIdByCredentialsOperation : IUserOperation
+    public class UserOperation : IUserOperation
     {
         private IConfiguration _configuration;
 
-        public GetUserIdByCredentialsOperation(IConfiguration configuration)
+        public UserOperation(IConfiguration configuration)
         {
             _configuration = configuration;
         }

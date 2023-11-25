@@ -4,11 +4,11 @@ using System.Data.SqlClient;
 
 namespace PostOffice.DataAccess.Registration
 {
-    public class Registration : IRegistrationOperation
+    public class RegistrationOperation : IRegistrationOperation
     {
         private readonly IConfiguration _configuration;
 
-        public Registration(IConfiguration configuration)
+        public RegistrationOperation(IConfiguration configuration)
         {
             _configuration = configuration;
         }

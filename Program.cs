@@ -1,8 +1,18 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using PostOffice.DataAccess.Login;
+using PostOffice.DataAccess.Packages;
+using PostOffice.DataAccess.Registration;
+using PostOffice.DataAccess.UserQueries;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ILoginOperation, LoginOperation>();
+builder.Services.AddScoped<IPackageOperation, PackageOperation>();
+builder.Services.AddScoped<IRegistrationOperation, RegistrationOperation>();
+builder.Services.AddScoped<IUserOperation, UserOperation>();
+
 
 var app = builder.Build();
 
