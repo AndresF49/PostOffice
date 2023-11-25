@@ -252,8 +252,8 @@ export default function CreatePackage() {
 									defaultValue={"Package"}
 									{...register("packageType")}>
 									{/* <option selected>Select package type</option> */}
-									<option value="Package">Package</option>
-									<option value="Envelope">Envelope</option>
+									<option value={1}>Package</option>
+									<option value={2}>Envelope</option>
 								</select>
 								<Label htmlFor="packageType">
 									Package type

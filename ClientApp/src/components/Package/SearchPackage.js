@@ -18,9 +18,9 @@ const SearchPackage = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    const containsOnlyNumbers = /^\d+$/.test(searchTerm);
+    // const containsOnlyNumbers = /^\d+$/.test(searchTerm);
     //check for empty search term
-    if (!searchTerm.trim() || !containsOnlyNumbers) {
+    if (!searchTerm.trim()) {
       setShowNotFound(false);
       setShowBadRequest(true);
       return;
