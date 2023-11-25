@@ -143,7 +143,7 @@ export default function RegisterForm({ setAuthentication }) {
                 })}
               />
               <Label htmlFor="FirstName">
-                First name
+                First name<span className="text-danger">*</span>
               </Label>
               <p className="text-danger mt-1">{errors.FirstName?.message}</p>
 
@@ -177,7 +177,7 @@ export default function RegisterForm({ setAuthentication }) {
                 })}
               />
               <Label htmlFor="LastName">
-                Last name
+                Last name<span className="text-danger">*</span>
               </Label>
               <p className="text-danger mt-1">{errors.LastName?.message}</p>
 
@@ -212,7 +212,7 @@ export default function RegisterForm({ setAuthentication }) {
                 })}
               />
               <Label htmlFor="email">
-                Email address
+                Email address<span className="text-danger">*</span>
               </Label>
               <p className="text-danger mt-1">{errors.Email?.message}</p>
 
@@ -231,7 +231,7 @@ export default function RegisterForm({ setAuthentication }) {
                 })}
               />
               <Label htmlFor="username">
-                Username
+                Username<span className="text-danger">*</span>
               </Label>
               <p className="text-danger mt-1">{errors.Username?.message}</p>
 
@@ -250,7 +250,7 @@ export default function RegisterForm({ setAuthentication }) {
               })}
             />
             <Label htmlFor="password">
-              Password
+              Password<span className="text-danger">*</span>
             </Label>
             <p className="text-danger mt-1">{errors.Password?.message}</p>
 
@@ -274,7 +274,7 @@ export default function RegisterForm({ setAuthentication }) {
                 })}
               />
               <Label htmlFor="confirmPassword">
-                Confirm password
+                Confirm password<span className="text-danger">*</span>
               </Label>
               <p className="text-danger mt-1">{errors.ConfirmPassword?.message}</p>
 

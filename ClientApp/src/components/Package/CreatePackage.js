@@ -34,7 +34,7 @@ export default function CreatePackage() {
 									})}
 								/>
 								<Label htmlFor="sender">
-									Sender
+									Sender<span className="text-danger">*</span>
 								</Label>
 								<p className="text-danger mt-1">{errors.sender?.message}</p>
 							</FormGroup>
@@ -56,7 +56,7 @@ export default function CreatePackage() {
 									})}
 								/>
 								<Label htmlFor="senderHouseAndStreet">
-									House Number and Street Address
+									House Number and Street Address<span className="text-danger">*</span>
 								</Label>
 								<p className="text-danger mt-1">{errors.senderHouseAndStreet?.message}</p>
 							</FormGroup>
@@ -76,7 +76,7 @@ export default function CreatePackage() {
 									})}
 								/>
 								<Label htmlFor="senderCity">
-									City
+									City<span className="text-danger">*</span>
 								</Label>
 								<p className="text-danger mt-1">{errors.senderCity?.message}</p>
 							</FormGroup>
@@ -96,7 +96,7 @@ export default function CreatePackage() {
 									})}
 								/>
 								<Label htmlFor="senderZipcode">
-									Zipcode
+									Zipcode<span className="text-danger">*</span>
 								</Label>
 								<p className="text-danger mt-1">{errors.senderZipcode?.message}</p>
 							</FormGroup>
@@ -116,7 +116,7 @@ export default function CreatePackage() {
 									})}
 								/>
 								<Label htmlFor="senderState">
-									State
+									State<span className="text-danger">*</span>
 								</Label>
 								<p className="text-danger mt-1">{errors.senderState?.message}</p>
 							</FormGroup>
@@ -141,7 +141,7 @@ export default function CreatePackage() {
 									})}
 								/>
 								<Label htmlFor="receiver">
-									Receiver
+									Receiver<span className="text-danger">*</span>
 								</Label>
 								<p className="text-danger mt-1">{errors.receiver?.message}</p>
 							</FormGroup>
@@ -163,7 +163,7 @@ export default function CreatePackage() {
 									})}
 								/>
 								<Label htmlFor="receiverHouseAndStreet">
-									House Number and Street Address
+									House Number and Street Address<span className="text-danger">*</span>
 								</Label>
 								<p className="text-danger mt-1">{errors.receiverHouseAndStreet?.message}</p>
 							</FormGroup>
@@ -183,7 +183,7 @@ export default function CreatePackage() {
 									})}
 								/>
 								<Label htmlFor="receiverCity">
-									City
+									City<span className="text-danger">*</span>
 								</Label>
 								<p className="text-danger mt-1">{errors.receiverCity?.message}</p>
 							</FormGroup>
@@ -203,7 +203,7 @@ export default function CreatePackage() {
 									})}
 								/>
 								<Label htmlFor="receiverZipcode">
-									Zipcode
+									Zipcode<span className="text-danger">*</span>
 								</Label>
 								<p className="text-danger mt-1">{errors.receiverZipcode?.message}</p>
 							</FormGroup>
@@ -223,7 +223,7 @@ export default function CreatePackage() {
 									})}
 								/>
 								<Label htmlFor="receiverState">
-									State
+									State<span className="text-danger">*</span>
 								</Label>
 								<p className="text-danger mt-1">{errors.receiverState?.message}</p>
 							</FormGroup>
