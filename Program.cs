@@ -1,6 +1,9 @@
-﻿using PostOffice.DataAccess.Login;
+﻿using PostOffice.DataAccess.CustomerQueries;
+using PostOffice.DataAccess.Login;
 using PostOffice.DataAccess.Packages;
 using PostOffice.DataAccess.Registration;
+using PostOffice.DataAccess.Reports.AnnualRevenueReport;
+using PostOffice.DataAccess.Reports.EmployeeProductivityReport;
 using PostOffice.DataAccess.UserQueries;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +15,9 @@ builder.Services.AddScoped<ILoginOperation, LoginOperation>();
 builder.Services.AddScoped<IPackageOperation, PackageOperation>();
 builder.Services.AddScoped<IRegistrationOperation, RegistrationOperation>();
 builder.Services.AddScoped<IUserOperation, UserOperation>();
+builder.Services.AddScoped<ICustomerOperation, CustomerOperation>();
+builder.Services.AddScoped<IGetAnnualRevenueReportOperation, GetAnnualRevenueReportOperation>();
+builder.Services.AddScoped<IGetEmployeeProductivityReportOperation, GetEmployeeProductivityReportOperation>();
 
 
 var app = builder.Build();

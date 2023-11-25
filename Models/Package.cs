@@ -10,13 +10,13 @@ namespace PostOffice.Models
 
         public string Sender { get; set; }
 
-        public double Price { get; set; }
+        public double? Price { get; set; }
 
         public string? DescriptionOfItem { get; set; }
 
         public double? DeclaredValue { get; set; }
 
-        public int PackageType { get; set; }
+        public int PackageTypeId { get; set; }
 
         public double? Weight { get; set; }
 

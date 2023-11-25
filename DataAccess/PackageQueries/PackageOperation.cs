@@ -38,7 +38,7 @@ namespace PostOffice.DataAccess.Packages
                     Price = result.Price,
                     DescriptionOfItem = result.DescriptionOfItem,
                     DeclaredValue = result.DeclaredValue,
-                    PackageType = result.PackageType,
+                    PackageTypeId = result.PackageTypeId,
                     Weight = result.Weight,
                     Length = result.Length,
                     Width = result.Width,
@@ -54,6 +54,19 @@ namespace PostOffice.DataAccess.Packages
 
         public int CreatePackage(Package package)
         {
+            double? price = 0.0;
+
+            if (package.PackageTypeId == 1)
+            {
+                price = (package.Weight * 0.4 + package.Length * 0.2 + package.Width * 0.2 + package.Depth * 0.2) * 4;
+            }
+            else
+            {
+                price = package.Weight * 4;
+            }
+
+            package.Price = price;
+
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
                 var sql = @"
@@ -64,7 +77,7 @@ namespace PostOffice.DataAccess.Packages
                     Price,
                     DescriptionOfItem,
                     DeclaredValue,
-                    PackageType,
+                    PackageTypeId,
                     Weight,
                     Length,
                     Width,
@@ -83,7 +96,7 @@ namespace PostOffice.DataAccess.Packages
                     @Price,
                     @DescriptionOfItem,
                     @DeclaredValue,
-                    @PackageType,
+                    @PackageTypeId,
                     @Weight,
                     @Length,
                     @Width,
@@ -101,7 +114,7 @@ namespace PostOffice.DataAccess.Packages
                     {"@Receiver", package.Receiver},
                     {"@Sender", package.Sender},
                     {"@Price", package.Price},
-                    {"@PackageType", package.PackageType},
+                    {"@PackageTypeId", package.PackageTypeId},
                     {"@SignatureRequired", package.SignatureRequired},
                     {"@Insurance", package.Insurance},
                     {"@SourceAddress", package.SourceAddress},
@@ -139,7 +152,7 @@ namespace PostOffice.DataAccess.Packages
                     Price = @Price,
                     DescriptionOfItem = @DescriptionOfItem,
                     DeclaredValue = @DeclaredValue,
-                    PackageType = @PackageType,
+                    PackageTypeId = @PackageTypeId,
                     Weight = @Weight,
                     Length = @Length,
                     Width = @Width,
@@ -161,7 +174,7 @@ namespace PostOffice.DataAccess.Packages
                     {"@Price", package.Price},
                     {"@DescriptionOfItem", package.DescriptionOfItem},
                     {"@DeclaredValue", package.DeclaredValue},
-                    {"@PackageType", package.PackageType},
+                    {"@PackageTypeId" , package.PackageTypeId},
                     {"@Weight", package.Weight},
                     {"@Length", package.Length},
                     {"@Width", package.Width},

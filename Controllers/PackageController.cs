@@ -58,7 +58,7 @@ public class PackageController : ControllerBase
 
     [HttpPost]
     [Route("UpdateTransaction")]
-    public ActionResult UpdateTransaction([FromBody] UpdateTransactionRequest request)
+    public ActionResult CreateTransaction([FromBody] UpdateTransactionRequest request)
     {
 
         _packageOperation.UpdateTransaction(request.TotalPrice, request.Customer.CustomerId, request.Package.PostOfficeId);
