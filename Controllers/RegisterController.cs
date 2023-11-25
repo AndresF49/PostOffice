@@ -73,8 +73,9 @@ public class RegisterController : ControllerBase
         var customerId = _registration.GetCustomerId(customer);
         _registration.UpdateCustomerIdOnUser(userId, customerId);
 
-        
-        var tokenObj = new Tokenk { token="token123", user=new User() };
+        var user = _userOperation.GetUserByUserId(userId);
+ 
+        var tokenObj = new Tokenk { token="token123", user=user };
 
         return Ok(JsonSerializer.Serialize(tokenObj));
     }
