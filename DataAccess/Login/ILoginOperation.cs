@@ -4,6 +4,6 @@ namespace PostOffice.DataAccess.Login
 {
     public interface ILoginOperation
     {
-        Task<bool> LoginAsync(LoginCredentials user);
+        User LoginAsync(LoginCredentials credentials);
     }
 }

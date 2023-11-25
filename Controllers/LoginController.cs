@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using PostOffice.DataAccess.Login;
+using PostOffice.DataAccess.UserQueries;
 using PostOffice.Models;
 
 namespace PostOffice.Controllers;
@@ -31,9 +32,9 @@ public class LoginController : ControllerBase
             return BadRequest("One or more Login credentials is empty");
         }
 
-        var loginCheck = await _login.LoginAsync(credentials);
+        var user = _login.LoginAsync(credentials);
 
-        if (loginCheck)
+        if (!string.IsNullOrEmpty(user.Username))
         {
             var tokenObj = new Token { token = "test123", user = new User() };
 

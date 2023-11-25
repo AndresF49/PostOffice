@@ -13,7 +13,7 @@ namespace PostOffice.DataAccess.Login
             _configuration = configuration;
         }
 
-        public async Task<bool> LoginAsync(LoginCredentials credentials)
+        public User LoginAsync(LoginCredentials credentials)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
@@ -28,12 +28,14 @@ namespace PostOffice.DataAccess.Login
                     {"@Password", credentials.Password}
                 };
 
-                var result = await connection.QueryAsync(sql, parameters, commandType: System.Data.CommandType.Text);
+                var result = connection.QueryFirstOrDefault<User>(sql, parameters, commandType: System.Data.CommandType.Text);
 
-                result.Count();
-
-
-                if (result.Count() > 0) { return true; } else { return false; }
+                return new User
+                {
+                    UserId = result.UserId,
+                    Username = result.Username,
+                    RoleTypeId = result.RoleTypeId
+                };
             }
         }
     }
