@@ -62,9 +62,21 @@ async function CreateCustomer(credentials) {
       // body: JSON.stringify( credentials )
     });
     // console.log("response: ", response);
-
-    const result = await response.json();
-    return result;
+    if (!response.ok) {
+      if (response.status === 400) {
+        const errorData = await response.json();
+        console.log("Error 400 received when creating Customer: " , errorData.errors);
+        return false;
+      } else {
+        console.error('Error during customer creation:', response.statusText);
+        return false;
+      } 
+      
+    } else {
+      console.log('Customer creation successfull');
+      const result = await response.json();
+      return result;
+    }
   } catch (error) {
     console.log("Error when creating Customer: ", error);
   }
@@ -85,17 +97,23 @@ export default function RegisterForm({ setAuthentication }) {
     
     // create a user, get the created UserId from db/backend
     // add UserId to the credentials object that we pass to CreateCustomer
-    const createUserObj = await CreateUser(credentials, 3, setRegistrationError);
-    if (createUserObj == false) {
+    const createUserObjId = await CreateUser(credentials, 3, setRegistrationError);
+    if (createUserObjId == false) {
       return false;
     }
-    credentials.UserId = createUserObj.UserId;
+    credentials.UserId = createUserObjId;
 
     const authDetails = await CreateCustomer(credentials);
+    console.log(authDetails);
+    if (authDetails == false) {
+      return false;
+    }
 
     setAuthentication({
-      currentUser: authDetails.user,
-      role: Roles[authDetails.user.RoleType],
+      // currentUser: authDetails.user,
+      // role: Roles[authDetails.user.RoleTypeId],
+      currentUser: authDetails.userId,
+      role: Roles[authDetails.userRoleTypeId],
       token: authDetails.token
     });
     // console.log("Info below from token=loginUser")
