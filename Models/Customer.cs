@@ -9,6 +9,6 @@ namespace PostOffice.Models
         public string? PhoneNumber { get; set; } = null;
         public string Email { get; set; }
         public int? BillingAddressId { get; set; } = null;
-        public User User { get; set; }
+        public int UserId { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace PostOffice.DataAccess.Registration
 
                 var result = connection.QueryFirstOrDefault<User>(sql, parameters, commandType: System.Data.CommandType.Text);
 
-                return result.Username != null ? true : false;
+                return result != null ? true : false;
             }
         }
 
@@ -68,7 +68,7 @@ namespace PostOffice.DataAccess.Registration
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
                 var sql = @"
-                INSERT INTO Customer(
+                INSERT INTO Customers(
                     FirstName,
                     MiddleInitial,
                     LastName,
@@ -76,7 +76,7 @@ namespace PostOffice.DataAccess.Registration
                     Email)
                 VALUES(
                     @FirstName,
-                    @MiddleInnitial,
+                    @MiddleInitial,
                     @LastName,
                     @PhoneNumber,
                     @Email)
@@ -108,10 +108,9 @@ namespace PostOffice.DataAccess.Registration
             {
                 var sql = @"
                 SELECT CustomerId 
-                FROM Customer 
+                FROM Customers 
                 WHERE FirstName = @FirstName 
                     AND LastName = @LastName 
-                    AND PhoneNumber = @PhoneNumber 
                     AND Email = @Email";
 
                 var parameters = new Dictionary<string, object>
@@ -135,7 +134,7 @@ namespace PostOffice.DataAccess.Registration
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
                 var sql = @"
-                UPDATE User
+                UPDATE Users
                 SET CustomerId = @CustomerId
                 WHERE UserId = @UserId
                 ";

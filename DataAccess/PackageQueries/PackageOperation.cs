@@ -56,7 +56,7 @@ namespace PostOffice.DataAccess.Packages
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
                 var sql = @"
-                INSERT INTO PACKAGE(
+                INSERT INTO PACKAGES(
                     Receiver,
                     Sender,
                     Price,
