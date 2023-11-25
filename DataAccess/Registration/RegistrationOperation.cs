@@ -73,20 +73,23 @@ namespace PostOffice.DataAccess.Registration
                     MiddleInitial,
                     LastName,
                     PhoneNumber,
-                    Email)
+                    Email,
+                    UserId)
                 VALUES(
                     @FirstName,
                     @MiddleInitial,
                     @LastName,
                     @PhoneNumber,
-                    @Email)
+                    @Email,
+                    @UserId)
                 ";
 
                 var parameters = new Dictionary<string, object>
                 {
                     {"@FirstName", customer.FirstName},
                     {"@LastName", customer.LastName},
-                    {"@Email", customer.Email}
+                    {"@Email", customer.Email},
+                    {"@UserId", customer.UserId}
                 };
 
                 var middleInitial = customer.MiddleInitial != null ? customer.MiddleInitial : null;
@@ -150,5 +153,6 @@ namespace PostOffice.DataAccess.Registration
             }
 
         }
+
     }
 }
