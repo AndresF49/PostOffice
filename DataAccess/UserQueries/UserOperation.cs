@@ -35,7 +35,7 @@ namespace PostOffice.DataAccess.UserQueries
             }
         }
 
-        public async Task<User> GetUserByUserId(int userId)
+        public User GetUserByUserId(int userId)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
@@ -49,7 +49,7 @@ namespace PostOffice.DataAccess.UserQueries
                     {"@UserId", userId},
                 };
 
-                var result = await connection.QuerySingleAsync<User>(sql, parameters, commandType: System.Data.CommandType.Text);
+                var result = connection.QuerySingleAsync<User>(sql, parameters, commandType: System.Data.CommandType.Text).Result;
 
                 return new User { UserId = result.UserId, Username = result.Username, RoleTypeId = result.RoleTypeId };
 

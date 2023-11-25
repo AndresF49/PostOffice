@@ -6,6 +6,6 @@ namespace PostOffice.DataAccess.UserQueries
     {
         Task<User> GetUserIdByCredentials(User credentials);
 
-        Task<User> GetUserByUserId(int userId);
+        User GetUserByUserId(int userId);
     }
 }
