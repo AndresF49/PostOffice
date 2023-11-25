@@ -41,17 +41,20 @@ namespace PostOffice.DataAccess.Registration
                 INSERT INTO Users(
                     Username,
                     Password,
+                    Email,
                     RoleTypeId)
                 VALUES(
                     @Username,
                     @Password,
-                    2
+                    @Email,
+                    3)
                 ";
 
                 var parameters = new Dictionary<string, object>
                 {
                     {"@Username", user.Username},
-                    {"@Password", user.Password}
+                    {"@Password", user.Password},
+                    {"@Email", user.Email }
                 };
 
                 var result = connection.Execute(sql, parameters, commandType: System.Data.CommandType.Text);
@@ -82,11 +85,16 @@ namespace PostOffice.DataAccess.Registration
                 var parameters = new Dictionary<string, object>
                 {
                     {"@FirstName", customer.FirstName},
-                    {"@MiddleInitial", customer.MiddleInitial},
                     {"@LastName", customer.LastName},
-                    {"@PhoneNumber", customer.PhoneNumber},
                     {"@Email", customer.Email}
                 };
+
+                var middleInitial = customer.MiddleInitial != null ? customer.MiddleInitial : null;
+                var phoneNumber = customer.PhoneNumber != null ? customer.PhoneNumber : "NULL";
+
+                parameters.Add("@MiddleInitial", middleInitial);
+                parameters.Add("@PhoneNumber", phoneNumber);
+
 
                 var result = connection.Execute(sql, parameters, commandType: System.Data.CommandType.Text);
 

@@ -36,7 +36,7 @@ export default function LoginForm({ setAuthentication }) {
 
     setAuthentication({
       currentUser: authDetails.user,
-      role: Roles[authDetails.user.RoleType],
+      role: Roles[authDetails.user.RoleTypeId],
       token: authDetails.token
     });
     // console.log("Info below from token=loginUser")

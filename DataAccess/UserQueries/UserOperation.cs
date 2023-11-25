@@ -19,7 +19,7 @@ namespace PostOffice.DataAccess.UserQueries
             {
                 var sql = @"
                 SELECT UserId FROM Users
-                WHERE Email = @Username AND Password = @Password
+                WHERE Username = @Username AND Password = @Password
                 ";
 
                 var parameters = new Dictionary<string, object>

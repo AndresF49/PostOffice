@@ -18,8 +18,8 @@ namespace PostOffice.DataAccess.Login
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
                 var sql = @"
-                SELECT 1 FROM Users
-                WHERE Email = @Username AND Password = @Password
+                SELECT * FROM Users
+                WHERE Username = @Username AND Password = @Password
                 ";
 
                 var parameters = new Dictionary<string, object>

@@ -17,7 +17,8 @@ async function CreateUser(credentials, roleType, setRegistrationError) {
       body: JSON.stringify({ 
         Username: credentials.Username,
         Password: credentials.Password,
-        RoleType: roleType,
+        Email: credentials.Email,
+        RoleTypeId: roleType,
       }) 
     }); 
 
@@ -84,7 +85,7 @@ export default function RegisterForm({ setAuthentication }) {
     
     // create a user, get the created UserId from db/backend
     // add UserId to the credentials object that we pass to CreateCustomer
-    const createUserObj = await CreateUser(credentials, 2, setRegistrationError);
+    const createUserObj = await CreateUser(credentials, 3, setRegistrationError);
     if (createUserObj == false) {
       return false;
     }
