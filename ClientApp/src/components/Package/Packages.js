@@ -1,17 +1,17 @@
-  import React, { useState, useEffect } from 'react';
-  import { Card, CardBody, CardHeader, CardTitle, Row, Col, CardText, Button } from 'reactstrap';
-  import ShowPackage from './ShowPackage';
-  import SearchPackage from './SearchPackage';
-  import EditPackage from './EditPackage'; 
-  import CreateTransaction from './CreateTransaction';
-  import useAuthentication from './utils/useAuthentication';
+import React, { useState, useEffect } from 'react';
+import { Card, CardBody, CardHeader, CardTitle, Row, Col, CardText, Button } from 'reactstrap';
+import ShowPackage from './ShowPackage';
+import SearchPackage from './SearchPackage';
+import EditPackage from './EditPackage'; 
+import CreateTransaction from './CreateTransaction';
+import useAuthentication from '../Utils/useAuthentication';
+import { Roles } from '../Account/Roles';
 
 
 
-
-export default function Packages() {
-  const { authentication } = useAuthentication();
-  const userRole = authentication ? authentication.getRole() : null;
+export default function Packages({ authentication }) {
+  // const { authentication } = useAuthentication();
+  const userRole = authentication.role ? authentication.role : null;
 
   const [listPackages, updatePackages] = useState([]);
   const [sendingPackages, updateSending] = useState([]);
@@ -61,7 +61,7 @@ export default function Packages() {
   return (
     <>
       <h1>Packages linked to Account</h1>
-          {(userRole === 'Admin' || userRole === 'Employee') && (
+          {(userRole === Roles[1] || userRole === Roles[2]) && (
               <>
                   <Button color='primary' onClick={() => setShowSearchPackage(!showSearchPackage)}>
                       Toggle Search Package
@@ -143,7 +143,7 @@ export default function Packages() {
         {selectedPackage && <ShowPackage _package={selectedPackage} />}
         </Col>
       </Row>
-       (userRole === 'Admin' || userRole === 'Employee') && selectedPackage && (
+       {(userRole === Roles[1] || userRole === Roles[2]) && selectedPackage && (
         <Row>
           <Col>
             <Button color='info' onClick={handleEditButtonClick}>
@@ -158,7 +158,7 @@ export default function Packages() {
             {showCreateTransaction && <CreateTransaction package={selectedPackage} />}
           </Col>
         </Row>
-      )
+      ) }
     </>
   );
 };
