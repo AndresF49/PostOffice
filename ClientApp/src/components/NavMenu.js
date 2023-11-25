@@ -50,8 +50,8 @@ export default function NavMenu({ setAuthentication, authentication }) {
             <NavItem>
               <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
             </NavItem>
-            { authentication.role === Roles[0] && adminPageLinks() }
-            { authentication.role === Roles[1] && employeePageLinks() }
+            { authentication.role === Roles[1] && adminPageLinks() }
+            { authentication.role === Roles[2] && employeePageLinks() }
             <NavItem>
             <Logout size="sm" setAuthentication={setAuthentication} />
             </NavItem>

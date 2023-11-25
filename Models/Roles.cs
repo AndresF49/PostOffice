@@ -2,8 +2,8 @@ namespace PostOffice.Models
 {
     public enum Roles
     {
-        ADMIN,
-        EMPLOYEE,
-        CUSTOMER
+        ADMIN = 1,
+        EMPLOYEE = 2,
+        CUSTOMER = 3
     }
 }

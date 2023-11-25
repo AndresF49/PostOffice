@@ -79,9 +79,9 @@ export default function App() {
   return (
     (authentication != null ? 
       <Layout setAuthentication={setAuthentication} authentication={authentication}>
-        { authentication.role === Roles[0] && adminRoutes() } {/* admin */}
-        { authentication.role === Roles[1] && employeeRoutes() } {/* employee */}
-        { authentication.role === Roles[2] && customerRoutes() } {/* customer */}
+        { authentication.role === Roles[1] && adminRoutes() } {/* admin */}
+        { authentication.role === Roles[2] && employeeRoutes() } {/* employee */}
+        { authentication.role === Roles[3] && customerRoutes() } {/* customer */}
       </Layout> 
       :
       notAuthenticatedRoutes()
