@@ -1,5 +1,5 @@
 ﻿using System.Data.SqlClient;
-using System.Net;
+using System.Data;
 using Dapper;
 using PostOffice.Models;
 
@@ -27,7 +27,7 @@ namespace PostOffice.DataAccess.Packages
                     {"@TrackingNumber", trackingNumber}
                 };
 
-                var result = await connection.QueryFirstOrDefaultAsync<Package>(sql, parameters);
+                var result = await connection.QueryFirstOrDefaultAsync<Package>(sql, parameters, commandType: CommandType.Text);
 
                 return new Package
                 {
@@ -47,7 +47,7 @@ namespace PostOffice.DataAccess.Packages
                     Insurance = result.Insurance,
                     SourceAddress = result.SourceAddress,
                     DestinationAddress = result.DestinationAddress,
-                    Status = result.Status
+                    StatusId = result.StatusId
                 };
             }
         }
@@ -57,7 +57,8 @@ namespace PostOffice.DataAccess.Packages
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
                 var sql = @"
-                INSERT INTO PACKAGES(
+                INSERT INTO PACKAGES
+                (
                     Receiver,
                     Sender,
                     Price,
@@ -72,7 +73,7 @@ namespace PostOffice.DataAccess.Packages
                     Insurance,
                     SourceAddress,
                     DestinationAddress,
-                    Status,
+                    StatusId,
                     UpdatedTimestamp
                 )
                 VALUES
@@ -91,7 +92,7 @@ namespace PostOffice.DataAccess.Packages
                     @Insurance,
                     @SourceAddress,
                     @DestinationAddress,
-                    @Status,
+                    @StatusId,
                     GETDATE()
                 )";
 
@@ -105,7 +106,7 @@ namespace PostOffice.DataAccess.Packages
                     {"@Insurance", package.Insurance},
                     {"@SourceAddress", package.SourceAddress},
                     {"@DestinationAddress", package.DestinationAddress},
-                    {"@Status", package.Status}
+                    {"@StatusId", package.StatusId}
                 };
 
                 var descriptionOfItem = package.DescriptionOfItem != null ? package.DescriptionOfItem : null;
@@ -122,7 +123,7 @@ namespace PostOffice.DataAccess.Packages
                 parameters.Add("@Width", width);
                 parameters.Add("@Depth", depth);
 
-                return connection.Execute(sql, parameters, commandType: System.Data.CommandType.Text);
+                return connection.Execute(sql, parameters, commandType: CommandType.Text);
             }
         }
 
@@ -147,7 +148,7 @@ namespace PostOffice.DataAccess.Packages
                     Insurance = @Insurance,
                     SourceAddress = @SourceAddress,
                     DestinationAddress = @DestinationAddress,
-                    Status = @Status,
+                    StatusId = @StatusId,
                     PostOfficeId = @PostOfficeId,
                     UpdatedTimestamp = GETDATE()
                 WHERE PackageId = @PackageId
@@ -169,11 +170,69 @@ namespace PostOffice.DataAccess.Packages
                     {"@Insurance", package.Insurance},
                     {"@SourceAddress", package.SourceAddress},
                     {"@DestinationAddress", package.DestinationAddress},
-                    {"@Status", package.Status},
+                    {"@StatusId", package.StatusId},
                     {"@PostOfficeId", postOfficeId}
                 };
 
-                connection.Execute(sql, parameters, commandType: System.Data.CommandType.Text);
+                connection.Execute(sql, parameters, commandType: CommandType.Text);
+
+            }
+        }
+
+        public void UpdateTransaction(float totalPrice, int customerId, int postOfficeId)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
+            {
+                var sql = @"
+                INSERT INTO Transactions
+                (
+                    TotalPrice,
+                    PaidByCustomerId,
+                    TransactionDate,
+                    PostOfficeId
+                )
+                VALUES
+                (
+                    @TotalPrice,
+                    @PaidByCustomerId,
+                    GETDATE(),
+                    @PostOfficeId
+                )
+                ";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@TotalPrice", totalPrice},
+                    {"@PaidByCustomerId", customerId},
+                    {"@PostOfficeId", postOfficeId}
+                };
+
+                connection.Execute(sql, parameters, commandType: CommandType.Text);
+
+
+            }
+        }
+
+        public void UpdatePackageStatus(int packageId, int statusId)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
+            {
+                var sql = @"
+                UPDATE Packages
+                SET
+                    Status = @Status,
+                    UpdatedTimestamp = GETDATE()
+                WHERE PackageId = @PackageId
+                )
+                ";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@Status", statusId},
+                    {"@PackageId", packageId}
+                };
+
+                connection.Execute(sql, parameters, commandType: CommandType.Text);
 
             }
         }

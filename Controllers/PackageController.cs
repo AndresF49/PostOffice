@@ -56,5 +56,15 @@ public class PackageController : ControllerBase
             return Ok(searchResult);
         }
 
+    [HttpPost]
+    [Route("UpdateTransaction")]
+    public ActionResult UpdateTransaction([FromBody] UpdateTransactionRequest request)
+    {
+
+        _packageOperation.UpdateTransaction(request.TotalPrice, request.Customer.CustomerId, request.Package.PostOfficeId);
+        _packageOperation.UpdatePackageStatus(request.Package.PackageId, 2); // StatusId = 2 => InTransit
+
+        return Ok();
+    }
 }
 

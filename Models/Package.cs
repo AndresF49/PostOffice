@@ -34,8 +34,8 @@ namespace PostOffice.Models
 
         public string DestinationAddress { get; set; }
 
-        public string Status { get; set; }
+        public int StatusId { get; set; }
 
-        public string PostOfficeId { get; set; }
+        public int PostOfficeId { get; set; }
     }
 }
