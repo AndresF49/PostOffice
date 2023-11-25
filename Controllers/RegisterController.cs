@@ -55,10 +55,10 @@ public class RegisterController : ControllerBase
     }
     [HttpPost]
     [Route("CreateCustomer")]
-    public async Task<IActionResult> CreateCustomer([FromBody] Customer customer)
+    public ActionResult<Token> CreateCustomer([FromBody] Customer customer)
     {
-        if (string.IsNullOrEmpty(customer.FirstName) 
-        || string.IsNullOrEmpty(customer.LastName) 
+        if (string.IsNullOrEmpty(customer.FirstName)
+        || string.IsNullOrEmpty(customer.LastName)
         || string.IsNullOrEmpty(customer.Email))
         {
             return BadRequest("One or more Create Customer credentials is empty");

@@ -220,7 +220,7 @@ namespace PostOffice.DataAccess.Packages
                 var sql = @"
                 UPDATE Packages
                 SET
-                    Status = @Status,
+                    StatusId = @StatusId,
                     UpdatedTimestamp = GETDATE()
                 WHERE PackageId = @PackageId
                 )
@@ -228,7 +228,7 @@ namespace PostOffice.DataAccess.Packages
 
                 var parameters = new Dictionary<string, object>
                 {
-                    {"@Status", statusId},
+                    {"@StatusId", statusId},
                     {"@PackageId", packageId}
                 };
 
