@@ -48,10 +48,82 @@ namespace PostOffice.DataAccess.Packages
                     DestinationAddress = result.DestinationAddress,
                     Status = result.Status
                 };
-
-
             }
+        }
 
+        public int CreatePackage(Package package)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
+            {
+                var sql = @"
+                INSERT INTO PACKAGE(
+                    Receiver,
+                    Sender,
+                    Price,
+                    DescriptionOfItem,
+                    DeclaredValue,
+                    PackageType,
+                    Weight,
+                    Length,
+                    Width,
+                    Depth,
+                    SignatureRequired,
+                    Insurance,
+                    SourceAddress,
+                    DestinationAddress,
+                    Status
+                )
+                VALUES
+                (
+                    @Receiver,
+                    @Sender,
+                    @Price,
+                    @DescriptionOfItem,
+                    @DeclaredValue,
+                    @PackageType,
+                    @Weight,
+                    @Length,
+                    @Width,
+                    @Depth,
+                    @SignatureRequired,
+                    @Insurance,
+                    @SourceAddress,
+                    @DestinationAddress,
+                    @Status
+                )";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@Receiver", package.Receiver},
+                    {"@Sender", package.Sender},
+                    {"@Price", package.Price},
+                    {"@PackageType", package.PackageType},
+                    {"@SignatureRequired", package.SignatureRequired},
+                    {"@Insurance", package.Insurance},
+                    {"@SourceAddress", package.SourceAddress},
+                    {"@DestinationAddress", package.DestinationAddress},
+                    {"@Status", package.Status}
+                };
+
+                var descriptionOfItem = package.DescriptionOfItem != null ? package.DescriptionOfItem : null;
+                var declaredValue = package.DeclaredValue != null ? package.DeclaredValue : null;
+                var weight = package.Weight != null ? package.Weight : null;
+                var length = package.Length != null ? package.Length : null;
+                var width = package.Width != null ? package.Width : null;
+                var depth = package.Depth != null ? package.Depth : null;
+
+                parameters.Add("@DescriptionOfItem", descriptionOfItem);
+                parameters.Add("@DeclaredValue", declaredValue);
+                parameters.Add("@Weight", weight);
+                parameters.Add("@Length", length);
+                parameters.Add("@Width", width);
+                parameters.Add("@Depth", depth);
+
+
+
+                return connection.Execute(sql, parameters, commandType: System.Data.CommandType.Text);
+            }
         }
     }
 }
+

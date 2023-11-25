@@ -15,6 +15,19 @@ public class PackageController : ControllerBase
         _packageOperation = packageOperation;
     }
 
+    [HttpPost]
+    [Route("CreatePackage")]
+    public ActionResult<Package> CreatePackage([FromBody] Package package)
+    {
+        if (_packageOperation.CreatePackage(package) < 1)
+        {
+            return BadRequest("Invalid package");
+        }
+        else
+        {
+            return Ok();
+        }
+    }
 
     [HttpPost]
     [Route("SearchPackage")]

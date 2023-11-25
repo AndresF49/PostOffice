@@ -27,9 +27,9 @@ namespace PostOffice.DataAccess.Registration
                     {"@Username", user.Username},
                 };
 
-                var result = connection.QueryFirstOrDefault(sql, parameters, commandType: System.Data.CommandType.Text);
+                var result = connection.QueryFirstOrDefault<User>(sql, parameters, commandType: System.Data.CommandType.Text);
 
-                if (result > 0) { return true; } else { return false; }
+                return result.Username != null ? true : false;
             }
         }
 
@@ -59,7 +59,7 @@ namespace PostOffice.DataAccess.Registration
 
                 var result = connection.Execute(sql, parameters, commandType: System.Data.CommandType.Text);
 
-                if (result > 0){return true;} else {return false;}
+                return result > 0 ? true : false;
             }
         }
 
@@ -98,7 +98,7 @@ namespace PostOffice.DataAccess.Registration
 
                 var result = connection.Execute(sql, parameters, commandType: System.Data.CommandType.Text);
 
-                if (result > 0) { return true; } else { return false; }
+                return result > 0 ? true : false;
             }
         }
 
@@ -117,11 +117,14 @@ namespace PostOffice.DataAccess.Registration
                 var parameters = new Dictionary<string, object>
                 {
                     {"@FirstName", customer.FirstName},
-                    {"@MiddleInitial", customer.MiddleInitial},
                     {"@LastName", customer.LastName},
-                    {"@PhoneNumber", customer.PhoneNumber},
                     {"@Email", customer.Email}
                 };
+
+                var middleInitial = customer.MiddleInitial != null ? customer.MiddleInitial : null;
+
+                parameters.Add("@MiddleInitial", middleInitial);
+
 
                 return connection.QueryFirstOrDefault<int>(sql, parameters, commandType: System.Data.CommandType.Text);
             }

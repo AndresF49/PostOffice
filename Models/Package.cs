@@ -16,7 +16,7 @@ namespace PostOffice.Models
 
         public double? DeclaredValue { get; set; }
 
-        public string PackageType { get; set; }
+        public int PackageType { get; set; }
 
         public double? Weight { get; set; }
 
@@ -35,5 +35,7 @@ namespace PostOffice.Models
         public string DestinationAddress { get; set; }
 
         public string Status { get; set; }
+
+        public string PostOfficeId { get; set; }
     }
 }
