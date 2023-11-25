@@ -12,7 +12,7 @@ public class RegisterController : ControllerBase
 {
     private readonly IRegistrationOperation _registration;
     private readonly IUserOperation _userOperation;
-    private int userId;
+    // private int userId;
 
     public RegisterController(IRegistrationOperation registration, IUserOperation userOperation)
     {
@@ -28,7 +28,9 @@ public class RegisterController : ControllerBase
     public class Tokenk // returning this token object so frontend destructure this object into a token and user object
     {
         public string token { get; set; }
-        public User user { get; set; }
+        //public User user { get; set; }
+        public int userRoleTypeId { get; set; }
+        public int userId { get; set; }
     }
     private class CustomError
     {
@@ -53,9 +55,9 @@ public class RegisterController : ControllerBase
         {
             _registration.CreateUser(credentials);
             var user = _userOperation.GetUserIdByCredentials(credentials).Result;
-            userId = user.UserId;
+            // userId = user.UserId;
 
-            return Ok(JsonSerializer.Serialize(user));
+            return Ok(JsonSerializer.Serialize(user.UserId));
         }
     }
     [HttpPost]
@@ -71,11 +73,11 @@ public class RegisterController : ControllerBase
 
         _registration.CreateCustomer(customer);
         var customerId = _registration.GetCustomerId(customer);
-        _registration.UpdateCustomerIdOnUser(userId, customerId);
+        _registration.UpdateCustomerIdOnUser(customer.UserId, customerId);
 
-        var user = _userOperation.GetUserByUserId(userId);
+        var user = _userOperation.GetUserByUserId(customer.UserId);
  
-        var tokenObj = new Tokenk { token="token123", user=user };
+        var tokenObj = new Tokenk { token="token123", userId=user.UserId, userRoleTypeId=user.RoleTypeId };
 
         return Ok(JsonSerializer.Serialize(tokenObj));
     }
