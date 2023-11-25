@@ -17,7 +17,7 @@ public class PackageController : ControllerBase
 
     [HttpPost]
     [Route("CreatePackage")]
-    public ActionResult<Package> CreatePackage([FromBody] Package package)
+    public ActionResult CreatePackage([FromBody] Package package)
     {
         if (_packageOperation.CreatePackage(package) < 1)
         {
@@ -27,6 +27,14 @@ public class PackageController : ControllerBase
         {
             return Ok();
         }
+    }
+
+    [HttpPost]
+    [Route("UpdatePackage")]
+    public  ActionResult UpdatePackage([FromBody] UpdatePackageRequest request)
+    {
+        _packageOperation.UpdatePackage(request.Package, request.PostOfficeId);
+        return Ok();
     }
 
     [HttpPost]

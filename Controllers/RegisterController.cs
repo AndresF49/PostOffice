@@ -21,14 +21,7 @@ public class RegisterController : ControllerBase
     }
     public class Token
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public int RoleTypeId { get; set; }
-    }
-    public class Tokenk // returning this token object so frontend destructure this object into a token and user object
-    {
-        public string token { get; set; }
-        //public User user { get; set; }
+        public Guid token { get; set; }
         public int userRoleTypeId { get; set; }
         public int userId { get; set; }
     }
@@ -38,7 +31,7 @@ public class RegisterController : ControllerBase
     }
     [HttpPost]
     [Route("CreateUser")]
-    public async Task<IActionResult> CreateUser([FromBody] User credentials)
+    public  ActionResult<int> CreateUser([FromBody] User credentials)
     {
         if (string.IsNullOrEmpty(credentials.Username) || string.IsNullOrEmpty(credentials.Password))
         {
@@ -76,10 +69,10 @@ public class RegisterController : ControllerBase
         _registration.UpdateCustomerIdOnUser(customer.UserId, customerId);
 
         var user = _userOperation.GetUserByUserId(customer.UserId);
- 
-        var tokenObj = new Tokenk { token="token123", userId=user.UserId, userRoleTypeId=user.RoleTypeId };
 
-        return Ok(JsonSerializer.Serialize(tokenObj));
+        var token = new Token { token = Guid.NewGuid(), userId=user.UserId, userRoleTypeId=user.RoleTypeId };
+
+        return Ok(JsonSerializer.Serialize(token));
     }
 }
 

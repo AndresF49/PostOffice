@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using System.Net;
 using Dapper;
 using PostOffice.Models;
 
@@ -119,9 +120,58 @@ namespace PostOffice.DataAccess.Packages
                 parameters.Add("@Width", width);
                 parameters.Add("@Depth", depth);
 
-
-
                 return connection.Execute(sql, parameters, commandType: System.Data.CommandType.Text);
+            }
+        }
+
+        public void UpdatePackage(Package package, int postOfficeId)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
+            {
+                var sql = @"
+                UPDATE Packages
+                SET
+                    Receiver = @Receiver,
+                    Sender = @Sender,
+                    Price = @Price,
+                    DescriptionOfItem = @DescriptionOfItem,
+                    DeclaredValue = @DeclaredValue,
+                    PackageType = @PackageType,
+                    Weight = @Weight,
+                    Length = @Length,
+                    Width = @Width,
+                    Depth = @Depth,
+                    SignatureRequired = @SignatureRequired,
+                    Insurance = @Insurance,
+                    SourceAddress = @SourceAddress,
+                    DestinationAddress = @DestinationAddress,
+                    Status = @Status,
+                    PostOfficeId = @PostOfficeId
+                WHERE PackageId = @PackageId
+                ";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@Receiver", package.Receiver},
+                    {"@Sender", package.Sender},
+                    {"@Price", package.Price},
+                    {"@DescriptionOfItem", package.DescriptionOfItem},
+                    {"@DeclaredValue", package.DeclaredValue},
+                    {"@PackageType", package.PackageType},
+                    {"@Weight", package.Weight},
+                    {"@Length", package.Length},
+                    {"@Width", package.Width},
+                    {"@Depth", package.Depth},
+                    {"@SignatureRequired", package.SignatureRequired},
+                    {"@Insurance", package.Insurance},
+                    {"@SourceAddress", package.SourceAddress},
+                    {"@DestinationAddress", package.DestinationAddress},
+                    {"@Status", package.Status},
+                    {"@PostOfficeId", postOfficeId}
+                };
+
+                connection.Execute(sql, parameters, commandType: System.Data.CommandType.Text);
+
             }
         }
     }

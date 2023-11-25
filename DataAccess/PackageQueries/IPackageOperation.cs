@@ -6,5 +6,6 @@ namespace PostOffice.DataAccess.Packages
     {
         Task<Package> GetPackageByTrackingNumber(string packageId);
         int CreatePackage(Package package);
+        void UpdatePackage(Package package, int postOfficeId);
     }
 }
