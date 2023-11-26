@@ -79,10 +79,13 @@ public class RegisterController : ControllerBase
     [Route("CreateEmployee")]
     public ActionResult CreateEmployee([FromBody] CreateEmployeeRequest request)
     {
-
-        _registration.CreateEmployee(request);
-
-        return Ok();
+        var employeeId = _registration.CreateEmployee(request);
+        if (_registration.UpdateEmployeeIdOnUser(request.UserId, employeeId)) {
+            return Ok();
+        }
+        else {
+            return BadRequest();
+        }
     }
 }
 

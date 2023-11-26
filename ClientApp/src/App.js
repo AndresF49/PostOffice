@@ -17,6 +17,7 @@ import Packages from './components/Package/Packages';
 import PackagesPage from './components/Package/PackagesPage';
 import TransactionsPage from './components/Transactions/TransactionsPage';
 import EditEmployee from './components/Admin/EditEmployee';
+import EmployeeAdminPage from './components/Admin/EmployeeAdminPage';
 
 
 export default function App() {
@@ -49,7 +50,7 @@ export default function App() {
       <Routes>
         <Route index path='/' element={ <AdminPage authentication={authentication} /> } />
         <Route index path='/packages' element={ <PackagesPage authentication={authentication} /> } />
-        <Route path='/employee' element={ <EditEmployee authentication={authentication}/> } /> 
+        <Route path='/employee' element={ <EmployeeAdminPage authentication={authentication}/> } /> 
         <Route path='/transactions' element={ <TransactionsPage authentication={authentication} />} />
         <Route path='*' element={ <Navigate to="/" replace /> } />
       </Routes>

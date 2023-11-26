@@ -155,13 +155,13 @@ namespace PostOffice.DataAccess.Registration
 
         }
 
-        public void CreateEmployee(CreateEmployeeRequest employee)
+        public int CreateEmployee(CreateEmployeeRequest employee)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
 
                 var postmasterIdSql = @"
-                SELECT PM.PostMasterId, PO.PostOfficeId
+                SELECT PM.PostMasterId
                 FROM Users U
                 JOIN Employees E ON U.UserId = E.UserId
                 LEFT JOIN PostMasters PM ON E.EmployeeId = PM.EmployeeId
@@ -181,14 +181,14 @@ namespace PostOffice.DataAccess.Registration
                 {
                     {"@UserId", employee.AdminUserId }
                 };
-                employee.PostMasterId = connection.QueryFirstOrDefault(postmasterIdSql, userIdParameters, commandType: CommandType.Text);
-                employee.PostOfficeId = connection.QueryFirstOrDefault(postOfficeIdSql, userIdParameters, commandType: CommandType.Text);
+
+                employee.PostMasterId = connection.QueryFirstOrDefault(postmasterIdSql, userIdParameters, commandType: CommandType.Text).PostMasterId;
+                employee.PostOfficeId = connection.QueryFirstOrDefault(postOfficeIdSql, userIdParameters, commandType: CommandType.Text).PostOfficeId;
 
 
                 var sql = @"
                 INSERT INTO Employees
                 (
-                    EmployeeId,
                     Ssn,
                     FirstName,
                     MiddleInitial,
@@ -205,7 +205,6 @@ namespace PostOffice.DataAccess.Registration
                 )
                 VALUES
                 (
-                    @EmployeeId,
                     @Ssn,
                     @FirstName,
                     @MiddleInitial,
@@ -223,7 +222,6 @@ namespace PostOffice.DataAccess.Registration
 
                 var parameters = new Dictionary<string, object>
                 {
-                    {"@EmployeeId", employee.EmployeeId },
                     {"@Ssn", employee.Ssn },
                     {"@FirstName", employee.FirstName },
                     {"@MiddleInitial", employee.MiddleInitial },
@@ -240,6 +238,40 @@ namespace PostOffice.DataAccess.Registration
                 };
 
                 connection.Execute(sql, parameters, commandType: CommandType.Text);
+
+                var sqlGetEmployee = @"
+                    SELECT EmployeeId
+                    FROM Employees
+                    WHERE Ssn=@Ssn
+                ";
+
+                var getEmployeeParameters = new Dictionary<string, object>
+                {
+                    {"@Ssn", employee.Ssn},
+                };
+
+                return connection.QueryFirstOrDefault<int>(sqlGetEmployee, getEmployeeParameters, commandType: CommandType.Text);
+            }
+        }
+
+        public bool UpdateEmployeeIdOnUser(int userId, int employeeId)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
+            {
+                var sql = @"
+                UPDATE Users
+                SET EmployeeId = @EmployeeId
+                WHERE UserId = @UserId
+                ";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@EmployeeId", employeeId},
+                    {"@UserId", userId}
+                };
+                var registrationCheck = connection.Execute(sql, parameters, commandType: CommandType.Text);
+
+                return registrationCheck > 0;
             }
         }
 
