@@ -34,10 +34,7 @@ export default function NavMenu({ setAuthentication, authentication }) {
           <NavLink tag={Link} className="text-dark" to="/transactions">Transactions</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink tag={Link} className="text-dark" to="/employee">Employee Details</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink tag={Link} className="text-dark" to="/admin">Admin Dashboard</NavLink>
+          <NavLink tag={Link} className="text-dark" to="/employee">Employees</NavLink>
         </NavItem>
       </>
     );

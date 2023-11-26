@@ -49,9 +49,8 @@ export default function App() {
       <Routes>
         <Route index path='/' element={ <AdminPage authentication={authentication} /> } />
         <Route index path='/packages' element={ <PackagesPage authentication={authentication} /> } />
-        <Route path='/employee' element={ <EmployeePage authentication={authentication} /> } /> 
-        <Route path='/transactions' element={<TransactionsPage authentication={authentication} />} />
-        <Route path='/admin' element={<EditEmployee authentication={authentication}/> } />
+        <Route path='/employee' element={ <EditEmployee authentication={authentication}/> } /> 
+        <Route path='/transactions' element={ <TransactionsPage authentication={authentication} />} />
         <Route path='*' element={ <Navigate to="/" replace /> } />
       </Routes>
     );

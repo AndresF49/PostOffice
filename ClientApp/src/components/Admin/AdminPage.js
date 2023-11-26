@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import PostOfficeRevenueForm from './ReportForms/PostOfficeRevenueForm';
-import AnnualRevenueReportForm from './ReportForms/AnnualRevenueReportForm';
-import EmployeeProductivityReportForm from './ReportForms/EmployeeProductivityReportForm';
+import PostOfficeRevenueForm from '../ReportForms/PostOfficeRevenueForm';
+import AnnualRevenueReportForm from '../ReportForms/AnnualRevenueReportForm';
+import EmployeeProductivityReportForm from '../ReportForms/EmployeeProductivityReportForm';
 
 
 const AdminPage = () => {
@@ -31,8 +31,9 @@ const AdminPage = () => {
                     <Button color="primary" onClick={() => handleReportButtonClick('EmployeeProductivityReport')}>
                         Employee Productivity Report
                     </Button>
-                </Col>            </Row>
-
+                </Col>           
+             </Row>
+            <br></br>
             {selectedReport === 'PostOfficeRevenue' && <PostOfficeRevenueForm />}
             {selectedReport === 'AnnualRevenueReport' && <AnnualRevenueReportForm />}
             {selectedReport === 'EmployeeProductivityReport' && <EmployeeProductivityReportForm />}
