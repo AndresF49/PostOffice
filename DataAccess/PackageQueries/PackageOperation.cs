@@ -34,7 +34,7 @@ namespace PostOffice.DataAccess.Packages
                     PackageId = result.PackageId,
                     TrackingNumber = result.TrackingNumber,
                     Receiver = result.Receiver,
-                    Sender = result.Sender,
+                    SenderId = result.SenderId,
                     Price = result.Price,
                     DescriptionOfItem = result.DescriptionOfItem,
                     DeclaredValue = result.DeclaredValue,
@@ -76,7 +76,7 @@ namespace PostOffice.DataAccess.Packages
                 (
                     TrackingNumber
                     Receiver,
-                    Sender,
+                    SenderId,
                     Price,
                     DescriptionOfItem,
                     DeclaredValue,
@@ -96,7 +96,7 @@ namespace PostOffice.DataAccess.Packages
                 (
                     @TrackingNumber,
                     @Receiver,
-                    @Sender,
+                    @SenderId,
                     @Price,
                     @DescriptionOfItem,
                     @DeclaredValue,
@@ -117,7 +117,7 @@ namespace PostOffice.DataAccess.Packages
                 {
                     {"@TrackingNumber", package.TrackingNumber },
                     {"@Receiver", package.Receiver},
-                    {"@Sender", package.Sender},
+                    {"@SenderId", package.SenderId},
                     {"@Price", package.Price},
                     {"@PackageTypeId", package.PackageTypeId},
                     {"@SignatureRequired", package.SignatureRequired},
@@ -160,7 +160,7 @@ namespace PostOffice.DataAccess.Packages
                 UPDATE Packages
                 SET
                     Receiver = @Receiver,
-                    Sender = @Sender,
+                    SenderId = @SenderId,
                     Price = @Price,
                     DescriptionOfItem = @DescriptionOfItem,
                     DeclaredValue = @DeclaredValue,
@@ -182,7 +182,7 @@ namespace PostOffice.DataAccess.Packages
                 var parameters = new Dictionary<string, object>
                 {
                     {"@Receiver", package.Receiver},
-                    {"@Sender", package.Sender},
+                    {"@SenderId", package.SenderId},
                     {"@Price", package.Price},
                     {"@DescriptionOfItem", package.DescriptionOfItem},
                     {"@DeclaredValue", package.DeclaredValue},

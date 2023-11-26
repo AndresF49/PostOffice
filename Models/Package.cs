@@ -8,7 +8,7 @@ namespace PostOffice.Models
 
         public string Receiver { get; set; }
 
-        public string Sender { get; set; }
+        public int SenderId { get; set; }
 
         public double? Price { get; set; }
 
