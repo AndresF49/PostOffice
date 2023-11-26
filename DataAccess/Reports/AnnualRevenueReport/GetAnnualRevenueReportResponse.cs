@@ -5,7 +5,6 @@
         public int PostOfficeId { get; set; }
         public int PostMasterId { get; set; }
         public string PostMasterName { get; set;}
-        public int Year { get; set; }
         public double TotalRevenue { get; set; }
     }
 }

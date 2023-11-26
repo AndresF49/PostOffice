@@ -19,7 +19,6 @@ namespace PostOffice.DataAccess.Reports.AnnualRevenueReport
                 var parameters = new DynamicParameters();
                 parameters.Add("@StartDate", request.StartDate, DbType.DateTime);
                 parameters.Add("@EndDate", request.EndDate, DbType.DateTime);
-                parameters.Add("@PostOfficeId", request.PostOfficeId, DbType.Int32);
 
                 var result = await connection.QueryAsync<GetAnnualRevenueReportResponse>("GetAnnualRevenueReport", parameters, commandType: CommandType.StoredProcedure);
 
@@ -28,7 +27,6 @@ namespace PostOffice.DataAccess.Reports.AnnualRevenueReport
                     PostOfficeId = i.PostOfficeId,
                     PostMasterId = i.PostMasterId,
                     PostMasterName = i.PostMasterName,
-                    Year = i.Year,
                     TotalRevenue = i.TotalRevenue
                 }).ToList();
             }
