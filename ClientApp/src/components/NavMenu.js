@@ -28,6 +28,9 @@ export default function NavMenu({ setAuthentication, authentication }) {
     return (
       <>
         <NavItem>
+          <NavLink tag={Link} className="text-dark" to="/packages">Packages</NavLink>
+        </NavItem>
+        <NavItem>
           <NavLink tag={Link} className="text-dark" to="/transactions">Transactions</NavLink>
         </NavItem>
         <NavItem>
