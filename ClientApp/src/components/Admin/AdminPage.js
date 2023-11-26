@@ -1,59 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Button } from 'reactstrap';
+import { Button, Row, Col } from 'reactstrap';
+import PostOfficeRevenueForm from './ReportForms/PostOfficeRevenueForm';
+import AnnualRevenueReportForm from './ReportForms/AnnualRevenueReportForm';
+import EmployeeProductivityReportForm from './ReportForms/EmployeeProductivityReportForm';
+
 
 const AdminPage = () => {
-    const [employees, setEmployees] = useState([]);
+    // State to track which report form should be displayed
+    const [selectedReport, setSelectedReport] = useState(null);
+    const handleReportButtonClick = (report) => {
+      setSelectedReport(selectedReport === report ? null : report);
+    };
 
-    useEffect(() => {
-        const fetchEmployees = async () => {
-            try {
-                const response = await fetch('/api/employees'); //the endpoints are not correct
-                if (response.ok) {
-                    const data = await response.json();
-                    setEmployees(data);
-                } else {
-                    console.error('Failed to fetch employee list:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error fetching employee list:', error);
-            }
-        };
-
-        fetchEmployees();
-    }, []);
-   
     return (
         <div>
-            <h1>Admin Page</h1>
-            <Link to="/admin/create-employee">
-                <Button color="primary">Create Employee</Button>
-            </Link>
-            <Table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {employees.map((employee) => (
-                        <tr key={employee.id}>
-                            <td>{employee.id}</td>
-                            <td>{employee.firstName}</td>
-                            <td>{employee.lastName}</td>
-                            <td>{employee.email}</td>
-                            <td>
-                                <Link to={`/Admin/EditEmployee/${employee.id}`}> 
-                                    <Button color="info">Edit</Button>
-                                </Link>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
+            <h1>Admin Dashboard</h1>
+            <Row>
+                <Col>
+                    <Button color="primary" onClick={() => handleReportButtonClick('PostOfficeRevenue')}>
+                        Post Office Revenue Report
+                    </Button>
+                </Col>
+                <Col>
+                    <Button color="primary" onClick={() => handleReportButtonClick('AnnualRevenueReport')}>
+                        Annual Revenue Report
+                    </Button>
+                </Col>
+                <Col>
+                    <Button color="primary" onClick={() => handleReportButtonClick('EmployeeProductivityReport')}>
+                        Employee Productivity Report
+                    </Button>
+                </Col>            </Row>
+
+            {selectedReport === 'PostOfficeRevenue' && <PostOfficeRevenueForm />}
+            {selectedReport === 'AnnualRevenueReport' && <AnnualRevenueReportForm />}
+            {selectedReport === 'EmployeeProductivityReport' && <EmployeeProductivityReportForm />}
         </div>
     );
 };
