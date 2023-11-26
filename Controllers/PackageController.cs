@@ -19,13 +19,14 @@ public class PackageController : ControllerBase
     [Route("CreatePackage")]
     public ActionResult CreatePackage([FromBody] Package package)
     {
-        if (_packageOperation.CreatePackage(package) < 1)
+        var response = _packageOperation.CreatePackage(package);
+        if (response == "failed")
         {
             return BadRequest("Invalid package");
         }
         else
         {
-            return Ok();
+            return Ok(response);
         }
     }
 

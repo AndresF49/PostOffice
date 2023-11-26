@@ -52,7 +52,7 @@ namespace PostOffice.DataAccess.Packages
             }
         }
 
-        public int CreatePackage(Package package)
+        public string CreatePackage(Package package)
         {
             double? price = 0.0;
 
@@ -65,6 +65,8 @@ namespace PostOffice.DataAccess.Packages
                 price = package.Weight * 4;
             }
 
+            package.TrackingNumber = Guid.NewGuid().ToString();
+
             package.Price = price;
 
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
@@ -72,6 +74,7 @@ namespace PostOffice.DataAccess.Packages
                 var sql = @"
                 INSERT INTO PACKAGES
                 (
+                    TrackingNumber
                     Receiver,
                     Sender,
                     Price,
@@ -91,6 +94,7 @@ namespace PostOffice.DataAccess.Packages
                 )
                 VALUES
                 (
+                    @TrackingNumber,
                     @Receiver,
                     @Sender,
                     @Price,
@@ -111,6 +115,7 @@ namespace PostOffice.DataAccess.Packages
 
                 var parameters = new Dictionary<string, object>
                 {
+                    {"@TrackingNumber", package.TrackingNumber },
                     {"@Receiver", package.Receiver},
                     {"@Sender", package.Sender},
                     {"@Price", package.Price},
@@ -136,7 +141,14 @@ namespace PostOffice.DataAccess.Packages
                 parameters.Add("@Width", width);
                 parameters.Add("@Depth", depth);
 
-                return connection.Execute(sql, parameters, commandType: CommandType.Text);
+                var result = connection.Execute(sql, parameters, commandType: CommandType.Text);
+
+                if (result < 0)
+                {
+                    return "failed";
+                }
+
+                return package.TrackingNumber.ToString();
             }
         }
 
