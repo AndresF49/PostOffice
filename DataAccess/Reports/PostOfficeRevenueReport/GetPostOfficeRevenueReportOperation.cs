@@ -12,7 +12,7 @@ namespace PostOffice.DataAccess.Reports.PostOfficeRevenueReport
             _configuration = configuration;
         }
 
-        public async Task<List<GetPostOfficeRevenueReportResponse>> GetAnunalRevenueReport(GetPostOfficeRevenueReportRequest request)
+        public async Task<List<GetPostOfficeRevenueReportResponse>> GetPostOfficeRevenueReport(GetPostOfficeRevenueReportRequest request)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {

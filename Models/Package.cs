@@ -30,9 +30,9 @@ namespace PostOffice.Models
 
         public bool Insurance { get; set; }
 
-        public string SourceAddress { get; set; }
+        public int SourceAddressId { get; set; }
 
-        public string DestinationAddress { get; set; }
+        public int DestinationAddressId { get; set; }
 
         public int StatusId { get; set; }
 

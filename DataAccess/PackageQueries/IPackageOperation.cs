@@ -9,5 +9,7 @@ namespace PostOffice.DataAccess.Packages
         void UpdatePackage(Package package, int postOfficeId);
         void UpdateTransaction(float totalPrice, int customerId, int postOfficeId);
         void UpdatePackageStatus(int packageId, int statusId);
+        public int GetAddressId(string address);
+        public int GetCustomerIdByUserId(int userId);
     }
 }

@@ -45,11 +45,46 @@ namespace PostOffice.DataAccess.Packages
                     Depth = result.Depth,
                     SignatureRequired = result.SignatureRequired,
                     Insurance = result.Insurance,
-                    SourceAddress = result.SourceAddress,
-                    DestinationAddress = result.DestinationAddress,
+                    SourceAddressId = result.SourceAddressId,
+                    DestinationAddressId = result.DestinationAddressId,
                     StatusId = result.StatusId
                 };
             }
+        }
+
+        public int GetCustomerIdByUserId(int userId)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
+            {
+                var sql = @"SELECT CustomerId FROM Customers WHERE UserId = @UserId";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@UserId", userId}
+                };
+
+                return connection.QuerySingleOrDefault(sql, parameters, commandType: CommandType.Text);
+            }
+        }
+
+        public int GetAddressId(string address)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
+            {
+                var sql = @"INSERT INTO Addresses (Address) VALUES (@Address)";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@Address", address}
+                };
+
+                connection.Execute(sql, parameters, commandType: CommandType.Text);
+
+                sql = @"SELECT AddressId FROM Addresses WHERE Address = @Address";
+
+                return connection.QuerySingleOrDefault(sql, parameters, commandType: CommandType.Text);
+            }
+
         }
 
         public string CreatePackage(Package package)
@@ -64,8 +99,6 @@ namespace PostOffice.DataAccess.Packages
             {
                 price = package.Weight * 4;
             }
-
-            package.TrackingNumber = Guid.NewGuid().ToString();
 
             package.Price = price;
 
@@ -87,8 +120,8 @@ namespace PostOffice.DataAccess.Packages
                     Depth,
                     SignatureRequired,
                     Insurance,
-                    SourceAddress,
-                    DestinationAddress,
+                    SourceAddressId,
+                    DestinationAddressId,
                     StatusId,
                     UpdatedTimestamp
                 )
@@ -107,8 +140,8 @@ namespace PostOffice.DataAccess.Packages
                     @Depth,
                     @SignatureRequired,
                     @Insurance,
-                    @SourceAddress,
-                    @DestinationAddress,
+                    @SourceAddressId,
+                    @DestinationAddressId,
                     @StatusId,
                     GETDATE()
                 )";
@@ -122,8 +155,8 @@ namespace PostOffice.DataAccess.Packages
                     {"@PackageTypeId", package.PackageTypeId},
                     {"@SignatureRequired", package.SignatureRequired},
                     {"@Insurance", package.Insurance},
-                    {"@SourceAddress", package.SourceAddress},
-                    {"@DestinationAddress", package.DestinationAddress},
+                    {"@SourceAddressId", package.SourceAddressId},
+                    {"@DestinationAddressId", package.DestinationAddressId},
                     {"@StatusId", package.StatusId}
                 };
 
@@ -171,8 +204,8 @@ namespace PostOffice.DataAccess.Packages
                     Depth = @Depth,
                     SignatureRequired = @SignatureRequired,
                     Insurance = @Insurance,
-                    SourceAddress = @SourceAddress,
-                    DestinationAddress = @DestinationAddress,
+                    SourceAddressId = @SourceAddressId,
+                    DestinationAddressId = @DestinationAddressId,
                     StatusId = @StatusId,
                     PostOfficeId = @PostOfficeId,
                     UpdatedTimestamp = GETDATE()
@@ -193,8 +226,8 @@ namespace PostOffice.DataAccess.Packages
                     {"@Depth", package.Depth},
                     {"@SignatureRequired", package.SignatureRequired},
                     {"@Insurance", package.Insurance},
-                    {"@SourceAddress", package.SourceAddress},
-                    {"@DestinationAddress", package.DestinationAddress},
+                    {"@SourceAddressId", package.SourceAddressId},
+                    {"@DestinationAddressId", package.DestinationAddressId},
                     {"@StatusId", package.StatusId},
                     {"@PostOfficeId", postOfficeId}
                 };
