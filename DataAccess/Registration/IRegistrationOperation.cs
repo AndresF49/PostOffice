@@ -9,6 +9,7 @@ namespace PostOffice.DataAccess.Registration
         bool CreateCustomer(Customer customer);
         int GetCustomerId(Customer customer);
         bool UpdateCustomerIdOnUser(int userId, int customerId);
+        void CreateEmployee(CreateEmployeeRequest employee);
 
     }
 }

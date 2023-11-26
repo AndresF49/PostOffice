@@ -1,4 +1,5 @@
-﻿using PostOffice.DataAccess.CustomerQueries;
+﻿using PostOffice.DataAccess.Admin;
+using PostOffice.DataAccess.CustomerQueries;
 using PostOffice.DataAccess.Login;
 using PostOffice.DataAccess.Packages;
 using PostOffice.DataAccess.Registration;
@@ -12,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IAdminOperation, AdminOperation>();
 builder.Services.AddScoped<ILoginOperation, LoginOperation>();
 builder.Services.AddScoped<IPackageOperation, PackageOperation>();
 builder.Services.AddScoped<IRegistrationOperation, RegistrationOperation>();

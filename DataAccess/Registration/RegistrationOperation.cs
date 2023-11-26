@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using PostOffice.Models;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace PostOffice.DataAccess.Registration
@@ -27,7 +28,7 @@ namespace PostOffice.DataAccess.Registration
                     {"@Username", user.Username},
                 };
 
-                var result = connection.QueryFirstOrDefault<User>(sql, parameters, commandType: System.Data.CommandType.Text);
+                var result = connection.QueryFirstOrDefault<User>(sql, parameters, commandType: CommandType.Text);
 
                 return result != null ? true : false;
             }
@@ -57,7 +58,7 @@ namespace PostOffice.DataAccess.Registration
                     {"@Email", user.Email }
                 };
 
-                var result = connection.Execute(sql, parameters, commandType: System.Data.CommandType.Text);
+                var result = connection.Execute(sql, parameters, commandType: CommandType.Text);
 
                 return result > 0 ? true : false;
             }
@@ -99,7 +100,7 @@ namespace PostOffice.DataAccess.Registration
                 parameters.Add("@PhoneNumber", phoneNumber);
 
 
-                var result = connection.Execute(sql, parameters, commandType: System.Data.CommandType.Text);
+                var result = connection.Execute(sql, parameters, commandType: CommandType.Text);
 
                 return result > 0 ? true : false;
             }
@@ -128,7 +129,7 @@ namespace PostOffice.DataAccess.Registration
                 parameters.Add("@MiddleInitial", middleInitial);
 
 
-                return connection.QueryFirstOrDefault<int>(sql, parameters, commandType: System.Data.CommandType.Text);
+                return connection.QueryFirstOrDefault<int>(sql, parameters, commandType: CommandType.Text);
             }
         }
 
@@ -147,11 +148,99 @@ namespace PostOffice.DataAccess.Registration
                     {"@CustomerId", customerId},
                     {"@UserId", userId}
                 };
-                var registrationCheck = connection.Execute(sql, parameters, commandType: System.Data.CommandType.Text);
+                var registrationCheck = connection.Execute(sql, parameters, commandType: CommandType.Text);
 
                 if (registrationCheck > 0){return true;}else{return false;}
             }
 
+        }
+
+        public void CreateEmployee(CreateEmployeeRequest employee)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
+            {
+
+                var postmasterIdSql = @"
+                SELECT PM.PostMasterId, PO.PostOfficeId
+                FROM Users U
+                JOIN Employees E ON U.UserId = E.UserId
+                LEFT JOIN PostMasters PM ON E.EmployeeId = PM.EmployeeId
+                LEFT JOIN PostOffices PO ON PM.PostMasterId = PO.PostMasterId
+                WHERE U.UserId = @UserId;
+                ";
+                var postOfficeIdSql = @"
+                SELECT PO.PostOfficeId
+                FROM Users U
+                JOIN Employees E ON U.UserId = E.UserId
+                LEFT JOIN PostMasters PM ON E.EmployeeId = PM.EmployeeId
+                LEFT JOIN PostOffices PO ON PM.PostMasterId = PO.PostMasterId
+                WHERE U.UserId = @UserId;
+                ";
+                
+                var userIdParameters = new Dictionary<string, object>
+                {
+                    {"@UserId", employee.AdminUserId }
+                };
+                employee.PostMasterId = connection.QueryFirstOrDefault(postmasterIdSql, userIdParameters, commandType: CommandType.Text);
+                employee.PostOfficeId = connection.QueryFirstOrDefault(postOfficeIdSql, userIdParameters, commandType: CommandType.Text);
+
+
+                var sql = @"
+                INSERT INTO Employees
+                (
+                    EmployeeId,
+                    Ssn,
+                    FirstName,
+                    MiddleInitial,
+                    LastName,
+                    PhoneNumber,
+                    Email,
+                    RoleTypeId,
+                    Salary,
+                    DateOfBirth,
+                    StartDate,
+                    UserId,
+                    PostOfficeId,
+                    PostMasterId
+                )
+                VALUES
+                (
+                    @EmployeeId,
+                    @Ssn,
+                    @FirstName,
+                    @MiddleInitial,
+                    @LastName,
+                    @PhoneNumber,
+                    @Email,
+                    @RoleTypeId,
+                    @Salary,
+                    @DateOfBirth,
+                    @StartDate,
+                    @UserId,
+                    @PostOfficeId,
+                    @PostMasterId
+                )";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@EmployeeId", employee.EmployeeId },
+                    {"@Ssn", employee.Ssn },
+                    {"@FirstName", employee.FirstName },
+                    {"@MiddleInitial", employee.MiddleInitial },
+                    {"@LastName", employee.LastName },
+                    {"@PhoneNumber", employee.PhoneNumber },
+                    {"@Email", employee.Email },
+                    {"@RoleTypeId", employee.RoleTypeId },
+                    {"@Salary", employee.Salary },
+                    {"@DateOfBirth", employee.DateOfBirth },
+                    {"@StartDate", employee.StartDate },
+                    {"@UserId", employee.UserId },
+                    {"@PostOfficeId", employee.PostOfficeId },
+                    {"@PostMasterId", employee.PostMasterId }
+                };
+
+                connection.Execute(sql, parameters, commandType: CommandType.Text);
+            }
         }
 
     }

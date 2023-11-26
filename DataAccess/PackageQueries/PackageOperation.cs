@@ -271,6 +271,46 @@ namespace PostOffice.DataAccess.Packages
             }
         }
 
+        public void UpdateVisitedLocations(UpdatePackageRequest request)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
+            {
+
+                var addressSql = @"SELECT AddressId FROM PostOffices WHERE PostOfficeId = @PostOfficeId";
+                var addressParams = new Dictionary<string, object>
+                {
+                    {"@PostOfficeId", request.PostOfficeId }
+                };
+
+                var addressId = connection.QuerySingleOrDefault(addressSql, addressParams, commandType: CommandType.Text);
+
+                var sql = @"
+                INSERT INTO VisitedLocations
+                (
+                    AddressId,
+                    PackageId,
+                    EmployeeId,
+                    ArrivalTime
+                )
+                VALUES
+                (
+                    @AddressId,
+                    @PackageId,
+                    @EmployeeId,
+                    GETDATE()
+                )";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@AddressId", addressId},
+                    {"@PackageId", request.Package.PackageId}, // once we update the reqeust we can fix this to be request.Package.PackageId
+                    {"@EmployeeId", request.Package.Width} // once we update the request we can fix this to be reqeust.EmployeeId
+                };
+
+                connection.Execute(sql, parameters, commandType: CommandType.Text);
+
+            }
+        }
         public void UpdatePackageStatus(int packageId, int statusId)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))

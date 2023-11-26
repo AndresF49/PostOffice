@@ -74,5 +74,15 @@ public class RegisterController : ControllerBase
 
         return Ok(JsonSerializer.Serialize(token));
     }
+
+    [HttpPost]
+    [Route("CreateEmployee")]
+    public ActionResult CreateEmployee([FromBody] CreateEmployeeRequest request)
+    {
+
+        _registration.CreateEmployee(request);
+
+        return Ok();
+    }
 }
 

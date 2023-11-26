@@ -1,25 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PostOffice.DataAccess.Admin;
 using PostOffice.DataAccess.Reports.AnnualRevenueReport;
 using PostOffice.DataAccess.Reports.EmployeeProductivityReport;
 using PostOffice.DataAccess.Reports.PostOfficeRevenueReport;
+using PostOffice.Models;
 
 namespace PostOffice.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ReportController : ControllerBase
+    public class AdminController : ControllerBase
     {
         private readonly IGetAnnualRevenueReportOperation _getAnnualRevenueReportOperation;
         private readonly IGetEmployeeProductivityReportOperation _getEmployeeProductivityReportOperation;
         private readonly IGetPostOfficeRevenueReportOperation _getPostOfficeRevenueReportOperation;
+        private readonly IAdminOperation _adminOperation;
 
-        public ReportController(IGetAnnualRevenueReportOperation getAnnualRevenueReportOperation,
+        public AdminController(IGetAnnualRevenueReportOperation getAnnualRevenueReportOperation,
             IGetEmployeeProductivityReportOperation getEmployeeProductivityReportOperation,
-            IGetPostOfficeRevenueReportOperation getPostOfficeRevenueReportOperation)
+            IGetPostOfficeRevenueReportOperation getPostOfficeRevenueReportOperation,
+            IAdminOperation adminOperation)
         {
             _getAnnualRevenueReportOperation = getAnnualRevenueReportOperation;
             _getEmployeeProductivityReportOperation = getEmployeeProductivityReportOperation;
             _getPostOfficeRevenueReportOperation = getPostOfficeRevenueReportOperation;
+            _adminOperation = adminOperation;
         }
 
         [HttpPost]
@@ -47,6 +52,16 @@ namespace PostOffice.Controllers
             var response = _getPostOfficeRevenueReportOperation.GetPostOfficeRevenueReport(request);
 
             return new JsonResult(response.Result);
+        }
+
+        [HttpPost]
+        [Route("UpdateEmployee")]
+        public ActionResult UpdateEmployee([FromBody] UpdateEmployeeRequest reqeust)
+        {
+
+            _adminOperation.UpdateEmployee(reqeust);
+
+            return Ok();
         }
     }
 }
