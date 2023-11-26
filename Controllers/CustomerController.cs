@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PostOffice.DataAccess.CustomerQueries;
+using System.Text.Json;
+
 
 namespace PostOffice.Controllers
 {
@@ -14,11 +16,11 @@ namespace PostOffice.Controllers
             _customerOperation = customerOperation;
         }
 
-        [HttpPost]
-        [Route("CreatePackage")]
+        [HttpGet]
+        [Route("GetCustomers")]
         public ActionResult GetCustomers()
         {
-            return Ok(_customerOperation.GetCustomers());
+            return Ok(JsonSerializer.Serialize(_customerOperation.GetCustomers()));
         }
     }
 }

@@ -2,15 +2,15 @@ import { Container, Row, Col, Button, Form, Label, FormGroup, Card, CardBody } f
 import { useForm } from 'react-hook-form'
 import { useState } from 'react';
 import { Roles } from "../Account/Roles";
+import SearchCustomer from "../Customer/SearchCustomer";
 
 export default function CreatePackage({ authentication }) {
 	const { register, handleSubmit, formState, reset } = useForm();
 	const { errors } = formState
-	const [packageInfo, setPackageInfo] = useState();
 	const [showTrackingNumber, setShowTrackingNumber] = useState(null);
 	const [customerSelected, setCustomerSelected] = useState(null);
 
-	const EmployeeCreatePackage = async (customerInfo, packageInfo) => {
+	const EmployeeCreatePackage = async (packageData) => {
 		// we may have to give employee Id too to store with Transaction
 		try {
 			const response = await fetch('package/EmployeeCreatePackage', {
@@ -19,8 +19,7 @@ export default function CreatePackage({ authentication }) {
 				'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({ 
-					Customer: customerInfo,
-					Package: packageInfo
+					Package: packageData
 				}) 
 			}); 
 	
@@ -46,7 +45,7 @@ export default function CreatePackage({ authentication }) {
 		}
 	}
 
-	const CreatePackage = async (packageInfo) => {
+	const CreatePackage = async (packageData) => {
 		try {
 			const response = await fetch('package/CreatePackage', {
 				method: 'POST',
@@ -54,7 +53,7 @@ export default function CreatePackage({ authentication }) {
 				'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({ 
-					Package: packageInfo
+					Package: packageData
 				}) 
 			}); 
 	
@@ -87,12 +86,14 @@ export default function CreatePackage({ authentication }) {
 		// SourceAddress = senderHouseAndStreet + senderCity + senderZipcode + senderState
 		// DestinationAddress = receiverHouseAndStreet + receiverCity + receiverZipcode + receiverState
 
-		packageInfo.SourceAddress = `${packageInfo.senderHouseAndStreet} ${packageInfo.senderCity}, ${packageInfo.senderState}. ${packageInfo.senderZipcode}`;
-		packageInfo.DestinationAddress = `${packageInfo.receiverHouseAndStreet} ${packageInfo.receiverCity}, ${packageInfo.receiverState}. ${packageInfo.receiverZipcode}`;
+		packageData.SourceAddress = `${packageData.senderHouseAndStreet} ${packageData.senderCity}, ${packageData.senderState}. ${packageData.senderZipcode}`;
+		packageData.DestinationAddress = `${packageData.receiverHouseAndStreet} ${packageData.receiverCity}, ${packageData.receiverState}. ${packageData.receiverZipcode}`;
+		
 
 		// setShowTrackingNumber("ABC123");
 		if (authentication.role === Roles[1] || authentication.role === Roles[2]) {
-			const trackingNumber = EmployeeCreatePackage(customerSelected, packageData);
+			packageData.SenderId = customerSelected.CustomerId;
+			const trackingNumber = EmployeeCreatePackage(packageData);
 			if (trackingNumber === false) {
 				console.log("TrackingNumber was returned with False -> Failed for EmployeeCreatePackage");
 			}
@@ -103,6 +104,7 @@ export default function CreatePackage({ authentication }) {
 			// pass Customer and package in EmployeeCreatePackage
 		} else if (authentication.role === Roles[3]) {
 			// send CreatePackage with just a package
+			packageData.SenderId = authentication.UserId; // backend will search on UserId to grab customer
 			const trackingNumber = CreatePackage(packageData);
 			if (trackingNumber === false) {
 				console.log("TrackingNumber was returned with False -> Failed for CreatePackage");
@@ -123,28 +125,9 @@ export default function CreatePackage({ authentication }) {
 		<h5 className="text-center mb-5 fw-light fs-2">Create a Package</h5>
 		<Form noValidate onSubmit={ handleSubmit(onSubmit) }  className="border border-2 p-3 rounded clearfix">
 			{/* Sender */}
-			<Row>
-				<Col md={4}>
-					<FormGroup floating className="mb-3">
-						<input 
-							type="text" 
-							className="form-control" 
-							id="sender" 
-							placeholder="Sender"
-							{...register("Sender", { // CHANGES THIS to autofill with Customer (Sender)
-								required: {
-									value: true,
-									message: 'Sender is required'
-								}
-							})}
-						/>
-						<Label htmlFor="sender">
-							Sender<span className="text-danger">*</span>
-						</Label>
-						<p className="text-danger mt-1">{errors.Sender?.message}</p>
-					</FormGroup>
-				</Col>
-			</Row>
+      <Row>
+        <Label className="fw-bold">Source Address</Label>
+      </Row>
 			<Row>
 				<Col md={5}>
 					<FormGroup floating className="mb-3">
@@ -229,7 +212,9 @@ export default function CreatePackage({ authentication }) {
 			</Row>
 
 			{/* Receiver */}
-
+      <Row>
+        <Label className="fw-bold">Destination</Label>
+      </Row>
 			<Row>
 				<Col md={4}>
 					<FormGroup floating className="mb-3">
@@ -237,7 +222,7 @@ export default function CreatePackage({ authentication }) {
 							type="text" 
 							className="form-control" 
 							id="receiver" 
-							placeholder="Receiver"
+							placeholder="Receiver Name"
 							{...register("Receiver", {
 								required: {
 									value: true,
@@ -246,7 +231,7 @@ export default function CreatePackage({ authentication }) {
 							})}
 						/>
 						<Label htmlFor="receiver">
-							Receiver<span className="text-danger">*</span>
+							Receiver Name<span className="text-danger">*</span>
 						</Label>
 						<p className="text-danger mt-1">{errors.Receiver?.message}</p>
 					</FormGroup>
@@ -334,7 +319,9 @@ export default function CreatePackage({ authentication }) {
 					</FormGroup>
 				</Col>
 			</Row>
-
+      <Row>
+        <Label className="fw-bold">Description of Package</Label>
+      </Row>
 			{/* Description of package */}
 			<Row>
 				<Col md={6}>
@@ -522,10 +509,19 @@ export default function CreatePackage({ authentication }) {
 					</FormGroup>
 				</Col>
 			</Row>
+      {(authentication.role == Roles[1] || authentication.role == Roles[2]) &&
+      <Row className="mb-3">
+        <Label>
+          Sender customer:
+        </Label>
+        <SearchCustomer setCustomerSelected={setCustomerSelected} />
+      </Row>
+      }
 			<Button className="btn-primary fw-bold float-end" type="submit" >
 				Submit
 			</Button>
 		</Form>
+		
 	</> 
 	:
 	<Card>

@@ -17,7 +17,7 @@ namespace PostOffice.DataAccess.CustomerQueries
           using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB"))) 
           {
             var sql = @"
-            SELECT CustomerId,FirstName,MiddleInitial,LastName,Email
+            SELECT *
             FROM Customers
             ";
             
