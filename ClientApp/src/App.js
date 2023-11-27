@@ -51,7 +51,7 @@ export default function App() {
         <Route index path='/' element={ <AdminPage authentication={authentication} /> } />
         <Route index path='/packages' element={ <PackagesPage authentication={authentication} /> } />
         <Route path='/employee' element={ <EmployeeAdminPage authentication={authentication}/> } /> 
-        <Route path='/transactions' element={ <TransactionsPage authentication={authentication} />} />
+        {/* <Route path='/transactions' element={ <TransactionsPage authentication={authentication} />} /> */}
         <Route path='*' element={ <Navigate to="/" replace /> } />
       </Routes>
     );
@@ -61,8 +61,8 @@ export default function App() {
     return (
       <Routes>
         <Route index path='/' element={ <PackagesPage authentication={authentication} /> } />
-        <Route path='/employee' element={ <EmployeePage authentication={authentication} /> } /> 
-        <Route path='/transactions' element={ <TransactionsPage authentication={authentication} /> } />
+        {/* <Route path='/employee' element={ <EmployeePage authentication={authentication} /> } />  */}
+        {/* <Route path='/transactions' element={ <TransactionsPage authentication={authentication} /> } /> */}
         <Route path='*' element={ <Navigate to="/" replace /> } />
       </Routes>
     );
@@ -72,7 +72,7 @@ export default function App() {
     return (
       <Routes>
         <Route index path='/' element={ <PackagesPage authentication={authentication} /> } />
-        <Route path='/transactions' element={ <TransactionsPage authentication={authentication} /> } />
+        {/* <Route path='/transactions' element={ <TransactionsPage authentication={authentication} /> } /> */}
         <Route path='*' element={ <Navigate to="/" replace /> } />
       </Routes>
     );
