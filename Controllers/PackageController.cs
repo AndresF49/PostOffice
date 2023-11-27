@@ -62,19 +62,19 @@ public class PackageController : ControllerBase
         var package = new Package()
         {
             TrackingNumber = Guid.NewGuid().ToString(),
-            Receiver = request.Package.Receiver,
-            SenderId = request.Package.SenderId,
-            DescriptionOfItem = request.Package.DescriptionOfItem,
-            PackageTypeId = request.Package.PackageTypeId,
-            Weight = request.Package.Weight,
-            Length = request.Package.Length,
-            Width = request.Package.Width,
-            Depth = request.Package.Depth,
-            SignatureRequired = request.Package.SignatureRequired,
-            Insurance = request.Package.Insurance,
-            SourceAddressId = request.Package.SourceAddressId,
-            DestinationAddressId = request.Package.DestinationAddressId,
-            StatusId = request.Package.StatusId,
+            Receiver = request.Receiver,
+            SenderId = request.SenderId,
+            DescriptionOfItem = request.DescriptionOfItem,
+            PackageTypeId = request.PackageTypeId,
+            Weight = request.Weight,
+            Length = request.Length,
+            Width = request.Width,
+            Depth = request.Depth,
+            SignatureRequired = request.SignatureRequired,
+            Insurance = request.Insurance,
+            SourceAddressId = _packageOperation.GetAddressId(request.SourceAddress),
+            DestinationAddressId = _packageOperation.GetAddressId(request.DestinationAddress),
+            StatusId = request.StatusId,
         };
 
         var response = _packageOperation.CreatePackage(package);

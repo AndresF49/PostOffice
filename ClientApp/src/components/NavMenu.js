@@ -14,9 +14,9 @@ export default function NavMenu({ setAuthentication, authentication }) {
   const employeePageLinks = () => {
     return (
       <>
-        <NavItem>
+        {/* <NavItem>
           <NavLink tag={Link} className="text-dark" to="/employee">Employee Details</NavLink>
-        </NavItem>
+        </NavItem> */}
       </>
     );
   }

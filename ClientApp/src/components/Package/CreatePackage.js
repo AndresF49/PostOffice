@@ -19,8 +19,23 @@ export default function CreatePackage({ authentication }) {
 				'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({ 
-					UserId: authentication.user.UserId,
-					Package: packageData
+					request: {
+						UserId: authentication.currentUser.UserId,
+					Receiver: packageData.Receiver,
+					SenderId: packageData.SenderId,
+					DescriptionOfItem: packageData.DescriptionOfItem,
+					PackageTypeId: packageData.PackageTypeId,
+					Weight: packageData.Weight,
+					Length: packageData.Length,
+					Width: packageData.Width,
+					Depth: packageData.Depth,
+					SignatureRequired: packageData.SignatureRequired,
+					Insurance: packageData.Insurance,
+					SourceAddress: packageData.SourceAddress,
+					DestinationAddress: packageData.DestinationAddress,
+					StatusId: packageData.StatusId,
+					}
+					
 				}) 
 			}); 
 	
@@ -29,10 +44,10 @@ export default function CreatePackage({ authentication }) {
 					const errorData = await response.json();
 					console.log("Error 400 recieved");
 					console.log(errorData.error);
-					return false;
+					return;
 				} else {
 					console.error('Error during Package Creation:', response.statusText);
-					return false;
+					return ;
 				}
 			} else {
 				// Handle successful package creation if needed
@@ -42,7 +57,7 @@ export default function CreatePackage({ authentication }) {
 			}
 		} catch (error) {
 			console.log("Error when creating Package: ", error);
-			return false;
+			return;
 		}
 	}
 
@@ -93,10 +108,12 @@ export default function CreatePackage({ authentication }) {
 
 		// setShowTrackingNumber("ABC123");
 		if (authentication.role === Roles[1] || authentication.role === Roles[2]) {
-			packageData.SenderId = customerSelected.CustomerId;
+			// console.log(`${packageData.Receiver} - ${packageData.SourceAddress} -> ${packageData.DestinationAddress}`);
+			packageData.SenderId = customerSelected.value.CustomerId;
 			packageData.StatusId = 2;
+			console.log(packageData);
 			const trackingNumber = EmployeeCreatePackage(packageData);
-			if (trackingNumber === false) {
+			if (trackingNumber.result == null) {
 				console.log("TrackingNumber was returned with False -> Failed for EmployeeCreatePackage");
 			}
 			else {
@@ -106,7 +123,7 @@ export default function CreatePackage({ authentication }) {
 			// pass Customer and package in EmployeeCreatePackage
 		} else if (authentication.role === Roles[3]) {
 			// send CreatePackage with just a package
-			packageData.SenderId = authentication.UserId; // backend will search on UserId to grab customer
+			packageData.SenderId = authentication.currentUser.UserId; // backend will search on UserId to grab customer
 			const trackingNumber = CreatePackage(packageData);
 			if (trackingNumber === false) {
 				console.log("TrackingNumber was returned with False -> Failed for CreatePackage");
@@ -487,10 +504,10 @@ export default function CreatePackage({ authentication }) {
 				<Col md={4}>
 					<FormGroup floating className="mb-3">
 						<select className="form-select" id="SignatureRequired"
-							defaultValue={"Yes"}
+							defaultValue={1}
 							{...register("SignatureRequired")}>
-							<option value="true">Yes</option>
-							<option value="False">No</option>
+							<option value={1}>Yes</option>
+							<option value={0}>No</option>
 						</select>
 						<Label htmlFor="SignatureRequired">
 							Signature required?
@@ -500,10 +517,10 @@ export default function CreatePackage({ authentication }) {
 				<Col md={4}>
 					<FormGroup floating className="mb-3">
 						<select className="form-select" id="insurance"
-							defaultValue={"true"}
+							defaultValue={1}
 							{...register("Insurance")}>
-							<option value="true">Yes</option>
-							<option value="false">No</option>
+							<option value={1}>Yes</option>
+							<option value={0}>No</option>
 						</select>
 						<Label htmlFor="Insurance">
 							Insurance?
