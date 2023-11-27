@@ -2,6 +2,6 @@
 {
     public interface IGetEmployeeProductivityReportOperation
     {
-        Task<List<GetEmployeeProductivityReportResponse>> GetEmployeeProductivityReport(GetEmployeeProductivityReportRequest request);
+        List<GetEmployeeProductivityReportResponse> GetEmployeeProductivityReport(GetEmployeeProductivityReportRequest request);
     }
 }

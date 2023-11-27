@@ -14,7 +14,7 @@ namespace PostOffice.DataAccess.Reports.EmployeeProductivityReport
             _configuration = configuration;
         }
 
-        public async Task<List<GetEmployeeProductivityReportResponse>> GetEmployeeProductivityReport(GetEmployeeProductivityReportRequest request)
+        public List<GetEmployeeProductivityReportResponse> GetEmployeeProductivityReport(GetEmployeeProductivityReportRequest request)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
@@ -23,17 +23,9 @@ namespace PostOffice.DataAccess.Reports.EmployeeProductivityReport
                 parameters.Add("@EndDate", request.EndDate, DbType.DateTime);
                 parameters.Add("@EmployeeId", request.EmployeeId, DbType.Int32);
 
-                var result = await connection.QueryAsync<GetEmployeeProductivityReportResponse>("GetEmployeeProductivityReport", parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.Query<GetEmployeeProductivityReportResponse>("GetEmployeeProductivityReport", parameters, commandType: CommandType.StoredProcedure);
 
-                return result.Select(i => new GetEmployeeProductivityReportResponse
-                {
-                    EmployeeId = i.EmployeeId,
-                    EmployeeName = i.EmployeeName,
-                    StartDate = i.StartDate,
-                    MonthsWorked = i.MonthsWorked,
-                    TotalRevenue = i.TotalRevenue
-
-                }).ToList();
+                return result.ToList();
             }
         }
     }

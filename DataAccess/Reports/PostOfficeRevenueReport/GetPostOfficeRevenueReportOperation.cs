@@ -12,7 +12,7 @@ namespace PostOffice.DataAccess.Reports.PostOfficeRevenueReport
             _configuration = configuration;
         }
 
-        public async Task<List<GetPostOfficeRevenueReportResponse>> GetPostOfficeRevenueReport(GetPostOfficeRevenueReportRequest request)
+        public List<GetPostOfficeRevenueReportResponse> GetPostOfficeRevenueReport(GetPostOfficeRevenueReportRequest request)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
@@ -21,15 +21,9 @@ namespace PostOffice.DataAccess.Reports.PostOfficeRevenueReport
                 parameters.Add("@EndDate", request.EndDate, DbType.DateTime);
                 parameters.Add("@PostOfficeId", request.PostOfficeId, DbType.Int32);
 
-                var result = await connection.QueryAsync<GetPostOfficeRevenueReportResponse>("GetPostOfficeRevenue", parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.Query<GetPostOfficeRevenueReportResponse>("GetPostOfficeRevenue", parameters, commandType: CommandType.StoredProcedure);
 
-                return result.Select(i => new GetPostOfficeRevenueReportResponse()
-                {
-                    PostOfficeId = i.PostOfficeId,
-                    PackageId = i.PackageId,
-                    TotalPrice = i.TotalPrice,
-                    TotalRevenue = i.TotalRevenue
-                }).ToList();
+                return result.ToList();
             }
         }
     }

@@ -2,6 +2,6 @@
 {
     public interface IGetPostOfficeRevenueReportOperation
     {
-        Task<List<GetPostOfficeRevenueReportResponse>> GetPostOfficeRevenueReport(GetPostOfficeRevenueReportRequest request);
+        List<GetPostOfficeRevenueReportResponse> GetPostOfficeRevenueReport(GetPostOfficeRevenueReportRequest request);
     }
 }
