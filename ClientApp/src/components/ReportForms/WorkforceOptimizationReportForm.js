@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Form, FormGroup, Label, Input, Button, Table, Col } from 'reactstrap';
+import React, { useState } from 'react';
+import { Button} from 'reactstrap';
 
 const WorkforceOptimizationReportForm = () => {
     const [reportData, setReportData] = useState(null);
     var key = 0;
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async () => {
         try {
             const response = await fetch('/admin/WorkforceOptimizationReport');
 

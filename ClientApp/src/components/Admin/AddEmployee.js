@@ -7,9 +7,8 @@ import { CreateUser } from "../Account/RegisterForm";
 
 export default function AddEmployee({ authentication })  {
 
-  const { register, watch, handleSubmit, formState } = useForm();
+  const { register, watch, handleSubmit, formState, reset } = useForm();
   const { errors } = formState
-  const navigate = useNavigate();
   const [registrationError, setRegistrationError] = useState(null);
   const [createUserError, setCreateUserError] = useState(null);
 
@@ -48,12 +47,12 @@ export default function AddEmployee({ authentication })  {
         } 
         
       } else {
-        console.log('Customer creation successfull');
+        alert('Employee creation successfull');
         const result = await response.json();
         return result;
       }
     } catch (error) {
-      console.log("Error when creating Customer: ", error);
+      console.log("Error when creating Employee: ", error);
     }
   }
 
@@ -95,10 +94,11 @@ export default function AddEmployee({ authentication })  {
     // credentials.StartDate = new Date();
 
     const authDetails = await CreateEmployee(credentials);
-    console.log(authDetails);
+    // console.log(authDetails);
     if (authDetails == false) {
       return false;
     }
+    reset();
     // console.log("Info below from token=loginUser")
     // console.log(`User: ${token.user}`);
     // console.log(`Role: ${[token.user.RoleType]}`);
@@ -110,7 +110,7 @@ export default function AddEmployee({ authentication })  {
     <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
       <div className="card border-0 shadow rounded-3 my-5">
         <div className="card-body p-4 p-sm-5">
-          <h5 className="card-title text-center mb-5 fw-light fs-2">Create an Employee</h5>
+          <h5 className="card-title text-center mb-5 fw-light fs-2">Register an Employee</h5>
           <Form noValidate onSubmit={ handleSubmit(onSubmit) } >
             <Row>
               <Col>
@@ -352,12 +352,3 @@ export default function AddEmployee({ authentication })  {
     </div>
   );
 }
-
-
-
-//   return (
-//     <>
-//       <h3>Add employee</h3>
-//     </>
-//   );
-// }
