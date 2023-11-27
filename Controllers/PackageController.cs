@@ -21,17 +21,6 @@ public class PackageController : ControllerBase
     public ActionResult CreatePackage([FromBody] CreatePackageRequest request)
     {
 
-        double? price = 0.0;
-
-        if (request.PackageTypeId == 1)
-        {
-            price = (request.Weight * 0.4 + request.Length * 0.2 + request.Width * 0.2 + request.Depth * 0.2) * 4;
-        }
-        else
-        {
-            price = request.Weight * 4;
-        }
-
         var package = new Package()
         {
             TrackingNumber = Guid.NewGuid().ToString(),
@@ -50,8 +39,6 @@ public class PackageController : ControllerBase
             StatusId = 1
         };
 
-        package.Price = price;
-
         var response = _packageOperation.CreatePackage(package);
         if (response == "failed")
         {
@@ -68,16 +55,6 @@ public class PackageController : ControllerBase
     public ActionResult EmployeeCreatePackge([FromBody] EmployeeCreatePackageRequest request)
     {
 
-        double? price = 0.0;
-
-        if (request.Package.PackageTypeId == 1)
-        {
-            price = (request.Package.Weight * 0.4 + request.Package.Length * 0.2 + request.Package.Width * 0.2 + request.Package.Depth * 0.2) * 4;
-        }
-        else
-        {
-            price = request.Package.Weight * 4;
-        }
 
         var package = new Package()
         {
@@ -96,8 +73,6 @@ public class PackageController : ControllerBase
             DestinationAddressId = request.Package.DestinationAddressId,
             StatusId = request.Package.StatusId,
         };
-
-        package.Price = price;
 
         var response = _packageOperation.CreatePackage(package);
         if (response == "failed")
