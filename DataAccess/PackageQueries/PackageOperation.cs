@@ -52,6 +52,22 @@ namespace PostOffice.DataAccess.Packages
             }
         }
 
+        public int GetPostOfficeIdByUserId(int userId)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
+            {
+                var sql = @"SELECT PostOfficeId FROM Employees WHERE UserId = @UserId";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@UserId", userId}
+                };
+
+                return connection.QuerySingleOrDefault(sql, parameters, commandType: CommandType.Text).PostOfficeId;
+            }
+
+        }
+
         public int GetCustomerIdByUserId(int userId)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
@@ -63,7 +79,7 @@ namespace PostOffice.DataAccess.Packages
                     {"@UserId", userId}
                 };
 
-                return connection.QuerySingleOrDefault(sql, parameters, commandType: CommandType.Text);
+                return connection.QuerySingleOrDefault(sql, parameters, commandType: CommandType.Text).CustomerId;
             }
         }
 
@@ -82,25 +98,13 @@ namespace PostOffice.DataAccess.Packages
 
                 sql = @"SELECT AddressId FROM Addresses WHERE Address = @Address";
 
-                return connection.QuerySingleOrDefault(sql, parameters, commandType: CommandType.Text);
+                return connection.QuerySingleOrDefault(sql, parameters, commandType: CommandType.Text).AddressId;
             }
 
         }
 
         public string CreatePackage(Package package)
         {
-            double? price = 0.0;
-
-            if (package.PackageTypeId == 1)
-            {
-                price = (package.Weight * 0.4 + package.Length * 0.2 + package.Width * 0.2 + package.Depth * 0.2) * 4;
-            }
-            else
-            {
-                price = package.Weight * 4;
-            }
-
-            package.Price = price;
 
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
@@ -142,7 +146,7 @@ namespace PostOffice.DataAccess.Packages
                     @Insurance,
                     @SourceAddressId,
                     @DestinationAddressId,
-                    @StatusId,
+                    1,
                     GETDATE()
                 )";
 
@@ -237,7 +241,7 @@ namespace PostOffice.DataAccess.Packages
             }
         }
 
-        public void UpdateTransaction(float totalPrice, int customerId, int postOfficeId)
+        public void UpdateTransaction(double? totalPrice, int customerId, int postOfficeId)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
@@ -266,8 +270,6 @@ namespace PostOffice.DataAccess.Packages
                 };
 
                 connection.Execute(sql, parameters, commandType: CommandType.Text);
-
-
             }
         }
 

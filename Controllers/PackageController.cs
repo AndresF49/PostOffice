@@ -21,6 +21,17 @@ public class PackageController : ControllerBase
     public ActionResult CreatePackage([FromBody] CreatePackageRequest request)
     {
 
+        double? price = 0.0;
+
+        if (request.PackageTypeId == 1)
+        {
+            price = (request.Weight * 0.4 + request.Length * 0.2 + request.Width * 0.2 + request.Depth * 0.2) * 4;
+        }
+        else
+        {
+            price = request.Weight * 4;
+        }
+
         var package = new Package()
         {
             TrackingNumber = Guid.NewGuid().ToString(),
@@ -39,6 +50,8 @@ public class PackageController : ControllerBase
             StatusId = 1
         };
 
+        package.Price = price;
+
         var response = _packageOperation.CreatePackage(package);
         if (response == "failed")
         {
@@ -47,6 +60,56 @@ public class PackageController : ControllerBase
         else
         {
             return Ok(JsonSerializer.Serialize(response));
+        }
+    }
+
+    [HttpPost]
+    [Route("EmployeeCreatePackage")]
+    public ActionResult EmployeeCreatePackge([FromBody] EmployeeCreatePackageRequest request)
+    {
+
+        double? price = 0.0;
+
+        if (request.Package.PackageTypeId == 1)
+        {
+            price = (request.Package.Weight * 0.4 + request.Package.Length * 0.2 + request.Package.Width * 0.2 + request.Package.Depth * 0.2) * 4;
+        }
+        else
+        {
+            price = request.Package.Weight * 4;
+        }
+
+        var package = new Package()
+        {
+            TrackingNumber = Guid.NewGuid().ToString(),
+            Receiver = request.Package.Receiver,
+            SenderId = request.Package.SenderId,
+            DescriptionOfItem = request.Package.DescriptionOfItem,
+            PackageTypeId = request.Package.PackageTypeId,
+            Weight = request.Package.Weight,
+            Length = request.Package.Length,
+            Width = request.Package.Width,
+            Depth = request.Package.Depth,
+            SignatureRequired = request.Package.SignatureRequired,
+            Insurance = request.Package.Insurance,
+            SourceAddressId = request.Package.SourceAddressId,
+            DestinationAddressId = request.Package.DestinationAddressId,
+            StatusId = request.Package.StatusId,
+        };
+
+        package.Price = price;
+
+        var response = _packageOperation.CreatePackage(package);
+        if (response == "failed")
+        {
+            return BadRequest("Invalid package");
+        }
+        else
+        {
+            var postOfficeId = _packageOperation.GetPostOfficeIdByUserId(request.UserId);
+            _packageOperation.UpdateTransaction(package.Price, package.SenderId, postOfficeId);
+            return Ok(JsonSerializer.Serialize(response));
+
         }
     }
 
