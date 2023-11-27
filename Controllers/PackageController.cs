@@ -98,7 +98,7 @@ public class PackageController : ControllerBase
 
     [HttpPost]
     [Route("SearchPackage")]
-    public ActionResult<Package> SearchPackage([FromBody] SearchRequest searchRequest)
+    public ActionResult<PackageResponse> SearchPackage([FromBody] SearchRequest searchRequest)
     {
             if (string.IsNullOrEmpty(searchRequest.TrackingNumber))
             {
@@ -107,12 +107,34 @@ public class PackageController : ControllerBase
 
             var searchResult = _packageOperation.GetPackageByTrackingNumber(searchRequest.TrackingNumber).Result;
 
+        var response = new PackageResponse
+        {
+            PackageId = searchResult.PackageId,
+            TrackingNumber = searchResult.TrackingNumber,
+            Receiver = searchResult.Receiver,
+            SenderId = searchResult.SenderId,
+            Price = searchResult.Price,
+            DescriptionOfItem = searchResult.DescriptionOfItem,
+            DeclaredValue = searchResult.DeclaredValue,
+            PackageTypeId = searchResult.PackageTypeId,
+            Weight = searchResult.Weight,
+            Length = searchResult.Length,
+            Width = searchResult.Width,
+            Depth = searchResult.Depth,
+            SignatureRequired = searchResult.SignatureRequired,
+            Insurance = searchResult.Insurance,
+            SourceAddress = _packageOperation.GetAddressById(searchResult.SourceAddressId),
+            DestinationAddress = _packageOperation.GetAddressById(searchResult.DestinationAddressId),
+            StatusId = searchResult.StatusId,
+            PostOfficeId = searchResult.PostOfficeId
+        };
+
             if (string.IsNullOrEmpty(searchResult.PackageId.ToString()))
             {
                 return NotFound("Object not found.");
             }
 
-            return Ok(JsonSerializer.Serialize(searchResult));
+            return Ok(JsonSerializer.Serialize(response));
         }
 
     [HttpPost]

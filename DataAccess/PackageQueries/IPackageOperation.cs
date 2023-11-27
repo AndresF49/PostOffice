@@ -12,5 +12,6 @@ namespace PostOffice.DataAccess.Packages
         public int GetAddressId(string address);
         public int GetCustomerIdByUserId(int userId);
         public int GetPostOfficeIdByUserId(int userId);
+        string GetAddressById(int addressId);
     }
 }
