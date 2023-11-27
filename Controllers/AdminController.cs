@@ -2,7 +2,7 @@
 using PostOffice.DataAccess.Admin;
 using PostOffice.DataAccess.Reports.AnnualRevenueReport;
 using PostOffice.DataAccess.Reports.EmployeeProductivityReport;
-using PostOffice.DataAccess.Reports.WorforceOptimizationReport;
+using PostOffice.DataAccess.Reports.WorkforceOptimizationReport;
 using PostOffice.Models;
 
 namespace PostOffice.Controllers
@@ -13,17 +13,17 @@ namespace PostOffice.Controllers
     {
         private readonly IGetAnnualRevenueReportOperation _getAnnualRevenueReportOperation;
         private readonly IGetEmployeeProductivityReportOperation _getEmployeeProductivityReportOperation;
-        private readonly IGetWorforceOptimizationReportOperation _getWorforceOptimizationReportOperation;
+        private readonly IGetWorkforceOptimizationReportOperation _getWorkforceOptimizationReportOperation;
         private readonly IAdminOperation _adminOperation;
 
         public AdminController(IGetAnnualRevenueReportOperation getAnnualRevenueReportOperation,
             IGetEmployeeProductivityReportOperation getEmployeeProductivityReportOperation,
-            IGetWorforceOptimizationReportOperation getWorforceOptimizationReportOperation,
+            IGetWorkforceOptimizationReportOperation getWorkforceOptimizationReportOperation,
             IAdminOperation adminOperation)
         {
             _getAnnualRevenueReportOperation = getAnnualRevenueReportOperation;
             _getEmployeeProductivityReportOperation = getEmployeeProductivityReportOperation;
-            _getWorforceOptimizationReportOperation = getWorforceOptimizationReportOperation;
+            _getWorkforceOptimizationReportOperation = getWorkforceOptimizationReportOperation;
             _adminOperation = adminOperation;
         }
 
@@ -49,7 +49,7 @@ namespace PostOffice.Controllers
         [Route("WorforceOptimizationRepor")]
         public ActionResult WorforceOptimizationRepor()
         {
-            var response = _getWorforceOptimizationReportOperation.GetWorforceOptimizationReport();
+            var response = _getWorkforceOptimizationReportOperation.GetWorkforceOptimizationReport();
 
             return new JsonResult(response);
         }
