@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using PostOffice.DataAccess.CustomerQueries;
 using PostOffice.DataAccess.Packages;
 using PostOffice.Models;
 using System.Text.Json;
@@ -10,10 +11,12 @@ namespace PostOffice.Controllers;
 public class PackageController : ControllerBase
 {
     private readonly IPackageOperation _packageOperation;
+    private readonly ICustomerOperation _customerOperation;
 
-    public PackageController(IPackageOperation packageOperation)
+    public PackageController(IPackageOperation packageOperation, ICustomerOperation customerOperation)
     {
         _packageOperation = packageOperation;
+        _customerOperation = customerOperation;
     }
 
     [HttpPost]
@@ -100,19 +103,26 @@ public class PackageController : ControllerBase
     [Route("SearchPackage")]
     public ActionResult<PackageResponse> SearchPackage([FromBody] SearchRequest searchRequest)
     {
-            if (string.IsNullOrEmpty(searchRequest.TrackingNumber))
-            {
-                return BadRequest("Invalid search request.");
-            }
+        if (string.IsNullOrEmpty(searchRequest.TrackingNumber))
+        {
+            return BadRequest("Invalid search request.");
+        }
 
-            var searchResult = _packageOperation.GetPackageByTrackingNumber(searchRequest.TrackingNumber).Result;
+        var searchResult = _packageOperation.GetPackageByTrackingNumber(searchRequest.TrackingNumber).Result;
+
+        if (searchResult == null)
+        {
+            return NotFound("Package not found");
+        }
+
+        var senderCustomer = _customerOperation.GetCustomerById(searchResult.SenderId).Result;
 
         var response = new PackageResponse
         {
             PackageId = searchResult.PackageId,
             TrackingNumber = searchResult.TrackingNumber,
             Receiver = searchResult.Receiver,
-            SenderId = searchResult.SenderId,
+            Sender = senderCustomer.FirstName + " " + senderCustomer.MiddleInitial + " " + senderCustomer.LastName,
             Price = searchResult.Price,
             DescriptionOfItem = searchResult.DescriptionOfItem,
             DeclaredValue = searchResult.DeclaredValue,

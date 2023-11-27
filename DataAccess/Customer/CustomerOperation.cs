@@ -25,5 +25,25 @@ namespace PostOffice.DataAccess.CustomerQueries
             return (List<Customer>)result;
           }
         }
+
+        public async Task<Customer> GetCustomerById(int customerId)
+        {
+          using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB"))) 
+          {
+              var sql = @"
+              SELECT FirstName, MiddleInitial, LastName
+              FROM Customers
+              WHERE CustomerId=@CustomerId
+              ";
+              
+              var parameters = new Dictionary<string, object>
+                {
+                    {"@CustomerId", customerId},
+                };
+
+              var result = await connection.QueryFirstOrDefaultAsync<Customer>(sql, parameters, commandType: System.Data.CommandType.Text);
+              return result;
+          }
+        }
     }
 }

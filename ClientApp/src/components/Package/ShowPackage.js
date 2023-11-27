@@ -17,10 +17,10 @@ export default function ShowPackage({ _package }) {
 				</Row>
 				<br></br>
 				<Row>
-					<Col><b>Sender:</b> {_package.SenderId}</Col> <Col><b>Receiver:</b> {_package.Receiver}</Col>
+					<Col><b>Sender:</b> {_package.Sender}</Col> <Col><b>Receiver:</b> {_package.Receiver}</Col>
 				</Row>
 				<Row>
-					{/* <Col><b>Source Address:</b> {_package.SourceAddress}</Col> <Col><b>Destination Address:</b> {_package.destinationAddress}</Col> */}
+					<Col><b>Source Address:</b> {_package.SourceAddress}</Col> <Col><b>Destination Address:</b> {_package.DestinationAddress}</Col>
 				</Row>
 				<br></br>
 				<Row>

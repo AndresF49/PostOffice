@@ -4,7 +4,7 @@ namespace PostOffice.DataAccess.Packages
 {
     public interface IPackageOperation
     {
-        Task<Package> GetPackageByTrackingNumber(string packageId);
+        Task<Package?> GetPackageByTrackingNumber(string packageId);
         string CreatePackage(Package package);
         void UpdatePackage(Package package, int postOfficeId);
         void UpdateTransaction(double? totalPrice, int customerId, int postOfficeId);

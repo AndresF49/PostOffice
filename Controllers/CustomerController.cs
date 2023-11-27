@@ -22,5 +22,16 @@ namespace PostOffice.Controllers
         {
             return Ok(JsonSerializer.Serialize(_customerOperation.GetCustomers()));
         }
+
+        [HttpGet]
+        [Route("GetCustomerById")]
+        public ActionResult GetCustomerById(int customerId)
+        {
+            var result = _customerOperation.GetCustomerById(customerId);
+            if (result == null) {
+                return NotFound("No customer found");
+            }
+            return Ok(JsonSerializer.Serialize(_customerOperation.GetCustomers()));
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace PostOffice.DataAccess.Packages
             _configuration = configuration;
         }
 
-        public async Task<Package> GetPackageByTrackingNumber(string trackingNumber)
+        public async Task<Package?> GetPackageByTrackingNumber(string trackingNumber)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
@@ -29,6 +29,11 @@ namespace PostOffice.DataAccess.Packages
                 };
 
                 var result = await connection.QueryFirstOrDefaultAsync<Package>(sql, parameters, commandType: CommandType.Text);
+
+                if (result == null)
+                {
+                    return null;
+                }
 
                 return new Package
                 {
