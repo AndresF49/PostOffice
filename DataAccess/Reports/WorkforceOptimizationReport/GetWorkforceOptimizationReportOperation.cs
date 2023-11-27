@@ -30,7 +30,7 @@ namespace PostOffice.DataAccess.Reports.WorkforceOptimizationReport
                 ORDER BY
                     PO.PostOfficeId
                 ";
-                var result = connection.Query<GetWorkforceOptimizationReportResponse>(sql, commandType: CommandType.StoredProcedure);
+                var result = connection.Query<GetWorkforceOptimizationReportResponse>(sql, commandType: CommandType.Text);
 
                 return result.ToList();
             }
