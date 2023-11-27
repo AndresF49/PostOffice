@@ -1,5 +1,6 @@
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
+import { PackageStatus } from './StatusEnums';
 
 export default function ShowPackage({ _package }) {
 
@@ -8,37 +9,37 @@ export default function ShowPackage({ _package }) {
 			<Container >
 				<Row>
 					<Col>
-						<b>Tracking Id:</b> {_package.trackingNumber != null ? _package.trackingNumber : "N/A"}
+						<b>Tracking Id:</b> {_package.TrackingNumber != null ? _package.TrackingNumber : "N/A"}
 					</Col> 
 					<Col>
-						<b>Status:</b> {_package.status}
+						<b>Status:</b> {PackageStatus[_package.StatusId]}
 					</Col> 
 				</Row>
 				<br></br>
 				<Row>
-					<Col><b>Sender:</b> {_package.sender}</Col> <Col><b>Receiver:</b> {_package.receiver}</Col>
+					<Col><b>Sender:</b> {_package.SenderId}</Col> <Col><b>Receiver:</b> {_package.Receiver}</Col>
 				</Row>
 				<Row>
-					<Col><b>Source Address:</b> {_package.sourceAddress}</Col> <Col><b>Destination Address:</b> {_package.destinationAddress}</Col>
+					{/* <Col><b>Source Address:</b> {_package.SourceAddress}</Col> <Col><b>Destination Address:</b> {_package.destinationAddress}</Col> */}
 				</Row>
 				<br></br>
 				<Row>
-					<Col><b>Price:</b> ${_package.price}</Col> <Col><b>Description of item:</b> {_package.descriptionOfItem  != null ? _package.descriptionOfItem : "N/A"}</Col>
+					<Col><b>Price:</b> ${_package.Price}</Col> <Col><b>Description of item:</b> {_package.DescriptionOfItem  != null ? _package.DescriptionOfItem : "N/A"}</Col>
 				</Row>
 				<Row>
-					<Col><b>Declared Value:</b> {_package.declaredValue != null ? '$' + _package.declaredValue : "N/A"}</Col> <Col><b>Package Type:</b> {_package.packageType}</Col>
+					<Col><b>Declared Value:</b> {_package.DeclaredValue != null ? '$' + _package.DeclaredValue : "N/A"}</Col> <Col><b>Package Type:</b> {_package.PackageTypeId == 1 ? "Package" : "Envelope"}</Col>
 				</Row>
 				<Row>
-					<Col><b>Weight:</b> {_package.weight != null ? _package.weight + ' lbs' : "N/A"}</Col> <Col><b>Signature Required:</b> {_package.signatureRequired ? "Yes" : "No"}</Col>
+					<Col><b>Weight:</b> {_package.Weight != null ? _package.Weight + ' lbs' : "N/A"}</Col> <Col><b>Signature Required:</b> {_package.SignatureRequired ? "Yes" : "No"}</Col>
 				</Row>
 				<Row>
-					<Col><b>Length:</b> {_package.length != null ? _package.length + '"' : ""}</Col> <Col><b>Insurance:</b> {_package.insurance ? "Yes" : "No"}</Col>
+					<Col><b>Length:</b> {_package.Length != null ? _package.Length + '"' : ""}</Col> <Col><b>Insurance:</b> {_package.Insurance ? "Yes" : "No"}</Col>
 				</Row>
 				<Row>
-					<Col><b>Width:</b> {_package.width != null ? _package.width + '"' : ""}</Col>
+					<Col><b>Width:</b> {_package.Width != null ? _package.Width + '"' : ""}</Col>
 				</Row>
 				<Row>
-					<Col><b>Depth:</b> {_package.depth != null ? _package.depth + '"' : ""}</Col>
+					<Col><b>Depth:</b> {_package.Depth != null ? _package.Depth + '"' : ""}</Col>
 				</Row>
 			</Container>
 		</>
