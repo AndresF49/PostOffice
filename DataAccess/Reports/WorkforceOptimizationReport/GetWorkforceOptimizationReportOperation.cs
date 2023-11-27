@@ -19,8 +19,8 @@ namespace PostOffice.DataAccess.Reports.WorkforceOptimizationReport
                 var sql = @"
                 SELECT
                     PO.PostOfficeId,
-                    COUNT(P.PackageId) AS PackageCount,
-                    COUNT(E.EmployeeId) AS EmployeeCount
+                    COUNT(DISTINCT P.PackageId) AS PackageCount,
+                    COUNT(DISTINCT E.EmployeeId) AS EmployeeCount
                 FROM
                     PostOffices PO
                     LEFT JOIN Packages P ON PO.PostOfficeId = P.PostOfficeId
@@ -28,7 +28,7 @@ namespace PostOffice.DataAccess.Reports.WorkforceOptimizationReport
                 GROUP BY
                     PO.PostOfficeId
                 ORDER BY
-                    PO.PostOfficeId
+                    PO.PostOfficeId;
                 ";
                 var result = connection.Query<GetWorkforceOptimizationReportResponse>(sql, commandType: CommandType.Text);
 
