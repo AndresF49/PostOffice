@@ -8,7 +8,7 @@ class PackageLookupForm extends Component {
         try {
             const response = await axios.get(' /api/packages/${trackingID');
             // Replace '/api/packages' with the actual URL of backend service
-            if (response.status === 200) {
+            if (response.status == 200) {
                 // Check if the request was successful (status code 200)
                 const packageData = response.data;
                 console.log(packageData);
