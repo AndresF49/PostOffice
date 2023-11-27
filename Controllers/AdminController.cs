@@ -3,6 +3,7 @@ using PostOffice.DataAccess.Admin;
 using PostOffice.DataAccess.Reports.AnnualRevenueReport;
 using PostOffice.DataAccess.Reports.EmployeeProductivityReport;
 using PostOffice.DataAccess.Reports.PostOfficeRevenueReport;
+using PostOffice.DataAccess.Reports.WorforceOptimizationReport;
 using PostOffice.Models;
 
 namespace PostOffice.Controllers
@@ -13,17 +14,17 @@ namespace PostOffice.Controllers
     {
         private readonly IGetAnnualRevenueReportOperation _getAnnualRevenueReportOperation;
         private readonly IGetEmployeeProductivityReportOperation _getEmployeeProductivityReportOperation;
-        private readonly IGetPostOfficeRevenueReportOperation _getPostOfficeRevenueReportOperation;
+        private readonly IGetWorforceOptimizationReportOperation _getWorforceOptimizationReportOperation;
         private readonly IAdminOperation _adminOperation;
 
         public AdminController(IGetAnnualRevenueReportOperation getAnnualRevenueReportOperation,
             IGetEmployeeProductivityReportOperation getEmployeeProductivityReportOperation,
-            IGetPostOfficeRevenueReportOperation getPostOfficeRevenueReportOperation,
+            IGetWorforceOptimizationReportOperation getWorforceOptimizationReportOperation,
             IAdminOperation adminOperation)
         {
             _getAnnualRevenueReportOperation = getAnnualRevenueReportOperation;
             _getEmployeeProductivityReportOperation = getEmployeeProductivityReportOperation;
-            _getPostOfficeRevenueReportOperation = getPostOfficeRevenueReportOperation;
+            _getWorforceOptimizationReportOperation = getWorforceOptimizationReportOperation;
             _adminOperation = adminOperation;
         }
 
@@ -33,7 +34,7 @@ namespace PostOffice.Controllers
         {
             var response = _getAnnualRevenueReportOperation.GetAnunalRevenueReport(request);
 
-            return new JsonResult(response.Result);
+            return new JsonResult(response);
         }
 
         [HttpPost]
@@ -42,16 +43,16 @@ namespace PostOffice.Controllers
         {
             var response = _getEmployeeProductivityReportOperation.GetEmployeeProductivityReport(request);
 
-            return new JsonResult(response.Result);
+            return new JsonResult(response);
         }
 
         [HttpPost]
-        [Route("PostOfficeRevenueReport")]
-        public ActionResult PostOfficeRevenueReport([FromBody] GetPostOfficeRevenueReportRequest request)
+        [Route("WorforceOptimizationRepor")]
+        public ActionResult WorforceOptimizationRepor()
         {
-            var response = _getPostOfficeRevenueReportOperation.GetPostOfficeRevenueReport(request);
+            var response = _getWorforceOptimizationReportOperation.GetWorforceOptimizationReport();
 
-            return new JsonResult(response.Result);
+            return new JsonResult(response);
         }
 
         [HttpPost]

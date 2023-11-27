@@ -2,6 +2,6 @@
 {
     public interface IGetWorforceOptimizationReportOperation
     {
-        List<GetWorforceOptimizationReportResponse> GetPostOfficeRevenueReport();
+        List<GetWorforceOptimizationReportResponse> GetWorforceOptimizationReport();
     }
 }

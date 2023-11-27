@@ -12,7 +12,7 @@ namespace PostOffice.DataAccess.Reports.WorforceOptimizationReport
             _configuration = configuration;
         }
 
-        public List<GetWorforceOptimizationReportResponse> GetPostOfficeRevenueReport()
+        public List<GetWorforceOptimizationReportResponse> GetWorforceOptimizationReport()
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
