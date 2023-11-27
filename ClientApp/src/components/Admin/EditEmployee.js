@@ -26,7 +26,20 @@ const EditEmployee = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    Employee: employeeSelected
+                    EmployeeId: employeeSelected.EmployeeId,
+                    Ssn: employeeSelected.Ssn,
+                    FirstName: employeeSelected.FirstName,
+                    MiddleInitial: employeeSelected.MiddleInitial,
+                    LastName: employeeSelected.LastName,
+                    PhoneNumber: employeeSelected.PhoneNumber,
+                    Email: employeeSelected.Email,
+                    RoleTypeId: employeeSelected.RoleTypeId,
+                    Salary: employeeSelected.Salary,
+                    DateOfBirth: employeeSelected.DateOfBirth,
+                    StartDate: employeeSelected.StartDate,
+                    UserId: employeeSelected.UserId,
+                    PostOfficeId: employeeSelected.PostOfficeId,
+                    PostMasterId: employeeSelected.PostMasterId
                 }),
             });
 
@@ -67,7 +80,7 @@ const EditEmployee = () => {
                     <Label for="firstName">First Name</Label>
                     <Input
                         type="text"
-                        name="firstName"
+                        name="FirstName"
                         id="firstName"
                         value={employeeSelected.FirstName}
                         onChange={handleInputChange}
@@ -87,7 +100,7 @@ const EditEmployee = () => {
                     <Label for="lastName">Last Name</Label>
                     <Input
                         type="text"
-                        name="lastName"
+                        name="LastName"
                         id="lastName"
                         value={employeeSelected.LastName}
                         onChange={handleInputChange}
@@ -97,7 +110,7 @@ const EditEmployee = () => {
                     <Label for="email">Email</Label>
                     <Input
                         type="email"
-                        name="email"
+                        name="Email"
                         id="email"
                         value={employeeSelected.Email}
                         onChange={handleInputChange}
@@ -107,7 +120,7 @@ const EditEmployee = () => {
                     <Label for="phone">Phone</Label>
                     <Input
                         type="tel"
-                        name="phone"
+                        name="PhoneNumber"
                         id="phone"
                         value={employeeSelected.PhoneNumber}
                         onChange={handleInputChange}
@@ -115,7 +128,8 @@ const EditEmployee = () => {
                 </FormGroup>
                 <FormGroup floating className="mb-3">
                 <select className="form-select" id="RoleTypeId"
-                    value={employeeSelected.RoleTypeId}
+                    name="RoleTypeId"
+                    defaultValue={employeeSelected.RoleTypeId}
                     >
                     <option value={2}>Employee</option>
                     <option value={1}>Admin</option>
@@ -148,7 +162,7 @@ const EditEmployee = () => {
                     <Label for="SD">Employment Start Date</Label>
                     <Input
                         type="date"
-                        name="Start date"
+                        name="StartDate"
                         id="SD"
                         value={employeeSelected.StartDate}
                         onChange={handleInputChange}
