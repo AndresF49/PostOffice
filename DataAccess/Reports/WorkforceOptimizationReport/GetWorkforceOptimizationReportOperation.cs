@@ -2,17 +2,17 @@
 using System.Data.SqlClient;
 using System.Data;
 
-namespace PostOffice.DataAccess.Reports.WorforceOptimizationReport
+namespace PostOffice.DataAccess.Reports.WorkforceOptimizationReport
 {
-    public class GetWorforceOptimizationReportOperation : IGetWorforceOptimizationReportOperation
+    public class GetWorkforceOptimizationReportOperation : IGetWorkforceOptimizationReportOperation
     {
         private readonly IConfiguration _configuration;
-        public GetWorforceOptimizationReportOperation(IConfiguration configuration)
+        public GetWorkforceOptimizationReportOperation(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public List<GetWorforceOptimizationReportResponse> GetWorforceOptimizationReport()
+        public List<GetWorkforceOptimizationReportResponse> GetWorkforceOptimizationReport()
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
@@ -30,7 +30,7 @@ namespace PostOffice.DataAccess.Reports.WorforceOptimizationReport
                 ORDER BY
                     PO.PostOfficeId
                 ";
-                var result = connection.Query<GetWorforceOptimizationReportResponse>(sql, commandType: CommandType.StoredProcedure);
+                var result = connection.Query<GetWorkforceOptimizationReportResponse>(sql, commandType: CommandType.StoredProcedure);
 
                 return result.ToList();
             }

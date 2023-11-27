@@ -1,6 +1,6 @@
-﻿namespace PostOffice.DataAccess.Reports.WorforceOptimizationReport
+﻿namespace PostOffice.DataAccess.Reports.WorkforceOptimizationReport
 {
-    public class GetWorforceOptimizationReportResponse
+    public class GetWorkforceOptimizationReportResponse
     {
         public int PostOfficeId { get; set; }
         public int PackageCount { get; set; }
