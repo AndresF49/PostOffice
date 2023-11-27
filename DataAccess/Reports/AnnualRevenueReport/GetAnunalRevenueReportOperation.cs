@@ -12,7 +12,7 @@ namespace PostOffice.DataAccess.Reports.AnnualRevenueReport
             _configuration = configuration;
         }
 
-        public async Task<List<GetAnnualRevenueReportResponse>> GetAnunalRevenueReport(GetAnnualRevenueReportRequest request)
+        public List<GetAnnualRevenueReportResponse> GetAnunalRevenueReport(GetAnnualRevenueReportRequest request)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
             {
@@ -20,15 +20,9 @@ namespace PostOffice.DataAccess.Reports.AnnualRevenueReport
                 parameters.Add("@StartDate", request.StartDate, DbType.DateTime);
                 parameters.Add("@EndDate", request.EndDate, DbType.DateTime);
 
-                var result = await connection.QueryAsync<GetAnnualRevenueReportResponse>("GetAnnualRevenueReport", parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.Query<GetAnnualRevenueReportResponse>("GetAnnualRevenueReport", parameters, commandType: CommandType.StoredProcedure);
 
-                return result.Select(i => new GetAnnualRevenueReportResponse()
-                {
-                    PostOfficeId = i.PostOfficeId,
-                    PostMasterId = i.PostMasterId,
-                    PostMasterName = i.PostMasterName,
-                    TotalRevenue = i.TotalRevenue
-                }).ToList();
+                return result.ToList();
             }
         }
     }

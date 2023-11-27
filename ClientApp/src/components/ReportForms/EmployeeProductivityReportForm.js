@@ -7,7 +7,7 @@ const EmployeeProductivityReportForm = () => {
 
     const handleSubmit = async (e) => {
         try {
-            const response = await fetch('/api/reports/employee-productivity', {
+            const response = await fetch('admin/EmployeeProductivityReport', {
                 method: 'POST',
                 body: JSON.stringify({ month: selectedMonth, year: selectedYear }),
                 headers: { 'Content-Type': 'application/json' },

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import PostOfficeRevenueForm from '../ReportForms/PostOfficeRevenueForm';
-import AnnualRevenueReportForm from '../ReportForms/AnnualRevenueReportForm';
 import EmployeeProductivityReportForm from '../ReportForms/EmployeeProductivityReportForm';
-
+import PostOfficeRevenueReportForm from '../ReportForms/PostOfficeRevenueReportForm';
+import WorkforceOptimizationReportForm from '../ReportForms/WorkforceOptimizationReportForm';
 
 const AdminPage = () => {
     // State to track which report form should be displayed
@@ -18,13 +17,13 @@ const AdminPage = () => {
             <h1>Admin Dashboard</h1>
             <Row>
                 <Col>
-                    <Button color="primary" onClick={() => handleReportButtonClick('PostOfficeRevenue')}>
+                    <Button color="primary" onClick={() => handleReportButtonClick('PostOfficeRevenueReport')}>
                         Post Office Revenue Report
                     </Button>
                 </Col>
                 <Col>
-                    <Button color="primary" onClick={() => handleReportButtonClick('AnnualRevenueReport')}>
-                        Annual Revenue Report
+                    <Button color="primary" onClick={() => handleReportButtonClick('WorkforceOptimizationReport')}>
+                        Workforce Optimization Report
                     </Button>
                 </Col>
                 <Col>
@@ -34,8 +33,8 @@ const AdminPage = () => {
                 </Col>           
              </Row>
             <br></br>
-            {selectedReport === 'PostOfficeRevenue' && <PostOfficeRevenueForm />}
-            {selectedReport === 'AnnualRevenueReport' && <AnnualRevenueReportForm />}
+            {selectedReport === 'PostOfficeRevenueReport' && <PostOfficeRevenueReportForm />}
+            {selectedReport === 'WorkforceOptimizationReport' && <WorkforceOptimizationReportForm />}
             {selectedReport === 'EmployeeProductivityReport' && <EmployeeProductivityReportForm />}
         </div>
     );

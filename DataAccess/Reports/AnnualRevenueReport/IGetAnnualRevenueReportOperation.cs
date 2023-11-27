@@ -2,6 +2,6 @@
 {
     public interface IGetAnnualRevenueReportOperation
     {
-        Task<List<GetAnnualRevenueReportResponse>> GetAnunalRevenueReport(GetAnnualRevenueReportRequest request);
+        List<GetAnnualRevenueReportResponse> GetAnunalRevenueReport(GetAnnualRevenueReportRequest request);
     }
 }
