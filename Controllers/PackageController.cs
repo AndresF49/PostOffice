@@ -1,4 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using PostOffice.DataAccess.CustomerQueries;
+using PostOffice.DataAccess.Packages;
+using PostOffice.Models;
+using System.Text.Json;
 
 namespace PostOffice.Controllers;
 
@@ -6,71 +10,151 @@ namespace PostOffice.Controllers;
 [Route("[controller]")]
 public class PackageController : ControllerBase
 {
+    private readonly IPackageOperation _packageOperation;
+    private readonly ICustomerOperation _customerOperation;
 
-	private static IEnumerable<Package> Packages = new[] {
-		new Package { PackageId=1, Status="Pending", Sender="Andres", 
-						TrackingNumber="12345",
-						SourceAddress="123 Sesame Street Houston, Tx", Receiver="Stephen", 
-						DestinationAddress="456 Hillsboro Blvd Corpus Christi, Tx", Price=25.34,
-						DescriptionOfItem="Electronics", DeclaredValue=125.00, PackageType="Package",
-						Weight=15, Length=15, Width=15, Depth=15, SignatureRequired=true,
-						Insurance=true
-					},
-		new Package { PackageId=2, Status="Shipped", Sender="Stephen", 
-						TrackingNumber="55555",
-						SourceAddress="789 Cullen Blvd Houston, Tx", Receiver="Andres", 
-						DestinationAddress="1212 Generic Crt Bellaire, Tx", Price=10.88,
-						DescriptionOfItem=null, DeclaredValue=null, PackageType="Envelope",
-						Weight=null, Length=null, Width=null, Depth=null, SignatureRequired=false,
-						Insurance=false
-					},
-		new Package { PackageId=3, Status="Delivered", Sender="Elmo",
-						TrackingNumber="ABC123", 
-						SourceAddress="112 Sesame St Houston, Tx", Receiver="Oscar", 
-						DestinationAddress="357 Forrest Dr Spring, Tx", Price=28.45,
-						DescriptionOfItem="Nunya", DeclaredValue=250, PackageType="Package",
-						Weight=25.76, Length=20.00, Width=40.00, Depth=15.00, SignatureRequired=false,
-						Insurance=true
-					},
-
-	};
-
-    private readonly ILogger<PackageController> _logger;
-
-    public PackageController(ILogger<PackageController> logger)
+    public PackageController(IPackageOperation packageOperation, ICustomerOperation customerOperation)
     {
-        _logger = logger;
+        _packageOperation = packageOperation;
+        _customerOperation = customerOperation;
     }
 
-    [HttpGet]
-    public IEnumerable<Package> Get()
+    [HttpPost]
+    [Route("CreatePackage")]
+    public ActionResult CreatePackage([FromBody] CreatePackageRequest request)
     {
 
-		return Packages;
-		
+        var package = new Package()
+        {
+            TrackingNumber = Guid.NewGuid().ToString(),
+            Receiver = request.Receiver,
+            SenderId = _packageOperation.GetCustomerIdByUserId(request.SenderId),
+            DescriptionOfItem = request.DescriptionOfItem,
+            PackageTypeId = request.PackageTypeId,
+            Weight = request.Weight,
+            Length = request.Length,
+            Width = request.Width,
+            Depth = request.Depth,
+            SignatureRequired = request.SignatureRequired,
+            Insurance = request.Insurance,
+            SourceAddressId = _packageOperation.GetAddressId(request.SourceAddress),
+            DestinationAddressId = _packageOperation.GetAddressId(request.DestinationAddress),
+            StatusId = 1
+        };
+
+        var response = _packageOperation.CreatePackage(package);
+        if (response == "failed")
+        {
+            return BadRequest("Invalid package");
+        }
+        else
+        {
+            return Ok(JsonSerializer.Serialize(response));
+        }
     }
-	public class TrackingRequest
-	{
-		public string searchRequest { get; set; }
-	}
-	[HttpPost]
-	[Route("SearchPackage")]
-    public ActionResult<Package> SearchPackage([FromBody] TrackingRequest tr) // By default, Web API tries to get simple types from the request URI. The FromBody attribute tells Web API to read the value from the request body.
+
+    [HttpPost]
+    [Route("EmployeeCreatePackage")]
+    public ActionResult EmployeeCreatePackge([FromBody] EmployeeCreatePackageRequest request)
     {
-            if (string.IsNullOrEmpty(tr.searchRequest))
-            {
-                return BadRequest("Invalid search request.");
-            }
 
-			var searchResult = Packages.Where(x => x.TrackingNumber == tr.searchRequest);
 
-			if (searchResult.Count() == 0)
+        var package = new Package()
+        {
+            TrackingNumber = Guid.NewGuid().ToString(),
+            Receiver = request.Receiver,
+            SenderId = request.SenderId,
+            DescriptionOfItem = request.DescriptionOfItem,
+            PackageTypeId = request.PackageTypeId,
+            Weight = request.Weight,
+            Length = request.Length,
+            Width = request.Width,
+            Depth = request.Depth,
+            SignatureRequired = request.SignatureRequired,
+            Insurance = request.Insurance,
+            SourceAddressId = _packageOperation.GetAddressId(request.SourceAddress),
+            DestinationAddressId = _packageOperation.GetAddressId(request.DestinationAddress),
+            StatusId = request.StatusId,
+        };
+
+        var response = _packageOperation.CreatePackage(package);
+        if (response == "failed")
+        {
+            return BadRequest("Invalid package");
+        }
+        else
+        {
+            var postOfficeId = _packageOperation.GetPostOfficeIdByUserId(request.UserId);
+            _packageOperation.UpdateTransaction(package.Price, package.SenderId, postOfficeId);
+            return Ok(JsonSerializer.Serialize(response));
+
+        }
+    }
+
+    [HttpPost]
+    [Route("UpdatePackage")]
+    public  ActionResult UpdatePackage([FromBody] UpdatePackageRequest request)
+    {
+        _packageOperation.UpdatePackage(request.Package, request.PostOfficeId);
+        return Ok();
+    }
+
+    [HttpPost]
+    [Route("SearchPackage")]
+    public ActionResult<PackageResponse> SearchPackage([FromBody] SearchRequest searchRequest)
+    {
+        if (string.IsNullOrEmpty(searchRequest.TrackingNumber))
+        {
+            return BadRequest("Invalid search request.");
+        }
+
+        var searchResult = _packageOperation.GetPackageByTrackingNumber(searchRequest.TrackingNumber).Result;
+
+        if (searchResult == null)
+        {
+            return NotFound("Package not found");
+        }
+
+        var senderCustomer = _customerOperation.GetCustomerById(searchResult.SenderId).Result;
+
+        var response = new PackageResponse
+        {
+            PackageId = searchResult.PackageId,
+            TrackingNumber = searchResult.TrackingNumber,
+            Receiver = searchResult.Receiver,
+            Sender = senderCustomer.FirstName + " " + senderCustomer.MiddleInitial + " " + senderCustomer.LastName,
+            Price = searchResult.Price,
+            DescriptionOfItem = searchResult.DescriptionOfItem,
+            DeclaredValue = searchResult.DeclaredValue,
+            PackageTypeId = searchResult.PackageTypeId,
+            Weight = searchResult.Weight,
+            Length = searchResult.Length,
+            Width = searchResult.Width,
+            Depth = searchResult.Depth,
+            SignatureRequired = searchResult.SignatureRequired,
+            Insurance = searchResult.Insurance,
+            SourceAddress = _packageOperation.GetAddressById(searchResult.SourceAddressId),
+            DestinationAddress = _packageOperation.GetAddressById(searchResult.DestinationAddressId),
+            StatusId = searchResult.StatusId,
+            PostOfficeId = searchResult.PostOfficeId
+        };
+
+            if (string.IsNullOrEmpty(searchResult.PackageId.ToString()))
             {
                 return NotFound("Object not found.");
             }
-		//Console.WriteLine(searchResult);
-            return Ok(searchResult);
+
+            return Ok(JsonSerializer.Serialize(response));
         }
 
-}
+    [HttpPost]
+    [Route("UpdateTransaction")]
+    public ActionResult CreateTransaction([FromBody] UpdateTransactionRequest request)
+    {
+        // need to fix this Package.PostOfficeId wont work, need to pull from Employee
+        _packageOperation.UpdateTransaction(request.TotalPrice, request.Customer.CustomerId, request.Package.PostOfficeId);
+        _packageOperation.UpdatePackageStatus(request.Package.PackageId, 2); // StatusId = 2 => InTransit
 
+        return Ok();
+    }
+}

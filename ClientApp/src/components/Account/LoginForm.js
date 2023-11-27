@@ -41,7 +41,7 @@ export default function LoginForm({ setAuthentication }) {
     });
     // console.log("Info below from token=loginUser")
     // console.log(`User: ${token.user}`);
-    // console.log(`Role: ${Roles[token.user.RoleTypeId]}`);
+    // console.log(`Role: ${Roles[token.user.RoleType]}`);
     // console.log(`Token: ${token.token}`);
     navigate("/");
   };

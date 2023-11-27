@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Roles } from "./Roles";
 
 // do not use Input component from reactstrap for form validation with useForm :(
-async function CreateUser(credentials, roleTypeNum, setRegistrationError) {
+export async function CreateUser(credentials, roleType, setRegistrationError) {
   setRegistrationError(null);
 
   try {
@@ -17,7 +17,8 @@ async function CreateUser(credentials, roleTypeNum, setRegistrationError) {
       body: JSON.stringify({ 
         Username: credentials.Username,
         Password: credentials.Password,
-        RoleTypeId: roleTypeNum,
+        Email: credentials.Email,
+        RoleTypeId: roleType,
       }) 
     }); 
 
@@ -61,9 +62,21 @@ async function CreateCustomer(credentials) {
       // body: JSON.stringify( credentials )
     });
     // console.log("response: ", response);
-
-    const result = await response.json();
-    return result;
+    if (!response.ok) {
+      if (response.status === 400) {
+        const errorData = await response.json();
+        console.log("Error 400 received when creating Customer: " , errorData.errors);
+        return false;
+      } else {
+        console.error('Error during customer creation:', response.statusText);
+        return false;
+      } 
+      
+    } else {
+      console.log('Customer creation successfull');
+      const result = await response.json();
+      return result;
+    }
   } catch (error) {
     console.log("Error when creating Customer: ", error);
   }
@@ -84,22 +97,28 @@ export default function RegisterForm({ setAuthentication }) {
     
     // create a user, get the created UserId from db/backend
     // add UserId to the credentials object that we pass to CreateCustomer
-    const createUserObj = await CreateUser(credentials, 2, setRegistrationError);
-    if (createUserObj == false) {
+    const createUserObjId = await CreateUser(credentials, 3, setRegistrationError);
+    if (createUserObjId == false) {
       return false;
     }
-    credentials.UserId = createUserObj.UserId;
+    credentials.UserId = createUserObjId;
 
     const authDetails = await CreateCustomer(credentials);
+    console.log(authDetails);
+    if (authDetails == false) {
+      return false;
+    }
 
     setAuthentication({
-      currentUser: authDetails.user,
-      role: Roles[authDetails.user.RoleTypeId],
+      // currentUser: authDetails.user,
+      // role: Roles[authDetails.user.RoleTypeId],
+      currentUser: authDetails.userId,
+      role: Roles[authDetails.userRoleTypeId],
       token: authDetails.token
     });
     // console.log("Info below from token=loginUser")
     // console.log(`User: ${token.user}`);
-    // console.log(`Role: ${Roles[token.user.RoleTypeId]}`);
+    // console.log(`Role: ${[token.user.RoleType]}`);
     // console.log(`Token: ${token.token}`);
     navigate("/");
   };
@@ -124,7 +143,7 @@ export default function RegisterForm({ setAuthentication }) {
                 })}
               />
               <Label htmlFor="FirstName">
-                First name
+                First name<span className="text-danger">*</span>
               </Label>
               <p className="text-danger mt-1">{errors.FirstName?.message}</p>
 
@@ -158,7 +177,7 @@ export default function RegisterForm({ setAuthentication }) {
                 })}
               />
               <Label htmlFor="LastName">
-                Last name
+                Last name<span className="text-danger">*</span>
               </Label>
               <p className="text-danger mt-1">{errors.LastName?.message}</p>
 
@@ -193,7 +212,7 @@ export default function RegisterForm({ setAuthentication }) {
                 })}
               />
               <Label htmlFor="email">
-                Email address
+                Email address<span className="text-danger">*</span>
               </Label>
               <p className="text-danger mt-1">{errors.Email?.message}</p>
 
@@ -212,7 +231,7 @@ export default function RegisterForm({ setAuthentication }) {
                 })}
               />
               <Label htmlFor="username">
-                Username
+                Username<span className="text-danger">*</span>
               </Label>
               <p className="text-danger mt-1">{errors.Username?.message}</p>
 
@@ -231,7 +250,7 @@ export default function RegisterForm({ setAuthentication }) {
               })}
             />
             <Label htmlFor="password">
-              Password
+              Password<span className="text-danger">*</span>
             </Label>
             <p className="text-danger mt-1">{errors.Password?.message}</p>
 
@@ -255,7 +274,7 @@ export default function RegisterForm({ setAuthentication }) {
                 })}
               />
               <Label htmlFor="confirmPassword">
-                Confirm password
+                Confirm password<span className="text-danger">*</span>
               </Label>
               <p className="text-danger mt-1">{errors.ConfirmPassword?.message}</p>
 

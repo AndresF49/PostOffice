@@ -1,19 +1,39 @@
-  import React, { useState, useEffect } from 'react';
-  import { Card, CardBody, CardHeader, CardTitle, Row, Col, CardText, Button } from 'reactstrap';
-  import ShowPackage from './ShowPackage';
+import React, { useState, useEffect } from 'react';
+import { Card, CardBody, CardHeader, CardTitle, Row, Col, CardText, Button } from 'reactstrap';
+import ShowPackage from './ShowPackage';
+import SearchPackage from './SearchPackage';
+import EditPackage from './EditPackage'; 
+import CreateTransaction from './CreateTransaction';
+import useAuthentication from '../Utils/useAuthentication';
+import { Roles } from '../Account/Roles';
 
 
 
-export default function Packages() {
+export default function Packages({ authentication }) {
+  // const { authentication } = useAuthentication();
+  const userRole = authentication.role ? authentication.role : null;
+
   const [listPackages, updatePackages] = useState([]);
   const [sendingPackages, updateSending] = useState([]);
   const [receivingPackages, updateReceiving] = useState([]);
 
   const [selectedPackage, setSelectedPackage] = useState(null); // to show package details under table
 
-  const handleDetailButtonClick = (pack) => {
+  const [showSearchPackage, setShowSearchPackage] = useState(false);
+  const [showEditPackage, setShowEditPackage] = useState(false);
+  const [showCreateTransaction, setShowCreateTransaction] = useState(false);
+
+    const handleDetailButtonClick = (pack) => {
     setSelectedPackage(pack);
-  };
+    };
+
+    const handleEditButtonClick = () => {
+        setShowEditPackage(true);
+    };
+
+    const handleCreateTransactionButtonClick = () => {
+        setShowCreateTransaction(true);
+    };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +61,14 @@ export default function Packages() {
   return (
     <>
       <h1>Packages linked to Account</h1>
+          {(userRole === Roles[1] || userRole === Roles[2]) && (
+              <>
+                  <Button color='primary' onClick={() => setShowSearchPackage(!showSearchPackage)}>
+                      Toggle Search Package
+                  </Button>
+                  {showSearchPackage && <SearchPackage />}
+              </>
+          )}
       <Row>
         <Col>
         <Card>
@@ -115,6 +143,22 @@ export default function Packages() {
         {selectedPackage && <ShowPackage _package={selectedPackage} />}
         </Col>
       </Row>
+       {(userRole === Roles[1] || userRole === Roles[2]) && selectedPackage && (
+        <Row>
+          <Col>
+            <Button color='info' onClick={handleEditButtonClick}>
+              Edit Package
+            </Button>
+            {showEditPackage && <EditPackage package={selectedPackage} />}
+          </Col>
+          <Col>
+            <Button color='success' onClick={handleCreateTransactionButtonClick}>
+              Create Transaction
+            </Button>
+            {showCreateTransaction && <CreateTransaction package={selectedPackage} />}
+          </Col>
+        </Row>
+      ) }
     </>
   );
 };

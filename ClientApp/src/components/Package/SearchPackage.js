@@ -18,9 +18,9 @@ const SearchPackage = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    const containsOnlyNumbers = /^\d+$/.test(searchTerm);
+    // const containsOnlyNumbers = /^\d+$/.test(searchTerm);
     //check for empty search term
-    if (!searchTerm.trim() || !containsOnlyNumbers) {
+    if (!searchTerm.trim()) {
       setShowNotFound(false);
       setShowBadRequest(true);
       return;
@@ -33,7 +33,7 @@ const SearchPackage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ searchRequest: searchTerm }),
+        body: JSON.stringify({ TrackingNumber: searchTerm}),
       });
       if (response.status === 404) {
         setResultPackage(null);
@@ -86,7 +86,7 @@ const SearchPackage = () => {
         </Button>
       </Form>
       <br></br>
-      {resultPackage && <ShowPackage _package={resultPackage[0]} />}
+      {resultPackage && <ShowPackage _package={resultPackage} />}
       {showNotFound && packageNotFound()}
       {showBadRequest && (
 				<div>

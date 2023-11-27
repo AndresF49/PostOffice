@@ -1,8 +1,28 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using PostOffice.DataAccess.Admin;
+using PostOffice.DataAccess.CustomerQueries;
+using PostOffice.DataAccess.Login;
+using PostOffice.DataAccess.Packages;
+using PostOffice.DataAccess.Registration;
+using PostOffice.DataAccess.Reports.AnnualRevenueReport;
+using PostOffice.DataAccess.Reports.EmployeeProductivityReport;
+using PostOffice.DataAccess.Reports.WorkforceOptimizationReport;
+using PostOffice.DataAccess.UserQueries;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IAdminOperation, AdminOperation>();
+builder.Services.AddScoped<ILoginOperation, LoginOperation>();
+builder.Services.AddScoped<IPackageOperation, PackageOperation>();
+builder.Services.AddScoped<IRegistrationOperation, RegistrationOperation>();
+builder.Services.AddScoped<IUserOperation, UserOperation>();
+builder.Services.AddScoped<ICustomerOperation, CustomerOperation>();
+builder.Services.AddScoped<IGetAnnualRevenueReportOperation, GetAnnualRevenueReportOperation>();
+builder.Services.AddScoped<IGetEmployeeProductivityReportOperation, GetEmployeeProductivityReportOperation>();
+builder.Services.AddScoped<IGetWorkforceOptimizationReportOperation, GetWorkforceOptimizationReportOperation>();
+
 
 var app = builder.Build();
 

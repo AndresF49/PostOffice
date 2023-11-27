@@ -1,6 +1,8 @@
-using System.Net;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using PostOffice.DataAccess.Login;
+using PostOffice.DataAccess.UserQueries;
+using PostOffice.Models;
 
 namespace PostOffice.Controllers;
 
@@ -8,48 +10,41 @@ namespace PostOffice.Controllers;
 [Route("[controller]")]
 public class LoginController : ControllerBase
 {
+    private readonly ILoginOperation _login;
 
-	private readonly ILogger<LoginController> _logger;
+    public LoginController(ILoginOperation login)
+    {
+        _login = login;
+    }
+    public class Token
+    {
+        public string token { get; set; }
+        public User user { get; set; }
+    }
+    
+    [HttpPost]
+    [Route("Login")]
+    public async Task<IActionResult> Login([FromBody] LoginCredentials credentials)
+    {
+        if (string.IsNullOrEmpty(credentials.Username) || string.IsNullOrEmpty(credentials.Password))
+        {
+            Console.WriteLine("username or pass null/emp");
+            return BadRequest("One or more Login credentials is empty");
+        }
 
-	public LoginController(ILogger<LoginController> logger)
-	{
-		_logger = logger;
-	}
-	public class LoginCredentials
-	{
-		public string username { get; set; }
-		public string password { get; set; }
-	}
-	public class Token // returning this token object so frontend destructure this object into a token and user object
-	{
-		public string token { get; set; }
-		public User user { get; set; }
-	}
-	
-	[HttpPost]
-	[Route("Login")]
-	public async Task<IActionResult> Login([FromBody] LoginCredentials credentials) // By default, Web API tries to get simple types from the request URI. The FromBody attribute tells Web API to read the value from the request body.
-	{
-		if (string.IsNullOrEmpty(credentials.username) || string.IsNullOrEmpty(credentials.password))
-		{
-			Console.WriteLine("username or pass null/emp");
-			return BadRequest("One or more Login credentials is empty");
-		}
-		
-		await Task.Run(() => Thread.Sleep(100));
-		// query db where credentials.username == db.username && Hash(credentials.password) == db.hashedPassword
-		// var user = UserArr.Single<User>(u => u.Username == credentials.username && u.Password == credentials.password);
-		var user = UsersArray.UserArr.Single<User>(u => u.Username == credentials.username && u.Password == credentials.password);
-		// NEEDS TO BE HASHED PASSWORD ^^^^ and SWITCH frontend to take a Username when logging in/registering instead
-		// of an email
-		var tokenObj = new Token { token = "test123", user = user };
-        // Console.WriteLine("In Post method for login:");
-        // Console.WriteLine("Username: " + credentials.username);
-        // Console.WriteLine("Pass: " + credentials.password);
-        // Console.WriteLine("Token: " + tokenObj);
-		// Console.WriteLine("JSONed Token: " + JsonSerializer.Serialize(tokenObj));
+        var user = _login.LoginAsync(credentials);
 
-        return Ok(JsonSerializer.Serialize(tokenObj));
-	}
+        if (!string.IsNullOrEmpty(user.Username))
+        {
+            var tokenObj = new Token { token = "test123", user = user };
+
+            return Ok(JsonSerializer.Serialize(tokenObj));
+        }
+        else
+        {
+            Console.WriteLine("Invalid Username or Password");
+            return Ok();
+        }
+    }
 }
 

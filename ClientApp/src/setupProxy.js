@@ -10,6 +10,8 @@ const context = [
   "/package",
   "/login",
   "/register",
+  "/customer",
+  "/admin"
 ];
 
 const onError = (err, req, resp, target) => {
