@@ -45,9 +45,9 @@ namespace PostOffice.Controllers
             return new JsonResult(response);
         }
 
-        [HttpPost]
-        [Route("WorforceOptimizationRepor")]
-        public ActionResult WorforceOptimizationRepor()
+        [HttpGet]
+        [Route("WorkforceOptimizationReport")]
+        public ActionResult WorkforceOptimizationReport()
         {
             var response = _getWorkforceOptimizationReportOperation.GetWorkforceOptimizationReport();
 
