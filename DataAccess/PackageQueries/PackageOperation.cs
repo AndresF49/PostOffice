@@ -2,6 +2,7 @@
 using System.Data;
 using Dapper;
 using PostOffice.Models;
+using System.Net;
 
 namespace PostOffice.DataAccess.Packages
 {
@@ -100,7 +101,23 @@ namespace PostOffice.DataAccess.Packages
 
                 return connection.QuerySingleOrDefault(sql, parameters, commandType: CommandType.Text).AddressId;
             }
+        }
 
+        public string GetAddressById(int addressId)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB")))
+            {
+                var sql = @"SELECT Address FROM Addresses WHERE AddressId = @AddressId";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@AddressId", addressId}
+                };
+
+                connection.Execute(sql, parameters, commandType: CommandType.Text);
+
+                return connection.QuerySingleOrDefault(sql, parameters, commandType: CommandType.Text).Address;
+            }
         }
 
         public string CreatePackage(Package package)
