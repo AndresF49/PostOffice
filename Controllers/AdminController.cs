@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using PostOffice.DataAccess.Admin;
 using PostOffice.DataAccess.Reports.AnnualRevenueReport;
 using PostOffice.DataAccess.Reports.EmployeeProductivityReport;
@@ -62,6 +63,15 @@ namespace PostOffice.Controllers
             _adminOperation.UpdateEmployee(reqeust);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("GetEmployees")]
+        public ActionResult GetEmployees()
+        {
+
+            return Ok(JsonSerializer.Serialize(_adminOperation.GetEmployees()));
+
         }
     }
 }

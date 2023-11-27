@@ -19,6 +19,7 @@ export default function CreatePackage({ authentication }) {
 				'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({ 
+					UserId: authentication.user.UserId,
 					Package: packageData
 				}) 
 			}); 
@@ -93,6 +94,7 @@ export default function CreatePackage({ authentication }) {
 		// setShowTrackingNumber("ABC123");
 		if (authentication.role === Roles[1] || authentication.role === Roles[2]) {
 			packageData.SenderId = customerSelected.CustomerId;
+			packageData.StatusId = 2;
 			const trackingNumber = EmployeeCreatePackage(packageData);
 			if (trackingNumber === false) {
 				console.log("TrackingNumber was returned with False -> Failed for EmployeeCreatePackage");

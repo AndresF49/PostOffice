@@ -3,49 +3,31 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import SearchEmployee from '../Employee/SearchEmployee';
 
 const EditEmployee = () => {
-    const { employeeId } = useParams();
-    const [employee, setEmployee] = useState({
-    });
-
-    useEffect(() => {
-        const fetchEmployeeById = async () => {
-            try {
-                // Make a request to your server endpoint to fetch employee data based on employeeId
-                const response = await fetch(`employees/${employeeId}`); // Replace with the correct endpoint <3
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setEmployee(data);
-                } else {
-                    console.error('Failed to fetch employee data:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error fetching employee data:', error);
-            }
-        };
-
-        fetchEmployeeById();
-    }, [employeeId]); // The effect will re-run whenever the employeeId changes
-
+    const [employeeSelected, setEmployeeSelected] = useState('');
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setEmployee((prevEmployee) => ({
-            ...prevEmployee,
-            [name]: value,
-        }));
-    };
+        setEmployeeSelected({
+          ...employeeSelected,
+          [name]: value,
+        });
+      };
 
     const handleSaveChanges = async () => {
+        // console.log(employeeSelected)
+        // return;
         try {
-            const response = await fetch(`/employees/${employee.id}`, { //need to put the correct endpoint T.T
+            const response = await fetch(`/admin/UpdateEmployee`, { 
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(employee),
+                body: JSON.stringify({
+                    Employee: employeeSelected
+                }),
             });
 
             if (response.ok) {
@@ -63,16 +45,41 @@ const EditEmployee = () => {
     };
 
     return (
-        <div>
+        <div className='mb-5'>
             <h2>Edit Employee</h2>
+            <SearchEmployee setEmployeeSelected={setEmployeeSelected} />
+            <br></br>
+
+            {employeeSelected && 
             <Form>
+                <FormGroup>
+                    <Label for="Ssn">Social Security Number</Label>
+                    <Input
+                        type="text"
+                        name="Ssn"
+                        id="Ssn"
+                        // placeholder={employeeSelected.Ssn}
+                        value={employeeSelected.Ssn}
+                        onChange={handleInputChange}
+                    />
+                </FormGroup>
                 <FormGroup>
                     <Label for="firstName">First Name</Label>
                     <Input
                         type="text"
                         name="firstName"
                         id="firstName"
-                        value={employee.firstName}
+                        value={employeeSelected.FirstName}
+                        onChange={handleInputChange}
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label for="lastName">Middle initial</Label>
+                    <Input
+                        type="text"
+                        name="MiddleInitial"
+                        id="MiddleInitial"
+                        value={employeeSelected.MiddleInitial}
                         onChange={handleInputChange}
                     />
                 </FormGroup>
@@ -82,7 +89,7 @@ const EditEmployee = () => {
                         type="text"
                         name="lastName"
                         id="lastName"
-                        value={employee.lastName}
+                        value={employeeSelected.LastName}
                         onChange={handleInputChange}
                     />
                 </FormGroup>
@@ -92,7 +99,7 @@ const EditEmployee = () => {
                         type="email"
                         name="email"
                         id="email"
-                        value={employee.email}
+                        value={employeeSelected.Email}
                         onChange={handleInputChange}
                     />
                 </FormGroup>
@@ -102,24 +109,77 @@ const EditEmployee = () => {
                         type="tel"
                         name="phone"
                         id="phone"
-                        value={employee.phone}
+                        value={employeeSelected.PhoneNumber}
+                        onChange={handleInputChange}
+                    />
+                </FormGroup>
+                <FormGroup floating className="mb-3">
+                <select className="form-select" id="RoleTypeId"
+                    value={employeeSelected.RoleTypeId}
+                    >
+                    <option value={2}>Employee</option>
+                    <option value={1}>Admin</option>
+                </select>
+                <Label htmlFor="RoleTypeId">
+                    Role Type
+                </Label>
+                </FormGroup>
+                <FormGroup>
+                    <Label for="Salary">Salary</Label>
+                    <Input
+                        type="numbers"
+                        name="Salary"
+                        id="Salary"
+                        value={employeeSelected.Salary}
                         onChange={handleInputChange}
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Label for="EmployeeId">Department</Label>
+                    <Label for="DOB">Date of Birth</Label>
                     <Input
-                        type="numbers"
-                        name="employeeId"
-                        id="employeeId"
-                        value={employee.employeeId}
+                        type="date"
+                        name="DateOfBirth"
+                        id="DOB"
+                        value={employeeSelected.DateOfBirth}
                         onChange={handleInputChange}
                     />
                 </FormGroup>
+                <FormGroup>
+                    <Label for="SD">Employment Start Date</Label>
+                    <Input
+                        type="date"
+                        name="Start date"
+                        id="SD"
+                        value={employeeSelected.StartDate}
+                        onChange={handleInputChange}
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label for="PostOfficeId">Post Office Id</Label>
+                    <Input
+                        type="number"
+                        name="PostOfficeId"
+                        id="PostOfficeId"
+                        value={employeeSelected.PostOfficeId}
+                        onChange={handleInputChange}
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label for="PostMasterId">Post Master Id</Label>
+                    <Input
+                        type="number"
+                        name="PostMasterId"
+                        id="PostMasterId"
+                        value={employeeSelected.PostMasterId}
+                        onChange={handleInputChange}
+                    />
+                </FormGroup>
+
                 <Button color="primary" onClick={handleSaveChanges}>
                     Save Changes
                 </Button>
             </Form>
+            }
         </div>
     );
 };

@@ -59,5 +59,17 @@ namespace PostOffice.DataAccess.Admin
             }
 
         }
+        public async Task<List<CreateEmployeeRequest>> GetEmployees() {
+          using (var connection = new SqlConnection(_configuration.GetConnectionString("PODB"))) 
+          {
+            var sql = @"
+            SELECT *
+            FROM Employees
+            ";
+            
+            var result = await connection.QueryAsync<CreateEmployeeRequest>(sql, commandType: System.Data.CommandType.Text);
+            return (List<CreateEmployeeRequest>)result;
+          }
+        }
     }
 }
